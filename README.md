@@ -1,2 +1,2 @@
-# A Mutant Generator
-A random character generator for Mutant Future
+# Some Game Tools!
+A set of tools for gaming.  Starting with a random character generator for Mutant Future.
