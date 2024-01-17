@@ -1,2 +1,2 @@
 # mutantfuture
-Random Mutant Future Character Generator
+Mutant Future Random Character Generator
