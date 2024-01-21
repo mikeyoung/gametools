@@ -16,6 +16,7 @@ def main():
     character.race = random.choice(rulebook['races'])['fields']
     character.mutations = get_character_mutations(rulebook, character.race)
     character.feats = random.choice(rulebook['feats'])['fields']
+    character.backgrounds = random.choice(rulebook['backgrounds'])['fields']
     
     print(f'Strength: {character.strength}')
     print(f'Dexterity: {character.dexterity}')
@@ -26,6 +27,7 @@ def main():
     print(f"Race: {character.race['name']}")
     print(f'Mutations: {character.mutations}')
     print(f"Feat: {character.feats['name']} ({character.feats['page_number']})")
+    print(f"Background: {character.backgrounds['name']}")
 
 
 def get_mutation_by_pk(rulebook, mutation_id):
