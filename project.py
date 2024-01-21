@@ -36,7 +36,7 @@ def get_mutation_by_pk(rulebook, mutation_id):
 
 def get_character_mutations(rulebook, character_race):
     all_mutations = rulebook['mutations']
-    character_mutations = set()
+    character_mutations = []
 
     #mental mutations
     total_mental_mutations = roll_dice(character_race['mental_mutations_roll_str'])
@@ -189,7 +189,7 @@ def get_character_mutations(rulebook, character_race):
                 character_mutations.add(mutation_name)
                 mutation_count += 1
 
-    return list(character_mutations)
+    return character_mutations
 
 
 def get_full_mutation_name(mutation):
