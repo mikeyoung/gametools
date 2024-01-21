@@ -50,7 +50,7 @@ def get_character_mutations(rulebook, character_race):
         while mutation_count < total_mental_mutations:
             mutation_name = get_full_mutation_name(random.choice(mental_mutations))
             if mutation_name not in character_mutations:
-                character_mutations.add(mutation_name)
+                character_mutations.append(mutation_name)
                 mutation_count += 1
     
 
@@ -66,7 +66,7 @@ def get_character_mutations(rulebook, character_race):
         while mutation_count < total_physical_mutations:
             mutation_name = get_full_mutation_name(random.choice(physical_mutations))
             if mutation_name not in character_mutations:
-                character_mutations.add(mutation_name)
+                character_mutations.append(mutation_name)
                 mutation_count += 1
 
 
@@ -82,7 +82,7 @@ def get_character_mutations(rulebook, character_race):
         while mutation_count < total_plant_mutations:
             mutation_name = get_full_mutation_name(random.choice(plant_mutations))
             if mutation_name not in character_mutations:
-                character_mutations.add(mutation_name)
+                character_mutations.append(mutation_name)
                 mutation_count += 1
 
 
@@ -98,7 +98,7 @@ def get_character_mutations(rulebook, character_race):
         while mutation_count < total_random_human_animal_mutations:
             mutation_name = get_full_mutation_name(random.choice(random_human_animal_mutations))
             if mutation_name not in character_mutations:
-                character_mutations.add(mutation_name)
+                character_mutations.append(mutation_name)
                 mutation_count += 1
 
 
@@ -114,7 +114,7 @@ def get_character_mutations(rulebook, character_race):
         while mutation_count < total_random_beneficial_any_mutations:
             mutation_name = get_full_mutation_name(random.choice(random_beneficial_any_mutations))
             if mutation_name not in character_mutations:
-                character_mutations.add(mutation_name)
+                character_mutations.append(mutation_name)
                 mutation_count += 1
 
 
@@ -128,7 +128,7 @@ def get_character_mutations(rulebook, character_race):
             random_mutation = get_mutation_by_pk(rulebook, random_mutation_pk)
             mutation_name = get_full_mutation_name(random_mutation)
             if mutation_name not in character_mutations:
-                character_mutations.add(mutation_name)
+                character_mutations.append(mutation_name)
                 mutation_count += 1
 
 
@@ -142,7 +142,7 @@ def get_character_mutations(rulebook, character_race):
             random_mutation = get_mutation_by_pk(rulebook, random_mutation_pk)
             mutation_name = get_full_mutation_name(random_mutation)
             if mutation_name not in character_mutations:
-                character_mutations.add(mutation_name)
+                character_mutations.append(mutation_name)
                 mutation_count += 1
 
 
@@ -158,7 +158,7 @@ def get_character_mutations(rulebook, character_race):
         while mutation_count < total_mental_drawback_mutations:
             mutation_name = get_full_mutation_name(random.choice(mental_drawback_mutations))
             if mutation_name not in character_mutations:
-                character_mutations.add(mutation_name)
+                character_mutations.append(mutation_name)
                 mutation_count += 1
 
 
@@ -174,7 +174,7 @@ def get_character_mutations(rulebook, character_race):
         while mutation_count < total_physical_drawback_mutations:
             mutation_name = get_full_mutation_name(random.choice(physical_drawback_mutations))
             if mutation_name not in character_mutations:
-                character_mutations.add(mutation_name)
+                character_mutations.append(mutation_name)
                 mutation_count += 1
 
 
@@ -186,7 +186,7 @@ def get_character_mutations(rulebook, character_race):
         while mutation_count < total_random_any_mutations:
             mutation_name = get_full_mutation_name(random.choice(all_mutations))
             if mutation_name not in character_mutations:
-                character_mutations.add(mutation_name)
+                character_mutations.append(mutation_name)
                 mutation_count += 1
 
     return character_mutations
