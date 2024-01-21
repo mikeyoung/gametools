@@ -216,27 +216,47 @@ class CharacterBase:
     def energy_save(self):
         """Energy Saving Throw"""
         return self._energy_save
+    
+    @energy_save.setter
+    def energy_save(self, value):
+        self._energy_save = value
 
     @property
     def poison_death_save(self):
         """Poison & Death Saving Throw"""
         return self._poison_death_save
+    
+    @poison_death_save.setter
+    def poison_death_save(self, value):
+        self._poison_death_save = value
 
     @property
     def stun_save(self):
         """Stun Saving Throw"""
         return self._stun_save
+    
+    @stun_save.setter
+    def stun_save(self, value):
+        self._stun_save = value
 
     @property
     def radiation_save(self):
         """Radiation Saving Throw"""
         return self._radiation_save
 
+    @radiation_save.setter
+    def radiation_save(self, value):
+        self._radiation_save = value
+
     @property
     def thac0(self):
         """THAC0"""
         return self._thac0
     
+    @thac0.setter
+    def thac0(self, value):
+        self._thac0 = value
+
     @property
     def gold(self):
         """Gold"""

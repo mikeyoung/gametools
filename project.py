@@ -42,8 +42,13 @@ def main():
     character.mutations = get_character_mutations(rulebook, character.race)
     character.feats = random.choice(rulebook['feats'])['fields']
     character.backgrounds = random.choice(rulebook['backgrounds'])['fields']
+    character.thac0 = 19
     character.gold = 10 * roll_dice('3d8')
     character.hit_points = get_hit_points(character.race, character.constitution)
+    character.energy_save = 15
+    character.poison_death_save = 12
+    character.stun_save = 14
+    character.radiation_save = 13
     
     print(f'Strength: {character.strength}')
     print(f'--Strength Mod: {character.strength_mod}')
@@ -81,6 +86,11 @@ def main():
     print(f"Background: {character.backgrounds['name']}")
     print(f'Gold: {character.gold}')
     print(f'Hit Points: {character.hit_points}')
+    print(f'THAC0: {character.thac0}')
+    print(f'Energy Save: {character.energy_save}')
+    print(f'Poison/Death Save: {character.poison_death_save}')
+    print(f'Stun Save: {character.stun_save}')
+    print(f'Radiation Save: {character.radiation_save}')
 
 def get_mutation_by_pk(rulebook, mutation_id):
     all_mutations = rulebook['mutations']
