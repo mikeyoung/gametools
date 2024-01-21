@@ -1,0 +1,1 @@
+RULEBOOK_PATH = 'mutantfuture/static/mutantfuture/json/rulebook.json'

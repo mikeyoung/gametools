@@ -5,6 +5,18 @@ class Race(models.Model):
     hit_dice_sides = models.IntegerField()
     page_number = models.CharField(max_length=10)
 
+    #mutation rolls
+    mental_mutations_roll_str = models.CharField(max_length = 12, default = 0)
+    physical_mutations_roll_str = models.CharField(max_length = 12, default = 0)
+    plant_mutations_roll_str = models.CharField(max_length = 12, default = 0)
+    random_human_animal_roll_str = models.CharField(max_length = 12, default = 0)
+    random_beneficial_any_roll_str = models.CharField(max_length = 12, default = 0)
+    special_animal_roll_str = models.CharField(max_length = 12, default = 0)
+    special_insect_roll_str = models.CharField(max_length = 12, default = 0)
+    mental_drawback_roll_str = models.CharField(max_length = 12, default = 0)
+    physical_drawback_roll_str = models.CharField(max_length = 12, default = 0)
+    random_any_roll_str = models.CharField(max_length = 12, default = 0)
+
     source = models.CharField(max_length=12, default = 'base', choices = [
         ('base', 'Base'),
         ('advanced', 'Advanced'),
@@ -12,7 +24,7 @@ class Race(models.Model):
 
 
     def __str__(self):
-        return f'{self.name} ({self.page_number})'
+        return f'{self.name} hit_die:{self.hit_dice_sides} ({self.page_number})'
     
 class Mutation(models.Model):
     name = models.CharField(max_length=100)
@@ -84,3 +96,58 @@ class PlantMutationRoll(models.Model):
 
     def __str__(self):
         return f'{self.roll} b:{self.base_result.name} / a:{self.advanced_result.name}'
+
+
+class StrengthModSet(models.Model):
+    value = models.IntegerField(unique = True)
+    str_mod = models.IntegerField()
+    dmg_mod = models.IntegerField()
+
+    def __str__(self):
+        return f'{self.value}: str_mod:{self.str_mod} dmg_mod:{self.dmg_mod}'
+
+
+class DexterityModSet(models.Model):
+    value = models.IntegerField(unique = True)
+    ac_mod = models.IntegerField()
+    missile_mod = models.IntegerField()
+    init_mod = models.IntegerField()
+
+    def __str__(self):
+        return f'{self.value}: ac_mod:{self.ac_mod} missile_mod:{self.missile_mod} init_mod:{self.init_mod}'
+
+
+class ConstitutionModSet(models.Model):
+    value = models.IntegerField(unique = True)
+    poison_death_mod = models.IntegerField()
+    radiation_mod = models.IntegerField()
+
+    def __str__(self):
+        return f'{self.value}: poison_death_mod:{self.poison_death_mod} radiation_mod:{self.radiation_mod}'
+
+
+class IntelligenceModSet(models.Model):
+    value = models.IntegerField(unique = True)
+    tech_mod = models.IntegerField()
+
+    def __str__(self):
+        return f'{self.value}: tech_mod:{self.tech_mod}'
+
+
+class CharismaModSet(models.Model):
+    value = models.IntegerField(unique = True)
+    reaction_mod = models.IntegerField()
+    retainers = models.IntegerField()
+    retainer_morale = models.IntegerField()
+
+    def __str__(self):
+        return f'{self.value}: reaction_mod:{self.reaction_mod} retainers:{self.retainers} retainer_morale:{self.retainer_morale}'
+
+class SpecialInsectMutationRoll(models.Model):
+    roll = models.IntegerField()
+    mutation = models.ForeignKey(Mutation, on_delete=models.CASCADE, related_name="special_insect_mutation_rolls", null=True)
+
+
+class SpecialAnimalMutationRoll(models.Model):
+    roll = models.IntegerField()
+    mutation = models.ForeignKey(Mutation, on_delete=models.CASCADE, related_name="special_plant_mutation_rolls", null=True)    
