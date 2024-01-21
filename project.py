@@ -54,14 +54,28 @@ def get_random_character():
     character.stun_save = 14
     character.radiation_save = 13
 
-    #misc
+    #alignment
     character.alignment = random.choice(ALIGNMENTS)
+
+    #race
     character.race = random.choice(rulebook['races'])['fields']
+
+    #mutations
     character.mutations = get_character_mutations(rulebook, character.race)
+
+    #feats
     character.feats = random.choice(rulebook['feats'])['fields']
+
+    #backgrounds
     character.backgrounds = random.choice(rulebook['backgrounds'])['fields']
+
+    #thac0
     character.thac0 = 19
+
+    #gold
     character.gold = 10 * roll_dice('3d8')
+
+    #hit points
     character.hit_points = get_hit_points(character.race, character.constitution)
     
     return character
@@ -114,6 +128,7 @@ def print_character_stats(character):
 def get_mutation_by_pk(rulebook, mutation_id):
     all_mutations = rulebook['mutations']
     return list(filter(lambda mutation: mutation['pk'] == mutation_id, all_mutations))[0]
+
 
 def get_character_mutations(rulebook, character_race):
     all_mutations = rulebook['mutations']
@@ -203,7 +218,7 @@ def get_character_mutations(rulebook, character_race):
     total_special_animal_mutations = roll_dice(character_race['special_animal_roll_str'])
     if (total_special_animal_mutations > 0):
         special_animal_mutations = rulebook['specialAnimalMutationRolls']
-                
+
         mutation_count = 0
         while mutation_count < total_special_animal_mutations:
             random_mutation_pk = random.choice(special_animal_mutations)['fields']['mutation']
@@ -278,6 +293,7 @@ def get_character_mutations(rulebook, character_race):
 def get_full_mutation_name(mutation):
     return f"{mutation['fields']['name']} ({mutation['fields']['type']}, {mutation['fields']['effect_type']}, {mutation['fields']['page_number']})"
 
+
 def roll_dice(roll_str):
     if 'd' in roll_str.lower():
         total = 0
@@ -314,6 +330,7 @@ def get_hit_points(race, constitution_value):
     else:
         sides = race['hit_dice_sides']
         return roll_dice(f'{constitution_value}d{sides}')
+
 
 if __name__ == '__main__':
     main()
