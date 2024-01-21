@@ -189,7 +189,7 @@ def get_character_mutations(rulebook, character_race):
                 character_mutations.add(mutation_name)
                 mutation_count += 1
 
-    return character_mutations
+    return list(character_mutations)
 
 
 def get_full_mutation_name(mutation):
