@@ -9,10 +9,12 @@ def main():
 
     for _ in range(0,4):
         new_character = get_random_character()
-        print_character_stats(new_character)
+        # print_character_stats(new_character)
+        print(type(new_character))
         characters.append(new_character)
 
-    print(characters)
+
+    # print(characters)
 
 
 def get_random_character():
