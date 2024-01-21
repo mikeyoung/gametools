@@ -1,6 +1,14 @@
 class CharacterBase:
     def __init__(self):
         pass
+    
+    @classmethod
+    def format_mod(cls, mod_value):
+        if mod_value > 0:
+            return f'+{str(mod_value)}' 
+        else:
+            return str(mod_value)
+        
 
     # Race        
     @property
@@ -55,7 +63,7 @@ class CharacterBase:
     @property
     def strength_mod(self):
         """Strength Modifier"""
-        return self._strength_mod
+        return CharacterBase.format_mod(self._strength_mod)
     
     @strength_mod.setter
     def strength_mod(self, value):
@@ -64,7 +72,7 @@ class CharacterBase:
     @property
     def damage_mod(self):
         """Damage Modifier"""
-        return self._damage_mod
+        return CharacterBase.format_mod(self._damage_mod)
     
     @damage_mod.setter
     def damage_mod(self, value):
@@ -83,7 +91,7 @@ class CharacterBase:
     @property
     def ac_mod(self):
         """Armor Class Modifier"""
-        return self._ac_mod
+        return CharacterBase.format_mod(self._ac_mod)
     
     @ac_mod.setter
     def ac_mod(self, value):
@@ -92,7 +100,7 @@ class CharacterBase:
     @property
     def missile_mod(self):
         """Missile Attack Modifier"""
-        return self._missle_mod
+        return CharacterBase.format_mod(self._missle_mod)
     
     @missile_mod.setter
     def missile_mod(self, value):
@@ -100,7 +108,7 @@ class CharacterBase:
 
     @property
     def init_mod(self):
-        return self._init_mod
+        return CharacterBase.format_mod(self._init_mod)
     
     @init_mod.setter
     def init_mod(self, value):
@@ -118,14 +126,23 @@ class CharacterBase:
         self._constitution = value
 
     @property
-    def poison_mod(self):
+    def poison_death_mod(self):
         """Poison Save Modifier"""
-        return 666
+        return CharacterBase.format_mod(self._poison_death_mod)
+    
+    @poison_death_mod.setter
+    def poison_death_mod(self, value):
+        self._poison_death_mod = value
 
     @property
     def radiation_mod(self):
         """Radiation Save Modifier"""
-        return 666
+        return CharacterBase.format_mod(self._radiation_mod)
+    
+    @radiation_mod.setter
+    def radiation_mod(self, value):
+        self._radiation_mod = value
+
 
     #Intelligence
     @property
@@ -140,7 +157,11 @@ class CharacterBase:
     @property
     def technology_mod(self):
         """Technology Modifier"""
-        return 666
+        return f'{CharacterBase.format_mod(self._technology_mod)}%'
+
+    @technology_mod.setter
+    def technology_mod(self, value):
+        self._technology_mod = value
 
     #Willpower
     @property
@@ -165,7 +186,30 @@ class CharacterBase:
     @property
     def reaction_mod(self):
         """Reaction Modifier"""
-        return 666
+        return CharacterBase.format_mod(self._reaction_mod)
+    
+    @reaction_mod.setter
+    def reaction_mod(self, value):
+        self._reaction_mod = value
+
+    @property
+    def retainers(self):
+        """Max Retainers"""
+        return self._retainers    
+
+    @retainers.setter
+    def retainers(self, value):
+        self._retainers = value
+
+    @property
+    def retainer_morale(self):
+        """Retainer Morale"""
+        return self._retainer_morale    
+
+    @retainer_morale.setter
+    def retainer_morale(self, value):
+        self._retainer_morale = value
+
 
     #Saving Throws
     @property

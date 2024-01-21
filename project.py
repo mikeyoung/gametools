@@ -1,7 +1,7 @@
 from mutantfuture.characters import CharacterBase
 import random
 import json
-from config import RULEBOOK_PATH
+from config import RULEBOOK_PATH, ALIGNMENTS
 
 
 def main():
@@ -19,15 +19,31 @@ def main():
     character.missile_mod = get_mod_by_attr_value(rulebook['dexterityModSets'], 'missile_mod', character.dexterity)
     character.init_mod = get_mod_by_attr_value(rulebook['dexterityModSets'], 'init_mod', character.dexterity)
 
+    #constitution
     character.constitution = roll_dice('3d6')
+    character.poison_death_mod = get_mod_by_attr_value(rulebook['constitutionModSets'], 'poison_death_mod', character.constitution)
+    character.radiation_mod = get_mod_by_attr_value(rulebook['constitutionModSets'], 'radiation_mod', character.constitution)
+
+    #intelligence
     character.intelligence = roll_dice('3d6')
+    character.technology_mod = get_mod_by_attr_value(rulebook['intelligenceModSets'], 'tech_mod', character.intelligence)
+
+    #willpower
     character.willpower = roll_dice('3d6')
+
+    #charisma
     character.charisma = roll_dice('3d6')
+    character.reaction_mod = get_mod_by_attr_value(rulebook['charismaModSets'], 'reaction_mod', character.charisma)
+    character.retainers = get_mod_by_attr_value(rulebook['charismaModSets'], 'retainers', character.charisma)
+    character.retainer_morale = get_mod_by_attr_value(rulebook['charismaModSets'], 'retainer_morale', character.charisma)
+
+    character.alignment = random.choice(ALIGNMENTS)
     character.race = random.choice(rulebook['races'])['fields']
     character.mutations = get_character_mutations(rulebook, character.race)
     character.feats = random.choice(rulebook['feats'])['fields']
     character.backgrounds = random.choice(rulebook['backgrounds'])['fields']
     character.gold = 10 * roll_dice('3d8')
+    character.hit_points = get_hit_points(character.race, character.constitution)
     
     print(f'Strength: {character.strength}')
     print(f'--Strength Mod: {character.strength_mod}')
@@ -41,15 +57,30 @@ def main():
     print()
 
     print(f'Constitution: {character.constitution}')
+    print(f'--Poison Save Mod: {character.poison_death_mod}')
+    print(f'--Poison Save Mod: {character.radiation_mod}')
+    print()
+
     print(f'Intelligence: {character.intelligence}')
+    print(f'--Technology Mod: {character.technology_mod}')
+    print()
+
     print(f'Willpower: {character.willpower}')
+    print()
+
     print(f'Charisma: {character.charisma}')
+    print(f'--Reaction Mod: {character.reaction_mod}')
+    print(f'--Retainers: {character.retainers}')
+    print(f'--Retainer Morale: {character.retainer_morale}')
+    print()
+
+    print(f'Alignment: {character.alignment}')
     print(f"Race: {character.race['name']}")
     print(f'Mutations: {character.mutations}')
     print(f"Feat: {character.feats['name']} ({character.feats['page_number']})")
     print(f"Background: {character.backgrounds['name']}")
     print(f'Gold: {character.gold}')
-
+    print(f'Hit Points: {character.hit_points}')
 
 def get_mutation_by_pk(rulebook, mutation_id):
     all_mutations = rulebook['mutations']
@@ -242,12 +273,16 @@ def get_rulebook(json_file_path):
 
 def get_mod_by_attr_value(attribute_table, mod_name, value):
     value_row = list(filter(lambda row : row['fields']['value'] == value, attribute_table))[0]
-    mod_value = value_row['fields'][mod_name]
-    if mod_value > 0:
-        return f'+{str(mod_value)}' 
-    else:
-        return str(mod_value)
+    return value_row['fields'][mod_name]
 
+
+def get_hit_points(race, constitution_value):
+    fixed_hp_races = ['synthetic android', 'basic android']
+    if race['name'].lower() in fixed_hp_races:
+        return 50
+    else:
+        sides = race['hit_dice_sides']
+        return roll_dice(f'{constitution_value}d{sides}')
 
 if __name__ == '__main__':
     main()
