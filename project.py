@@ -5,6 +5,17 @@ from config import RULEBOOK_PATH, ALIGNMENTS
 
 
 def main():
+    characters = []
+
+    for _ in range(0,4):
+        new_character = get_random_character()
+        print_character_stats(new_character)
+        characters.append(new_character)
+
+    print(characters)
+
+
+def get_random_character():
     rulebook = get_rulebook(RULEBOOK_PATH)
     character = CharacterBase()
 
@@ -37,6 +48,13 @@ def main():
     character.retainers = get_mod_by_attr_value(rulebook['charismaModSets'], 'retainers', character.charisma)
     character.retainer_morale = get_mod_by_attr_value(rulebook['charismaModSets'], 'retainer_morale', character.charisma)
 
+    #saves
+    character.energy_save = 15
+    character.poison_death_save = 12
+    character.stun_save = 14
+    character.radiation_save = 13
+
+    #misc
     character.alignment = random.choice(ALIGNMENTS)
     character.race = random.choice(rulebook['races'])['fields']
     character.mutations = get_character_mutations(rulebook, character.race)
@@ -45,11 +63,11 @@ def main():
     character.thac0 = 19
     character.gold = 10 * roll_dice('3d8')
     character.hit_points = get_hit_points(character.race, character.constitution)
-    character.energy_save = 15
-    character.poison_death_save = 12
-    character.stun_save = 14
-    character.radiation_save = 13
     
+    return character
+
+
+def print_character_stats(character):
     print(f'Strength: {character.strength}')
     print(f'--Strength Mod: {character.strength_mod}')
     print(f'--Damage Mod: {character.damage_mod}')
@@ -91,6 +109,7 @@ def main():
     print(f'Poison/Death Save: {character.poison_death_save}')
     print(f'Stun Save: {character.stun_save}')
     print(f'Radiation Save: {character.radiation_save}')
+
 
 def get_mutation_by_pk(rulebook, mutation_id):
     all_mutations = rulebook['mutations']
@@ -183,7 +202,8 @@ def get_character_mutations(rulebook, character_race):
     #special_animal_mutations
     total_special_animal_mutations = roll_dice(character_race['special_animal_roll_str'])
     if (total_special_animal_mutations > 0):
-        special_animal_mutations = rulebook['specialAnimalMutationRolls']        
+        special_animal_mutations = rulebook['specialAnimalMutationRolls']
+                
         mutation_count = 0
         while mutation_count < total_special_animal_mutations:
             random_mutation_pk = random.choice(special_animal_mutations)['fields']['mutation']
@@ -197,7 +217,8 @@ def get_character_mutations(rulebook, character_race):
     #special_insect_mutations
     total_special_insect_mutations = roll_dice(character_race['special_insect_roll_str'])
     if (total_special_insect_mutations > 0):
-        special_insect_mutations = rulebook['specialInsectMutationRolls']        
+        special_insect_mutations = rulebook['specialInsectMutationRolls']
+
         mutation_count = 0
         while mutation_count < total_special_insect_mutations:
             random_mutation_pk = random.choice(special_insect_mutations)['fields']['mutation']
