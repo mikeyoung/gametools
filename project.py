@@ -25,6 +25,7 @@ def main():
     character.mutations = get_character_mutations(rulebook, character.race)
     character.feats = random.choice(rulebook['feats'])['fields']
     character.backgrounds = random.choice(rulebook['backgrounds'])['fields']
+    character.gold = 10 * roll_dice('3d8')
     
     print(f'Strength: {character.strength}')
     print(f'--Strength Mod: {character.strength_mod}')
@@ -43,6 +44,7 @@ def main():
     print(f'Mutations: {character.mutations}')
     print(f"Feat: {character.feats['name']} ({character.feats['page_number']})")
     print(f"Background: {character.backgrounds['name']}")
+    print(f'Gold: {character.gold}')
 
 
 def get_mutation_by_pk(rulebook, mutation_id):
