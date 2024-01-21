@@ -53,9 +53,22 @@ class CharacterBase:
         self._strength = value
     
     @property
-    def strength_mods(self):
-        """Strength Modifiers"""
-        return 666
+    def strength_mod(self):
+        """Strength Modifier"""
+        return self._strength_mod
+    
+    @strength_mod.setter
+    def strength_mod(self, value):
+        self._strength_mod = value
+
+    @property
+    def damage_mod(self):
+        """Damage Modifier"""
+        return self._damage_mod
+    
+    @damage_mod.setter
+    def damage_mod(self, value):
+        self._damage_mod = value
 
     #Dexterity
     @property

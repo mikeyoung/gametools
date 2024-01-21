@@ -8,6 +8,7 @@ def main():
     rulebook = get_rulebook(RULEBOOK_PATH)
     character = CharacterBase()
     character.strength = roll_dice('3d6')
+    character.strength_mod = get_mod_by_attr_value(rulebook['strengthModSets'], 'str_mod', character.strength)
     character.dexterity = roll_dice('3d6')
     character.constitution = roll_dice('3d6')
     character.intelligence = roll_dice('3d6')
@@ -19,6 +20,7 @@ def main():
     character.backgrounds = random.choice(rulebook['backgrounds'])['fields']
     
     print(f'Strength: {character.strength}')
+    print(f'Strength Mod: {character.strength_mod}')
     print(f'Dexterity: {character.dexterity}')
     print(f'Constitution: {character.constitution}')
     print(f'Intelligence: {character.intelligence}')
@@ -217,6 +219,15 @@ def get_rulebook(json_file_path):
             return data[0]
     except FileNotFoundError:
         raise
+
+
+def get_mod_by_attr_value(attribute_table, mod_name, value):
+    value_row = list(filter(lambda row : row['fields']['value'] == value, attribute_table))[0]
+    mod_value = value_row['fields'][mod_name]
+    if mod_value > 0:
+        return f'+{str(mod_value)}' 
+    else:
+        return str(mod_value)
 
 
 if __name__ == '__main__':
