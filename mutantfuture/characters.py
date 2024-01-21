@@ -83,7 +83,11 @@ class CharacterBase:
     @property
     def ac_mod(self):
         """Armor Class Modifier"""
-        return 666
+        return self._ac_mod
+    
+    @ac_mod.setter
+    def ac_mod(self, value):
+        self._ac_mod = value
 
     @property
     def missile_mod(self):

@@ -7,10 +7,16 @@ from config import RULEBOOK_PATH
 def main():
     rulebook = get_rulebook(RULEBOOK_PATH)
     character = CharacterBase()
+
+    #strength
     character.strength = roll_dice('3d6')
     character.strength_mod = get_mod_by_attr_value(rulebook['strengthModSets'], 'str_mod', character.strength)
     character.damage_mod = get_mod_by_attr_value(rulebook['strengthModSets'], 'dmg_mod', character.strength)
+
+    #dexterity
     character.dexterity = roll_dice('3d6')
+    character.ac_mod = get_mod_by_attr_value(rulebook['dexterityModSets'], 'ac_mod', character.dexterity)
+
     character.constitution = roll_dice('3d6')
     character.intelligence = roll_dice('3d6')
     character.willpower = roll_dice('3d6')
@@ -24,7 +30,11 @@ def main():
     print(f'--Strength Mod: {character.strength_mod}')
     print(f'--Strength Dmg: {character.damage_mod}')
     print()
+
     print(f'Dexterity: {character.dexterity}')
+    print(f'-- AC Mod: {character.ac_mod}')
+    print()
+
     print(f'Constitution: {character.constitution}')
     print(f'Intelligence: {character.intelligence}')
     print(f'Willpower: {character.willpower}')
