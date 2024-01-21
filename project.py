@@ -16,6 +16,8 @@ def main():
     #dexterity
     character.dexterity = roll_dice('3d6')
     character.ac_mod = get_mod_by_attr_value(rulebook['dexterityModSets'], 'ac_mod', character.dexterity)
+    character.missile_mod = get_mod_by_attr_value(rulebook['dexterityModSets'], 'missile_mod', character.dexterity)
+    character.init_mod = get_mod_by_attr_value(rulebook['dexterityModSets'], 'init_mod', character.dexterity)
 
     character.constitution = roll_dice('3d6')
     character.intelligence = roll_dice('3d6')
@@ -29,11 +31,13 @@ def main():
     
     print(f'Strength: {character.strength}')
     print(f'--Strength Mod: {character.strength_mod}')
-    print(f'--Strength Dmg: {character.damage_mod}')
+    print(f'--Damage Mod: {character.damage_mod}')
     print()
 
     print(f'Dexterity: {character.dexterity}')
     print(f'-- AC Mod: {character.ac_mod}')
+    print(f'-- Missile Mod: {character.missile_mod}')
+    print(f'-- Init Mod: {character.init_mod}')
     print()
 
     print(f'Constitution: {character.constitution}')

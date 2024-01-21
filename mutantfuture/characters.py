@@ -92,7 +92,20 @@ class CharacterBase:
     @property
     def missile_mod(self):
         """Missile Attack Modifier"""
-        return 666
+        return self._missle_mod
+    
+    @missile_mod.setter
+    def missile_mod(self, value):
+        self._missle_mod = value
+
+    @property
+    def init_mod(self):
+        return self._init_mod
+    
+    @init_mod.setter
+    def init_mod(self, value):
+        self._init_mod = value
+        
 
     #Constitution
     @property
