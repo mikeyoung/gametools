@@ -15,6 +15,7 @@ def main():
     character.charisma = roll_dice('3d6')
     character.race = random.choice(rulebook['races'])['fields']
     character.mutations = get_character_mutations(rulebook, character.race)
+    character.feats = random.choice(rulebook['feats'])['fields']
     
     print(f'Strength: {character.strength}')
     print(f'Dexterity: {character.dexterity}')
@@ -24,6 +25,7 @@ def main():
     print(f'Charisma: {character.charisma}')
     print(f"Race: {character.race['name']}")
     print(f'Mutations: {character.mutations}')
+    print(f"Feat: {character.feats['name']} ({character.feats['page_number']})")
 
 
 def get_mutation_by_pk(rulebook, mutation_id):
@@ -189,7 +191,7 @@ def get_character_mutations(rulebook, character_race):
 
 
 def get_full_mutation_name(mutation):
-    return f"{mutation['fields']['name']} ({mutation['fields']['type']}, {mutation['fields']['effect_type']})"
+    return f"{mutation['fields']['name']} ({mutation['fields']['type']}, {mutation['fields']['effect_type']}, {mutation['fields']['page_number']})"
 
 def roll_dice(roll_str):
     if 'd' in roll_str.lower():
