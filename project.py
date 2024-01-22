@@ -23,7 +23,7 @@ def create_characters_file(characters):
         chararacter_number = 1
         for character in characters:
             text_file_contents += f'---------------start record {chararacter_number} of {len(characters)}---------------\n'
-            text_file_contents += f'Race: {character.race["name"]}\n'
+            text_file_contents += f'Race: {character.race["name"]} ({character.race["page_number"]})\n'
             text_file_contents += f'Background: {character.backgrounds["name"]}\n'
             text_file_contents += f'Alignment: {character.alignment}\n'
 
@@ -53,9 +53,13 @@ def create_characters_file(characters):
             text_file_contents += '\n'
             text_file_contents += f'Hit Points: {character.hit_points}\n'
             text_file_contents += '\n'
-            text_file_contents += f'Mutations:\n'
-            for mutation in character.mutations:
-                text_file_contents += f'--{mutation}\n'
+
+            if len(character.mutations) > 0:
+                text_file_contents += f'Mutations:\n'
+                for mutation in character.mutations:
+                    text_file_contents += f'--{mutation}\n'
+            else:
+                text_file_contents += f'Mutations: None\n'
 
             text_file_contents += '\n'
             text_file_contents += f'Feat: {character.feats["name"]} ({character.feats["page_number"]})\n'
