@@ -1,0 +1,438 @@
+MUTANT FUTURE CHARACTER SPLAT
+
+---------------start record 1 of 9---------------
+Race: Mutant Human
+Background: Lawyer
+Alignment: neutrality
+
+Strength: 8
+--Strength Mod: -1
+--Damage Mod: -1
+
+Dexterity: 6
+-- AC Mod: +1
+-- Missile Mod: -1
+-- Init Mod: -1
+
+Constitution: 13
+--Poison Save Mod: 0
+--Poison Save Mod: 0
+
+Intelligence: 9
+--Technology Mod: 0%
+
+Willpower: 5
+
+Charisma: 10
+--Reaction Mod: 0
+--Retainers: 4
+--Retainer Morale: 7
+
+Hit Points: 52
+
+Mutations:
+--Unstable Genes (Mental) (mental, benefit, A35)
+--Atrophied Cerebellum (mental, drawback, M31)
+--Increased Caloric Needs (physical, drawback, M27)
+--Spiny Growth (physical, benefit, M26)
+--Density Alteration (Self) (physical, benefit, M23)
+--Epidermal Photosynthesis (physical, benefit, M24)
+
+Feat: Secret Tongue (A9)
+
+Gold: 170
+
+Saving Throws
+--Energy Save: 15
+--Poison/Death Save: 12
+--Stun Save: 14
+--Radiation Save: 13
+
+----------------end record 1 of 9----------------
+
+---------------start record 2 of 9---------------
+Race: Mutant Insect
+Background: Undertaker
+Alignment: chaos
+
+Strength: 13
+--Strength Mod: +1
+--Damage Mod: +1
+
+Dexterity: 6
+-- AC Mod: +1
+-- Missile Mod: -1
+-- Init Mod: -1
+
+Constitution: 7
+--Poison Save Mod: 0
+--Poison Save Mod: -1
+
+Intelligence: 14
+--Technology Mod: +5%
+
+Willpower: 10
+
+Charisma: 5
+--Reaction Mod: +1
+--Retainers: 2
+--Retainer Morale: 5
+
+Hit Points: 24
+
+Mutations:
+--Mind Transfer (mental, benefit, A33)
+--Metamorph (physical, benefit, M25)
+--Aberrant Form (physical, benefit, M22)
+--Echolocation (physical, benefit, M24)
+
+Feat: Fateful Blow (A12)
+
+Gold: 160
+
+Saving Throws
+--Energy Save: 15
+--Poison/Death Save: 12
+--Stun Save: 14
+--Radiation Save: 13
+
+----------------end record 2 of 9----------------
+
+---------------start record 3 of 9---------------
+Race: Mutant Insect
+Background: Archaeologist
+Alignment: chaos
+
+Strength: 12
+--Strength Mod: 0
+--Damage Mod: 0
+
+Dexterity: 10
+-- AC Mod: 0
+-- Missile Mod: 0
+-- Init Mod: 0
+
+Constitution: 12
+--Poison Save Mod: 0
+--Poison Save Mod: 0
+
+Intelligence: 4
+--Technology Mod: -10%
+
+Willpower: 16
+
+Charisma: 14
+--Reaction Mod: -1
+--Retainers: 5
+--Retainer Morale: 8
+
+Hit Points: 36
+
+Mutations:
+--Radio Brain (mental, benefit, A33)
+--Reanimator Parasite (physical, benefit, A26)
+--Night Vision (physical, benefit, M25)
+--Adhesive Touch (physical, benefit, A23)
+--Complete Wing Development (physical, benefit, A23)
+
+Feat: Resistance (A9)
+
+Gold: 80
+
+Saving Throws
+--Energy Save: 15
+--Poison/Death Save: 12
+--Stun Save: 14
+--Radiation Save: 13
+
+----------------end record 3 of 9----------------
+
+---------------start record 4 of 9---------------
+Race: Mutant Cyborg
+Background: Inventor
+Alignment: chaos
+
+Strength: 9
+--Strength Mod: 0
+--Damage Mod: 0
+
+Dexterity: 15
+-- AC Mod: -1
+-- Missile Mod: +1
+-- Init Mod: +1
+
+Constitution: 12
+--Poison Save Mod: 0
+--Poison Save Mod: 0
+
+Intelligence: 6
+--Technology Mod: -5%
+
+Willpower: 7
+
+Charisma: 11
+--Reaction Mod: 0
+--Retainers: 4
+--Retainer Morale: 7
+
+Hit Points: 48
+
+Mutations:
+--Abnormal Sleeping Habits (mental, drawback, A36)
+
+Feat: Defender (A9)
+
+Gold: 130
+
+Saving Throws
+--Energy Save: 15
+--Poison/Death Save: 12
+--Stun Save: 14
+--Radiation Save: 13
+
+----------------end record 4 of 9----------------
+
+---------------start record 5 of 9---------------
+Race: Mutant Human
+Background: Hunter
+Alignment: neutrality
+
+Strength: 13
+--Strength Mod: +1
+--Damage Mod: +1
+
+Dexterity: 10
+-- AC Mod: 0
+-- Missile Mod: 0
+-- Init Mod: 0
+
+Constitution: 9
+--Poison Save Mod: 0
+--Poison Save Mod: 0
+
+Intelligence: 12
+--Technology Mod: 0%
+
+Willpower: 12
+
+Charisma: 13
+--Reaction Mod: -1
+--Retainers: 5
+--Retainer Morale: 8
+
+Hit Points: 35
+
+Mutations:
+--Mind Lock (mental, benefit, A33)
+--Neural Telepathy (mental, benefit, M31)
+--Remote Viewing (mental, benefit, A34)
+--Dwarfism (physical, benefit, M23)
+--Skin Inflammation (physical, drawback, A29)
+
+Feat: Artifact (A11)
+
+Gold: 110
+
+Saving Throws
+--Energy Save: 15
+--Poison/Death Save: 12
+--Stun Save: 14
+--Radiation Save: 13
+
+----------------end record 5 of 9----------------
+
+---------------start record 6 of 9---------------
+Race: Mutant Animal (Advanced)
+Background: Gladiator
+Alignment: law
+
+Strength: 7
+--Strength Mod: -1
+--Damage Mod: -1
+
+Dexterity: 7
+-- AC Mod: +1
+-- Missile Mod: -1
+-- Init Mod: -1
+
+Constitution: 10
+--Poison Save Mod: 0
+--Poison Save Mod: 0
+
+Intelligence: 9
+--Technology Mod: 0%
+
+Willpower: 15
+
+Charisma: 9
+--Reaction Mod: 0
+--Retainers: 4
+--Retainer Morale: 7
+
+Hit Points: 32
+
+Mutations:
+--Abnormal Sleeping Habits (mental, drawback, A36)
+--Disintegration (mental, benefit, M29)
+--Body Adjustment (mental, benefit, M28)
+--Explosive Self-Destruction (physical, benefit, A24)
+--Hemophilia (physical, drawback, M27)
+--Reduced Oxygen Efficiency (physical, drawback, M27)
+--Dual Cerebellum (Defective) (mental, drawback, M31)
+
+Feat: Radical Mutation (A10)
+
+Gold: 60
+
+Saving Throws
+--Energy Save: 15
+--Poison/Death Save: 12
+--Stun Save: 14
+--Radiation Save: 13
+
+----------------end record 6 of 9----------------
+
+---------------start record 7 of 9---------------
+Race: Brainiac
+Background: Gang Boss
+Alignment: law
+
+Strength: 7
+--Strength Mod: -1
+--Damage Mod: -1
+
+Dexterity: 7
+-- AC Mod: +1
+-- Missile Mod: -1
+-- Init Mod: -1
+
+Constitution: 11
+--Poison Save Mod: 0
+--Poison Save Mod: 0
+
+Intelligence: 12
+--Technology Mod: 0%
+
+Willpower: 10
+
+Charisma: 4
+--Reaction Mod: +1
+--Retainers: 2
+--Retainer Morale: 5
+
+Hit Points: 39
+
+Mutations:
+--Vampiric Field (mental, benefit, M31)
+--Neural Telekinesis (mental, benefit, M31)
+--Neural Telepathy (mental, benefit, M31)
+--Dream Invasion (mental, benefit, M31)
+--Energy Infusion (mental, benefit, A31)
+--Teleportal (mental, benefit, A34)
+--Damage Turning (mental, benefit, M28)
+--Epidermal Susceptibility (physical, drawback, M26)
+
+Feat: Pet (A11)
+
+Gold: 70
+
+Saving Throws
+--Energy Save: 15
+--Poison/Death Save: 12
+--Stun Save: 14
+--Radiation Save: 13
+
+----------------end record 7 of 9----------------
+
+---------------start record 8 of 9---------------
+Race: Mutant Cyborg
+Background: Astronaut
+Alignment: law
+
+Strength: 12
+--Strength Mod: 0
+--Damage Mod: 0
+
+Dexterity: 15
+-- AC Mod: -1
+-- Missile Mod: +1
+-- Init Mod: +1
+
+Constitution: 8
+--Poison Save Mod: 0
+--Poison Save Mod: -1
+
+Intelligence: 4
+--Technology Mod: -10%
+
+Willpower: 7
+
+Charisma: 8
+--Reaction Mod: +1
+--Retainers: 3
+--Retainer Morale: 6
+
+Hit Points: 30
+
+Mutations:
+--Phobia (mental, drawback, M32)
+
+Feat: Guild (A10)
+
+Gold: 120
+
+Saving Throws
+--Energy Save: 15
+--Poison/Death Save: 12
+--Stun Save: 14
+--Radiation Save: 13
+
+----------------end record 8 of 9----------------
+
+---------------start record 9 of 9---------------
+Race: Basic Android
+Background: Lawyer
+Alignment: chaos
+
+Strength: 13
+--Strength Mod: +1
+--Damage Mod: +1
+
+Dexterity: 9
+-- AC Mod: 0
+-- Missile Mod: 0
+-- Init Mod: 0
+
+Constitution: 14
+--Poison Save Mod: 0
+--Poison Save Mod: 0
+
+Intelligence: 7
+--Technology Mod: -5%
+
+Willpower: 8
+
+Charisma: 12
+--Reaction Mod: 0
+--Retainers: 4
+--Retainer Morale: 7
+
+Hit Points: 50
+
+Mutations:
+--Temperature Control (mental, benefit, M31)
+--Channel Life (mental, benefit, A31)
+--Amphibious (physical, benefit, A23)
+
+Feat: Superior Attack (A9)
+
+Gold: 110
+
+Saving Throws
+--Energy Save: 15
+--Poison/Death Save: 12
+--Stun Save: 14
+--Radiation Save: 13
+
+----------------end record 9 of 9----------------
+

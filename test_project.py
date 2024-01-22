@@ -1,5 +1,5 @@
 import pytest
-from project import roll_dice, get_rulebook, get_random_character
+from project import roll_dice, get_rulebook, get_random_character, get_random_alignment, get_random_race
 from mutantfuture.characters import CharacterBase
 from config import RULEBOOK_PATH
 
@@ -24,3 +24,26 @@ def test_get_rulebook():
 
 def test_get_random_character(): 
     assert type(get_random_character()) == CharacterBase
+
+
+def test_get_random_alignment():
+    invalid_alignment_detected = False
+
+    #test a thousand random alignments
+    for _ in range(0,1000):
+        if not get_random_alignment() in ['chaos','neutrality','law']:
+            invalid_alignment_detected = True
+            break
+
+    assert invalid_alignment_detected == False
+
+def test_get_random_race():
+    base_race_detected = False
+
+    #test a thousand random races to not include base versions
+    for _ in range(0,1000):
+        if '(base)' in get_random_race(get_rulebook(RULEBOOK_PATH))['name'].lower():
+            base_race_detected = True
+            break
+
+    assert base_race_detected == False

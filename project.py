@@ -1,20 +1,78 @@
 from mutantfuture.characters import CharacterBase
 import random
 import json
-from config import RULEBOOK_PATH, ALIGNMENTS
+from config import RULEBOOK_PATH, ALIGNMENTS, SPLAT_COUNT
+import time
 
 
 def main():
     characters = []
 
-    for _ in range(0,4):
+    for _ in range(0, SPLAT_COUNT):
         new_character = get_random_character()
-        # print_character_stats(new_character)
         print(type(new_character))
         characters.append(new_character)
 
+    create_characters_file(characters)
 
-    # print(characters)
+
+def create_characters_file(characters):
+    with open(f'splat_sheets/characters_splat_{time.time()}.txt', 'w') as text_file:
+        text_file_contents = 'MUTANT FUTURE CHARACTER SPLAT\n\n'
+        
+        chararacter_number = 1
+        for character in characters:
+            text_file_contents += f'---------------start record {chararacter_number} of {len(characters)}---------------\n'
+            text_file_contents += f'Race: {character.race["name"]}\n'
+            text_file_contents += f'Background: {character.backgrounds["name"]}\n'
+            text_file_contents += f'Alignment: {character.alignment}\n'
+
+            text_file_contents += '\n'
+            text_file_contents += f'Strength: {character.strength}\n'
+            text_file_contents += f'--Strength Mod: {character.strength_mod}\n'
+            text_file_contents += f'--Damage Mod: {character.damage_mod}\n'
+            text_file_contents += '\n'
+            text_file_contents += f'Dexterity: {character.dexterity}\n'
+            text_file_contents += f'-- AC Mod: {character.ac_mod}\n'
+            text_file_contents += f'-- Missile Mod: {character.missile_mod}\n'
+            text_file_contents += f'-- Init Mod: {character.init_mod}\n'
+            text_file_contents += '\n'
+            text_file_contents += f'Constitution: {character.constitution}\n'
+            text_file_contents += f'--Poison Save Mod: {character.poison_death_mod}\n'
+            text_file_contents += f'--Poison Save Mod: {character.radiation_mod}\n'
+            text_file_contents += '\n'
+            text_file_contents += f'Intelligence: {character.intelligence}\n'
+            text_file_contents += f'--Technology Mod: {character.technology_mod}\n'
+            text_file_contents += '\n'
+            text_file_contents += f'Willpower: {character.willpower}\n'
+            text_file_contents += '\n'
+            text_file_contents += f'Charisma: {character.charisma}\n'
+            text_file_contents += f'--Reaction Mod: {character.reaction_mod}\n'
+            text_file_contents += f'--Retainers: {character.retainers}\n'
+            text_file_contents += f'--Retainer Morale: {character.retainer_morale}\n'
+            text_file_contents += '\n'
+            text_file_contents += f'Hit Points: {character.hit_points}\n'
+            text_file_contents += '\n'
+            text_file_contents += f'Mutations:\n'
+            for mutation in character.mutations:
+                text_file_contents += f'--{mutation}\n'
+
+            text_file_contents += '\n'
+            text_file_contents += f'Feat: {character.feats["name"]} ({character.feats["page_number"]})\n'
+            text_file_contents += f'\n'
+            text_file_contents += f'Gold: {character.gold}\n'
+            text_file_contents += f'\n'
+            text_file_contents += f'Saving Throws\n'
+            text_file_contents += f'--Energy Save: {character.energy_save}\n'
+            text_file_contents += f'--Poison/Death Save: {character.poison_death_save}\n'
+            text_file_contents += f'--Stun Save: {character.stun_save}\n'
+            text_file_contents += f'--Radiation Save: {character.radiation_save}\n'
+            text_file_contents += f'\n'
+            text_file_contents += f'----------------end record {chararacter_number} of {len(characters)}----------------\n'
+            text_file_contents += f'\n'
+            chararacter_number += 1
+
+        text_file.write(text_file_contents)
 
 
 def get_random_character():
@@ -57,10 +115,10 @@ def get_random_character():
     character.radiation_save = 13
 
     #alignment
-    character.alignment = random.choice(ALIGNMENTS)
+    character.alignment = get_random_alignment()
 
     #race
-    character.race = random.choice(rulebook['races'])['fields']
+    character.race = get_random_race(rulebook)
 
     #mutations
     character.mutations = get_character_mutations(rulebook, character.race)
@@ -81,6 +139,16 @@ def get_random_character():
     character.hit_points = get_hit_points(character.race, character.constitution)
     
     return character
+
+
+def get_random_alignment():
+    return random.choice(ALIGNMENTS)
+
+
+def get_random_race(rulebook):
+    #filter out base versions for now
+    filtered_races = list(filter(lambda race : '(base)' not in race['fields']['name'].lower(), rulebook['races']))
+    return random.choice(filtered_races)['fields']
 
 
 def print_character_stats(character):
