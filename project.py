@@ -2,18 +2,30 @@ from mutantfuture.characters import CharacterBase
 import random
 import json
 from config import RULEBOOK_PATH, ALIGNMENTS, SPLAT_COUNT
-import time
+import uuid
 
 
 def main():
+    player_name = None
+    while player_name == None:
+        player_name = input('Player name? ').strip()
+        if len(player_name) > 12:
+            print('Max 12 characters for player name please.\n')
+            player_name = None
+            continue
+            
+        if not player_name.isalnum():
+            print('Alphanumeric characters only please.\n')
+            player_name = None
+            continue
+
     characters = []
 
     for _ in range(0, SPLAT_COUNT):
         new_character = get_random_character()
-        print(type(new_character))
         characters.append(new_character)
 
-    create_characters_file(characters)
+    create_characters_file(characters, player_name)
 
 
 def get_random_character():
@@ -270,8 +282,11 @@ def get_hit_points(race, constitution_value):
         return roll_dice(f'{constitution_value}d{sides}')
     
 
-def get_splat_sheet_string(characters, for_html=False):
-    splat_sheet_contents = 'MUTANT FUTURE CHARACTER SPLAT\n\n'
+def get_splat_sheet_string(characters, player_name='', for_html=False):
+    splat_sheet_contents = 'MUTANT FUTURE CHARACTER SPLAT'
+    if player_name != '':
+        splat_sheet_contents += f' FOR PLAYER {player_name.upper()}'
+    splat_sheet_contents += '\n\n'
 
     chararacter_number = 1
     for character in characters:
@@ -335,8 +350,8 @@ def get_splat_sheet_string(characters, for_html=False):
     return splat_sheet_contents
         
 
-def create_characters_file(characters):
-    with open(f'splat_sheets/characters_splat_{time.time()}.txt', 'w') as text_file:
+def create_characters_file(characters, player_name):
+    with open(f'splat_sheets/characters_splat_{player_name}_{uuid.uuid4()}.txt', 'w') as text_file:
         text_file_contents = get_splat_sheet_string(characters)
         text_file.write(text_file_contents)
 
