@@ -268,68 +268,76 @@ def get_hit_points(race, constitution_value):
     else:
         sides = race['hit_dice_sides']
         return roll_dice(f'{constitution_value}d{sides}')
+    
 
+def get_splat_sheet_string(characters, for_html=False):
+    splat_sheet_contents = 'MUTANT FUTURE CHARACTER SPLAT\n\n'
+
+    chararacter_number = 1
+    for character in characters:
+        splat_sheet_contents += f'---------------start record {chararacter_number} of {len(characters)}---------------\n'
+        splat_sheet_contents += f'Race: {character.race["name"]} ({character.race["page_number"]})\n'
+        splat_sheet_contents += f'Background: {character.backgrounds["name"]}\n'
+        splat_sheet_contents += f'Alignment: {character.alignment}\n'
+
+        splat_sheet_contents += '\n'
+        splat_sheet_contents += f'Strength: {character.strength}\n'
+        splat_sheet_contents += f'--Strength Mod: {character.strength_mod}\n'
+        splat_sheet_contents += f'--Damage Mod: {character.damage_mod}\n'
+        splat_sheet_contents += '\n'
+        splat_sheet_contents += f'Dexterity: {character.dexterity}\n'
+        splat_sheet_contents += f'-- AC Mod: {character.ac_mod}\n'
+        splat_sheet_contents += f'-- Missile Mod: {character.missile_mod}\n'
+        splat_sheet_contents += f'-- Init Mod: {character.init_mod}\n'
+        splat_sheet_contents += '\n'
+        splat_sheet_contents += f'Constitution: {character.constitution}\n'
+        splat_sheet_contents += f'--Poison Save Mod: {character.poison_death_mod}\n'
+        splat_sheet_contents += f'--Poison Save Mod: {character.radiation_mod}\n'
+        splat_sheet_contents += '\n'
+        splat_sheet_contents += f'Intelligence: {character.intelligence}\n'
+        splat_sheet_contents += f'--Technology Mod: {character.technology_mod}\n'
+        splat_sheet_contents += '\n'
+        splat_sheet_contents += f'Willpower: {character.willpower}\n'
+        splat_sheet_contents += '\n'
+        splat_sheet_contents += f'Charisma: {character.charisma}\n'
+        splat_sheet_contents += f'--Reaction Mod: {character.reaction_mod}\n'
+        splat_sheet_contents += f'--Retainers: {character.retainers}\n'
+        splat_sheet_contents += f'--Retainer Morale: {character.retainer_morale}\n'
+        splat_sheet_contents += '\n'
+        splat_sheet_contents += f'Hit Points: {character.hit_points}\n'
+        splat_sheet_contents += '\n'
+
+        if len(character.mutations) > 0:
+            splat_sheet_contents += f'Mutations:\n'
+            for mutation in character.mutations:
+                splat_sheet_contents += f'--{mutation}\n'
+        else:
+            splat_sheet_contents += f'Mutations: None\n'
+
+        splat_sheet_contents += '\n'
+        splat_sheet_contents += f'Feat: {character.feats["name"]} ({character.feats["page_number"]})\n'
+        splat_sheet_contents += f'\n'
+        splat_sheet_contents += f'Gold: {character.gold}\n'
+        splat_sheet_contents += f'\n'
+        splat_sheet_contents += f'Saving Throws\n'
+        splat_sheet_contents += f'--Energy Save: {character.energy_save}\n'
+        splat_sheet_contents += f'--Poison/Death Save: {character.poison_death_save}\n'
+        splat_sheet_contents += f'--Stun Save: {character.stun_save}\n'
+        splat_sheet_contents += f'--Radiation Save: {character.radiation_save}\n'
+        splat_sheet_contents += f'\n'
+        splat_sheet_contents += f'----------------end record {chararacter_number} of {len(characters)}----------------\n'
+        splat_sheet_contents += f'\n'
+        chararacter_number += 1
+
+    if for_html:
+        splat_sheet_contents = splat_sheet_contents.replace('\n','<br>')
+
+    return splat_sheet_contents
+        
 
 def create_characters_file(characters):
     with open(f'splat_sheets/characters_splat_{time.time()}.txt', 'w') as text_file:
-        text_file_contents = 'MUTANT FUTURE CHARACTER SPLAT\n\n'
-        
-        chararacter_number = 1
-        for character in characters:
-            text_file_contents += f'---------------start record {chararacter_number} of {len(characters)}---------------\n'
-            text_file_contents += f'Race: {character.race["name"]} ({character.race["page_number"]})\n'
-            text_file_contents += f'Background: {character.backgrounds["name"]}\n'
-            text_file_contents += f'Alignment: {character.alignment}\n'
-
-            text_file_contents += '\n'
-            text_file_contents += f'Strength: {character.strength}\n'
-            text_file_contents += f'--Strength Mod: {character.strength_mod}\n'
-            text_file_contents += f'--Damage Mod: {character.damage_mod}\n'
-            text_file_contents += '\n'
-            text_file_contents += f'Dexterity: {character.dexterity}\n'
-            text_file_contents += f'-- AC Mod: {character.ac_mod}\n'
-            text_file_contents += f'-- Missile Mod: {character.missile_mod}\n'
-            text_file_contents += f'-- Init Mod: {character.init_mod}\n'
-            text_file_contents += '\n'
-            text_file_contents += f'Constitution: {character.constitution}\n'
-            text_file_contents += f'--Poison Save Mod: {character.poison_death_mod}\n'
-            text_file_contents += f'--Poison Save Mod: {character.radiation_mod}\n'
-            text_file_contents += '\n'
-            text_file_contents += f'Intelligence: {character.intelligence}\n'
-            text_file_contents += f'--Technology Mod: {character.technology_mod}\n'
-            text_file_contents += '\n'
-            text_file_contents += f'Willpower: {character.willpower}\n'
-            text_file_contents += '\n'
-            text_file_contents += f'Charisma: {character.charisma}\n'
-            text_file_contents += f'--Reaction Mod: {character.reaction_mod}\n'
-            text_file_contents += f'--Retainers: {character.retainers}\n'
-            text_file_contents += f'--Retainer Morale: {character.retainer_morale}\n'
-            text_file_contents += '\n'
-            text_file_contents += f'Hit Points: {character.hit_points}\n'
-            text_file_contents += '\n'
-
-            if len(character.mutations) > 0:
-                text_file_contents += f'Mutations:\n'
-                for mutation in character.mutations:
-                    text_file_contents += f'--{mutation}\n'
-            else:
-                text_file_contents += f'Mutations: None\n'
-
-            text_file_contents += '\n'
-            text_file_contents += f'Feat: {character.feats["name"]} ({character.feats["page_number"]})\n'
-            text_file_contents += f'\n'
-            text_file_contents += f'Gold: {character.gold}\n'
-            text_file_contents += f'\n'
-            text_file_contents += f'Saving Throws\n'
-            text_file_contents += f'--Energy Save: {character.energy_save}\n'
-            text_file_contents += f'--Poison/Death Save: {character.poison_death_save}\n'
-            text_file_contents += f'--Stun Save: {character.stun_save}\n'
-            text_file_contents += f'--Radiation Save: {character.radiation_save}\n'
-            text_file_contents += f'\n'
-            text_file_contents += f'----------------end record {chararacter_number} of {len(characters)}----------------\n'
-            text_file_contents += f'\n'
-            chararacter_number += 1
-
+        text_file_contents = get_splat_sheet_string(characters)
         text_file.write(text_file_contents)
 
 
