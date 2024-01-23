@@ -290,7 +290,8 @@ def get_splat_sheet_string(characters, player_name='', for_html=False):
 
     chararacter_number = 1
     for character in characters:
-        splat_sheet_contents += f'---------------start record {chararacter_number} of {len(characters)}---------------\n'
+        splat_sheet_contents += f'---------------start record {chararacter_number:02d} of {len(characters):02d}---------------\n'
+        splat_sheet_contents += f'{character.alignment} {character.race["name"].replace(" (Advanced)","")} {character.backgrounds["name"]}\n\n'
         splat_sheet_contents += f'Race: {character.race["name"]} ({character.race["page_number"]})\n'
         splat_sheet_contents += f'Background: {character.backgrounds["name"]}\n'
         splat_sheet_contents += f'Alignment: {character.alignment}\n'
@@ -340,7 +341,7 @@ def get_splat_sheet_string(characters, player_name='', for_html=False):
         splat_sheet_contents += f'--Stun Save: {character.stun_save}\n'
         splat_sheet_contents += f'--Radiation Save: {character.radiation_save}\n'
         splat_sheet_contents += f'\n'
-        splat_sheet_contents += f'----------------end record {chararacter_number} of {len(characters)}----------------\n'
+        splat_sheet_contents += f'----------------end record {chararacter_number:02d} of {len(characters):02d}----------------\n'
         splat_sheet_contents += f'\n'
         chararacter_number += 1
 

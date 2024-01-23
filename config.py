@@ -1,3 +1,3 @@
 RULEBOOK_PATH = 'mutantfuture/static/mutantfuture/json/rulebook.json'
-ALIGNMENTS = ['law', 'neutrality', 'chaos']
-SPLAT_COUNT = 9
+ALIGNMENTS = ['Lawful', 'Neutral', 'Chaotic']
+SPLAT_COUNT = 20
