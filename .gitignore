@@ -6,6 +6,9 @@ __pycache__/
 #VSCode
 *.code-workspace
 
+#Generated Splat Sheets
+splat_sheets/*
+
 # C extensions
 *.so
 
