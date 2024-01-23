@@ -16,69 +16,6 @@ def main():
     create_characters_file(characters)
 
 
-def create_characters_file(characters):
-    with open(f'splat_sheets/characters_splat_{time.time()}.txt', 'w') as text_file:
-        text_file_contents = 'MUTANT FUTURE CHARACTER SPLAT\n\n'
-        
-        chararacter_number = 1
-        for character in characters:
-            text_file_contents += f'---------------start record {chararacter_number} of {len(characters)}---------------\n'
-            text_file_contents += f'Race: {character.race["name"]} ({character.race["page_number"]})\n'
-            text_file_contents += f'Background: {character.backgrounds["name"]}\n'
-            text_file_contents += f'Alignment: {character.alignment}\n'
-
-            text_file_contents += '\n'
-            text_file_contents += f'Strength: {character.strength}\n'
-            text_file_contents += f'--Strength Mod: {character.strength_mod}\n'
-            text_file_contents += f'--Damage Mod: {character.damage_mod}\n'
-            text_file_contents += '\n'
-            text_file_contents += f'Dexterity: {character.dexterity}\n'
-            text_file_contents += f'-- AC Mod: {character.ac_mod}\n'
-            text_file_contents += f'-- Missile Mod: {character.missile_mod}\n'
-            text_file_contents += f'-- Init Mod: {character.init_mod}\n'
-            text_file_contents += '\n'
-            text_file_contents += f'Constitution: {character.constitution}\n'
-            text_file_contents += f'--Poison Save Mod: {character.poison_death_mod}\n'
-            text_file_contents += f'--Poison Save Mod: {character.radiation_mod}\n'
-            text_file_contents += '\n'
-            text_file_contents += f'Intelligence: {character.intelligence}\n'
-            text_file_contents += f'--Technology Mod: {character.technology_mod}\n'
-            text_file_contents += '\n'
-            text_file_contents += f'Willpower: {character.willpower}\n'
-            text_file_contents += '\n'
-            text_file_contents += f'Charisma: {character.charisma}\n'
-            text_file_contents += f'--Reaction Mod: {character.reaction_mod}\n'
-            text_file_contents += f'--Retainers: {character.retainers}\n'
-            text_file_contents += f'--Retainer Morale: {character.retainer_morale}\n'
-            text_file_contents += '\n'
-            text_file_contents += f'Hit Points: {character.hit_points}\n'
-            text_file_contents += '\n'
-
-            if len(character.mutations) > 0:
-                text_file_contents += f'Mutations:\n'
-                for mutation in character.mutations:
-                    text_file_contents += f'--{mutation}\n'
-            else:
-                text_file_contents += f'Mutations: None\n'
-
-            text_file_contents += '\n'
-            text_file_contents += f'Feat: {character.feats["name"]} ({character.feats["page_number"]})\n'
-            text_file_contents += f'\n'
-            text_file_contents += f'Gold: {character.gold}\n'
-            text_file_contents += f'\n'
-            text_file_contents += f'Saving Throws\n'
-            text_file_contents += f'--Energy Save: {character.energy_save}\n'
-            text_file_contents += f'--Poison/Death Save: {character.poison_death_save}\n'
-            text_file_contents += f'--Stun Save: {character.stun_save}\n'
-            text_file_contents += f'--Radiation Save: {character.radiation_save}\n'
-            text_file_contents += f'\n'
-            text_file_contents += f'----------------end record {chararacter_number} of {len(characters)}----------------\n'
-            text_file_contents += f'\n'
-            chararacter_number += 1
-
-        text_file.write(text_file_contents)
-
-
 def get_random_character():
     rulebook = get_rulebook(RULEBOOK_PATH)
     character = CharacterBase()
@@ -155,50 +92,6 @@ def get_random_race(rulebook):
     return random.choice(filtered_races)['fields']
 
 
-def print_character_stats(character):
-    print(f'Strength: {character.strength}')
-    print(f'--Strength Mod: {character.strength_mod}')
-    print(f'--Damage Mod: {character.damage_mod}')
-    print()
-
-    print(f'Dexterity: {character.dexterity}')
-    print(f'-- AC Mod: {character.ac_mod}')
-    print(f'-- Missile Mod: {character.missile_mod}')
-    print(f'-- Init Mod: {character.init_mod}')
-    print()
-
-    print(f'Constitution: {character.constitution}')
-    print(f'--Poison Save Mod: {character.poison_death_mod}')
-    print(f'--Poison Save Mod: {character.radiation_mod}')
-    print()
-
-    print(f'Intelligence: {character.intelligence}')
-    print(f'--Technology Mod: {character.technology_mod}')
-    print()
-
-    print(f'Willpower: {character.willpower}')
-    print()
-
-    print(f'Charisma: {character.charisma}')
-    print(f'--Reaction Mod: {character.reaction_mod}')
-    print(f'--Retainers: {character.retainers}')
-    print(f'--Retainer Morale: {character.retainer_morale}')
-    print()
-
-    print(f'Alignment: {character.alignment}')
-    print(f"Race: {character.race['name']}")
-    print(f'Mutations: {character.mutations}')
-    print(f"Feat: {character.feats['name']} ({character.feats['page_number']})")
-    print(f"Background: {character.backgrounds['name']}")
-    print(f'Gold: {character.gold}')
-    print(f'Hit Points: {character.hit_points}')
-    print(f'THAC0: {character.thac0}')
-    print(f'Energy Save: {character.energy_save}')
-    print(f'Poison/Death Save: {character.poison_death_save}')
-    print(f'Stun Save: {character.stun_save}')
-    print(f'Radiation Save: {character.radiation_save}')
-
-
 def get_mutation_by_pk(rulebook, mutation_id):
     all_mutations = rulebook['mutations']
     return list(filter(lambda mutation: mutation['pk'] == mutation_id, all_mutations))[0]
@@ -209,159 +102,130 @@ def get_character_mutations(rulebook, character_race):
     character_mutations = []
 
     #mental mutations
-    total_mental_mutations = roll_dice(character_race['mental_mutations_roll_str'])
-    if (total_mental_mutations > 0):
-        mental_mutations = []
+    total_new_mutations = roll_dice(character_race['mental_mutations_roll_str'])
+    if (total_new_mutations > 0):
+        mutation_list = []
         for mutation in all_mutations:
             if mutation['fields']['type'] == 'mental':
-                mental_mutations.append(mutation)
+                mutation_list.append(mutation)
         
-        mutation_count = 0
-        while mutation_count < total_mental_mutations:
-            mutation_name = get_full_mutation_name(random.choice(mental_mutations))
-            if mutation_name not in character_mutations:
-                character_mutations.append(mutation_name)
-                mutation_count += 1
+        character_mutations = append_random_mutations(character_mutations, total_new_mutations, mutation_list)
     
 
     #physical mutations
-    total_physical_mutations = roll_dice(character_race['physical_mutations_roll_str'])
-    if (total_physical_mutations > 0):
-        physical_mutations = []
+    total_new_mutations = roll_dice(character_race['physical_mutations_roll_str'])
+    if (total_new_mutations > 0):
+        mutation_list = []
         for mutation in all_mutations:
             if mutation['fields']['type'] == 'physical':
-                physical_mutations.append(mutation)
+                mutation_list.append(mutation)
         
-        mutation_count = 0
-        while mutation_count < total_physical_mutations:
-            mutation_name = get_full_mutation_name(random.choice(physical_mutations))
-            if mutation_name not in character_mutations:
-                character_mutations.append(mutation_name)
-                mutation_count += 1
+        character_mutations = append_random_mutations(character_mutations, total_new_mutations, mutation_list)
 
 
     #plant_mutations
-    total_plant_mutations = roll_dice(character_race['plant_mutations_roll_str'])
-    if (total_plant_mutations > 0):
-        plant_mutations = []
+    total_new_mutations = roll_dice(character_race['plant_mutations_roll_str'])
+    if (total_new_mutations > 0):
+        mutation_list = []
         for mutation in all_mutations:
             if mutation['fields']['type'] == 'plant':
-                plant_mutations.append(mutation)
+                mutation_list.append(mutation)
         
-        mutation_count = 0
-        while mutation_count < total_plant_mutations:
-            mutation_name = get_full_mutation_name(random.choice(plant_mutations))
-            if mutation_name not in character_mutations:
-                character_mutations.append(mutation_name)
-                mutation_count += 1
+        character_mutations = append_random_mutations(character_mutations, total_new_mutations, mutation_list)
 
 
     #random_human_animal_mutations
-    total_random_human_animal_mutations = roll_dice(character_race['random_human_animal_roll_str'])
-    if (total_random_human_animal_mutations > 0):
-        random_human_animal_mutations = []
+    total_new_mutations = roll_dice(character_race['random_human_animal_roll_str'])
+    if (total_new_mutations > 0):
+        mutation_list = []
         for mutation in all_mutations:
             if mutation['fields']['type'] == 'mental' or mutation['fields']['type'] == 'physical':
-                random_human_animal_mutations.append(mutation)
+                mutation_list.append(mutation)
         
-        mutation_count = 0
-        while mutation_count < total_random_human_animal_mutations:
-            mutation_name = get_full_mutation_name(random.choice(random_human_animal_mutations))
-            if mutation_name not in character_mutations:
-                character_mutations.append(mutation_name)
-                mutation_count += 1
+        character_mutations = append_random_mutations(character_mutations, total_new_mutations, mutation_list)
 
 
     #random_beneficial_any_mutations
-    total_random_beneficial_any_mutations = roll_dice(character_race['random_beneficial_any_roll_str'])
-    if (total_random_beneficial_any_mutations > 0):
-        random_beneficial_any_mutations = []
+    total_new_mutations = roll_dice(character_race['random_beneficial_any_roll_str'])
+    if (total_new_mutations > 0):
+        mutation_list = []
         for mutation in all_mutations:
             if mutation['fields']['effect_type'] == 'benefit':
-                random_beneficial_any_mutations.append(mutation)
+                mutation_list.append(mutation)
         
-        mutation_count = 0
-        while mutation_count < total_random_beneficial_any_mutations:
-            mutation_name = get_full_mutation_name(random.choice(random_beneficial_any_mutations))
-            if mutation_name not in character_mutations:
-                character_mutations.append(mutation_name)
-                mutation_count += 1
+        character_mutations = append_random_mutations(character_mutations, total_new_mutations, mutation_list)
 
 
     #special_animal_mutations
-    total_special_animal_mutations = roll_dice(character_race['special_animal_roll_str'])
-    if (total_special_animal_mutations > 0):
-        special_animal_mutations = rulebook['specialAnimalMutationRolls']
-
-        mutation_count = 0
-        while mutation_count < total_special_animal_mutations:
-            random_mutation_pk = random.choice(special_animal_mutations)['fields']['mutation']
-            random_mutation = get_mutation_by_pk(rulebook, random_mutation_pk)
-            mutation_name = get_full_mutation_name(random_mutation)
-            if mutation_name not in character_mutations:
-                character_mutations.append(mutation_name)
-                mutation_count += 1
+    total_new_mutations = roll_dice(character_race['special_animal_roll_str'])
+    if (total_new_mutations > 0):
+        character_mutations = append_random_special_mutations(character_mutations, total_new_mutations, rulebook['specialAnimalMutationRolls'], rulebook)
 
 
     #special_insect_mutations
-    total_special_insect_mutations = roll_dice(character_race['special_insect_roll_str'])
-    if (total_special_insect_mutations > 0):
-        special_insect_mutations = rulebook['specialInsectMutationRolls']
-
-        mutation_count = 0
-        while mutation_count < total_special_insect_mutations:
-            random_mutation_pk = random.choice(special_insect_mutations)['fields']['mutation']
-            random_mutation = get_mutation_by_pk(rulebook, random_mutation_pk)
-            mutation_name = get_full_mutation_name(random_mutation)
-            if mutation_name not in character_mutations:
-                character_mutations.append(mutation_name)
-                mutation_count += 1
+    total_new_mutations = roll_dice(character_race['special_insect_roll_str'])
+    if (total_new_mutations > 0):
+        character_mutations = append_random_special_mutations(character_mutations, total_new_mutations, rulebook['specialInsectMutationRolls'], rulebook)
 
 
     #mental_drawback_mutations
-    total_mental_drawback_mutations = roll_dice(character_race['mental_drawback_roll_str'])
-    if (total_mental_drawback_mutations > 0):
-        mental_drawback_mutations = []
+    total_new_mutations = roll_dice(character_race['mental_drawback_roll_str'])
+    if (total_new_mutations > 0):
+        mutation_list = []
         for mutation in all_mutations:
             if mutation['fields']['effect_type'] == 'drawback' and mutation['fields']['type'] == 'mental':
-                mental_drawback_mutations.append(mutation)
+                mutation_list.append(mutation)
         
-        mutation_count = 0
-        while mutation_count < total_mental_drawback_mutations:
-            mutation_name = get_full_mutation_name(random.choice(mental_drawback_mutations))
-            if mutation_name not in character_mutations:
-                character_mutations.append(mutation_name)
-                mutation_count += 1
+        character_mutations = append_random_mutations(character_mutations, total_new_mutations, mutation_list)
 
 
     #physical_drawback_mutations
-    total_physical_drawback_mutations = roll_dice(character_race['physical_drawback_roll_str'])
-    if (total_physical_drawback_mutations > 0):
-        physical_drawback_mutations = []
+    total_new_mutations = roll_dice(character_race['physical_drawback_roll_str'])
+    if (total_new_mutations > 0):
+        mutation_list = []
         for mutation in all_mutations:
             if mutation['fields']['effect_type'] == 'drawback' and mutation['fields']['type'] == 'physical':
-                physical_drawback_mutations.append(mutation)
+                mutation_list.append(mutation)
         
-        mutation_count = 0
-        while mutation_count < total_physical_drawback_mutations:
-            mutation_name = get_full_mutation_name(random.choice(physical_drawback_mutations))
-            if mutation_name not in character_mutations:
-                character_mutations.append(mutation_name)
-                mutation_count += 1
+        character_mutations = append_random_mutations(character_mutations, total_new_mutations, mutation_list)
 
 
     #random_any_mutations
-    total_random_any_mutations = roll_dice(character_race['random_any_roll_str'])
-    if (total_random_any_mutations > 0):
+    total_new_mutations = roll_dice(character_race['random_any_roll_str'])
+    if (total_new_mutations > 0):
         
         mutation_count = 0
-        while mutation_count < total_random_any_mutations:
+        while mutation_count < total_new_mutations:
             mutation_name = get_full_mutation_name(random.choice(all_mutations))
             if mutation_name not in character_mutations:
                 character_mutations.append(mutation_name)
                 mutation_count += 1
 
     return character_mutations
+
+
+def append_random_mutations(character_mutations, total_new_mutations, mutation_list):
+        mutation_count = 0
+        while mutation_count < total_new_mutations:
+            mutation_name = get_full_mutation_name(random.choice(mutation_list))
+            if mutation_name not in character_mutations:
+                character_mutations.append(mutation_name)
+                mutation_count += 1
+
+        return character_mutations
+
+
+def append_random_special_mutations(character_mutations, total_new_mutations, mutation_list, rulebook):
+        mutation_count = 0
+        while mutation_count < total_new_mutations:
+            random_mutation_pk = random.choice(mutation_list)['fields']['mutation']
+            random_mutation = get_mutation_by_pk(rulebook, random_mutation_pk)
+            mutation_name = get_full_mutation_name(random_mutation)
+            if mutation_name not in character_mutations:
+                character_mutations.append(mutation_name)
+                mutation_count += 1
+
+        return character_mutations
 
 
 def get_full_mutation_name(mutation):
@@ -404,6 +268,69 @@ def get_hit_points(race, constitution_value):
     else:
         sides = race['hit_dice_sides']
         return roll_dice(f'{constitution_value}d{sides}')
+
+
+def create_characters_file(characters):
+    with open(f'splat_sheets/characters_splat_{time.time()}.txt', 'w') as text_file:
+        text_file_contents = 'MUTANT FUTURE CHARACTER SPLAT\n\n'
+        
+        chararacter_number = 1
+        for character in characters:
+            text_file_contents += f'---------------start record {chararacter_number} of {len(characters)}---------------\n'
+            text_file_contents += f'Race: {character.race["name"]} ({character.race["page_number"]})\n'
+            text_file_contents += f'Background: {character.backgrounds["name"]}\n'
+            text_file_contents += f'Alignment: {character.alignment}\n'
+
+            text_file_contents += '\n'
+            text_file_contents += f'Strength: {character.strength}\n'
+            text_file_contents += f'--Strength Mod: {character.strength_mod}\n'
+            text_file_contents += f'--Damage Mod: {character.damage_mod}\n'
+            text_file_contents += '\n'
+            text_file_contents += f'Dexterity: {character.dexterity}\n'
+            text_file_contents += f'-- AC Mod: {character.ac_mod}\n'
+            text_file_contents += f'-- Missile Mod: {character.missile_mod}\n'
+            text_file_contents += f'-- Init Mod: {character.init_mod}\n'
+            text_file_contents += '\n'
+            text_file_contents += f'Constitution: {character.constitution}\n'
+            text_file_contents += f'--Poison Save Mod: {character.poison_death_mod}\n'
+            text_file_contents += f'--Poison Save Mod: {character.radiation_mod}\n'
+            text_file_contents += '\n'
+            text_file_contents += f'Intelligence: {character.intelligence}\n'
+            text_file_contents += f'--Technology Mod: {character.technology_mod}\n'
+            text_file_contents += '\n'
+            text_file_contents += f'Willpower: {character.willpower}\n'
+            text_file_contents += '\n'
+            text_file_contents += f'Charisma: {character.charisma}\n'
+            text_file_contents += f'--Reaction Mod: {character.reaction_mod}\n'
+            text_file_contents += f'--Retainers: {character.retainers}\n'
+            text_file_contents += f'--Retainer Morale: {character.retainer_morale}\n'
+            text_file_contents += '\n'
+            text_file_contents += f'Hit Points: {character.hit_points}\n'
+            text_file_contents += '\n'
+
+            if len(character.mutations) > 0:
+                text_file_contents += f'Mutations:\n'
+                for mutation in character.mutations:
+                    text_file_contents += f'--{mutation}\n'
+            else:
+                text_file_contents += f'Mutations: None\n'
+
+            text_file_contents += '\n'
+            text_file_contents += f'Feat: {character.feats["name"]} ({character.feats["page_number"]})\n'
+            text_file_contents += f'\n'
+            text_file_contents += f'Gold: {character.gold}\n'
+            text_file_contents += f'\n'
+            text_file_contents += f'Saving Throws\n'
+            text_file_contents += f'--Energy Save: {character.energy_save}\n'
+            text_file_contents += f'--Poison/Death Save: {character.poison_death_save}\n'
+            text_file_contents += f'--Stun Save: {character.stun_save}\n'
+            text_file_contents += f'--Radiation Save: {character.radiation_save}\n'
+            text_file_contents += f'\n'
+            text_file_contents += f'----------------end record {chararacter_number} of {len(characters)}----------------\n'
+            text_file_contents += f'\n'
+            chararacter_number += 1
+
+        text_file.write(text_file_contents)
 
 
 if __name__ == '__main__':
