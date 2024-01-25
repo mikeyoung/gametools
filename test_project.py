@@ -1,7 +1,7 @@
 import pytest
 from project import roll_dice, get_rulebook, get_random_character, get_random_alignment, get_random_race
 from mutantfuture.characters import CharacterBase
-from config import RULEBOOK_PATH
+from config import RULEBOOK_PATH, ALIGNMENTS
 
 
 def test_roll_dice():
@@ -31,7 +31,7 @@ def test_get_random_alignment():
 
     #test a thousand random alignments
     for _ in range(0,1000):
-        if not get_random_alignment() in ['chaos','neutrality','law']:
+        if not get_random_alignment() in ALIGNMENTS:
             invalid_alignment_detected = True
             break
 

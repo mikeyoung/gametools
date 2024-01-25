@@ -2,30 +2,40 @@ from mutantfuture.characters import CharacterBase
 import random
 import json
 from config import RULEBOOK_PATH, ALIGNMENTS, SPLAT_COUNT
-import uuid
+from datetime import datetime
+import sys
 
 
 def main():
     player_name = None
-    while player_name == None:
-        player_name = input('Player name? ').strip()
-        if len(player_name) > 12:
-            print('Max 12 characters for player name please.\n')
-            player_name = None
-            continue
-            
-        if not player_name.isalnum():
-            print('Alphanumeric characters only please.\n')
-            player_name = None
-            continue
+    finished = False
 
-    characters = []
+    while not finished:
+        while player_name == None:
+            player_name = input('Provide player name or [ENTER] to quit: ').strip()
+            if player_name == '':
+                finished = True
+                break
 
-    for _ in range(0, SPLAT_COUNT):
-        new_character = get_random_character()
-        characters.append(new_character)
+            if len(player_name) > 12:
+                print('Max 12 characters for player name please.\n')
+                player_name = None
+                continue
+                
+            if not player_name.isalnum():
+                print('Alphanumeric characters only please.\n')
+                player_name = None
+                continue
 
-    create_characters_file(characters, player_name)
+        characters = []
+
+        for _ in range(0, SPLAT_COUNT):
+            new_character = get_random_character()
+            characters.append(new_character)
+
+        create_characters_file(characters, player_name)
+
+    sys.exit(0)
 
 
 def get_random_character():
@@ -121,7 +131,7 @@ def get_character_mutations(rulebook, character_race):
             if mutation['fields']['type'] == 'mental':
                 mutation_list.append(mutation)
         
-        character_mutations = append_random_mutations(character_mutations, total_new_mutations, mutation_list)
+        character_mutations = append_table_mutations(character_mutations, total_new_mutations, mutation_table)
     
 
     #physical mutations
@@ -132,7 +142,7 @@ def get_character_mutations(rulebook, character_race):
             if mutation['fields']['type'] == 'physical':
                 mutation_list.append(mutation)
         
-        character_mutations = append_random_mutations(character_mutations, total_new_mutations, mutation_list)
+        character_mutations = append_table_mutations(character_mutations, total_new_mutations, mutation_table)
 
 
     #plant_mutations
@@ -143,7 +153,7 @@ def get_character_mutations(rulebook, character_race):
             if mutation['fields']['type'] == 'plant':
                 mutation_list.append(mutation)
         
-        character_mutations = append_random_mutations(character_mutations, total_new_mutations, mutation_list)
+        character_mutations = append_table_mutations(character_mutations, total_new_mutations, mutation_table)
 
 
     #random_human_animal_mutations
@@ -154,7 +164,7 @@ def get_character_mutations(rulebook, character_race):
             if mutation['fields']['type'] == 'mental' or mutation['fields']['type'] == 'physical':
                 mutation_list.append(mutation)
         
-        character_mutations = append_random_mutations(character_mutations, total_new_mutations, mutation_list)
+        character_mutations = append_table_mutations(character_mutations, total_new_mutations, mutation_table)
 
 
     #random_beneficial_any_mutations
@@ -165,7 +175,7 @@ def get_character_mutations(rulebook, character_race):
             if mutation['fields']['effect_type'] == 'benefit':
                 mutation_list.append(mutation)
         
-        character_mutations = append_random_mutations(character_mutations, total_new_mutations, mutation_list)
+        character_mutations = append_table_mutations(character_mutations, total_new_mutations, mutation_table)
 
 
     #special_animal_mutations
@@ -188,7 +198,7 @@ def get_character_mutations(rulebook, character_race):
             if mutation['fields']['effect_type'] == 'drawback' and mutation['fields']['type'] == 'mental':
                 mutation_list.append(mutation)
         
-        character_mutations = append_random_mutations(character_mutations, total_new_mutations, mutation_list)
+        character_mutations = append_table_mutations(character_mutations, total_new_mutations, mutation_table)
 
 
     #physical_drawback_mutations
@@ -199,8 +209,7 @@ def get_character_mutations(rulebook, character_race):
             if mutation['fields']['effect_type'] == 'drawback' and mutation['fields']['type'] == 'physical':
                 mutation_list.append(mutation)
         
-        character_mutations = append_random_mutations(character_mutations, total_new_mutations, mutation_list)
-
+        character_mutations = append_table_mutations(character_mutations, total_new_mutations, mutation_table)
 
     #random_any_mutations
     total_new_mutations = roll_dice(character_race['random_any_roll_str'])
@@ -216,7 +225,7 @@ def get_character_mutations(rulebook, character_race):
     return character_mutations
 
 
-def append_random_mutations(character_mutations, total_new_mutations, mutation_list):
+def append_table_mutations(character_mutations, total_new_mutations, mutation_table):
         mutation_count = 0
         while mutation_count < total_new_mutations:
             mutation_name = get_full_mutation_name(random.choice(mutation_list))
@@ -352,7 +361,7 @@ def get_splat_sheet_string(characters, player_name='', for_html=False):
         
 
 def create_characters_file(characters, player_name):
-    with open(f'splat_sheets/characters_splat_{player_name}_{uuid.uuid4()}.txt', 'w') as text_file:
+    with open(f'splat_sheets/characters_splat_{player_name}_{datetime.now():%Y-%m-%d_%H-%m-%d}.txt', 'w') as text_file:
         text_file_contents = get_splat_sheet_string(characters)
         text_file.write(text_file_contents)
 
