@@ -120,118 +120,79 @@ def get_mutation_by_pk(rulebook, mutation_id):
 
 
 def get_character_mutations(rulebook, character_race):
-    all_mutations = rulebook['mutations']
     character_mutations = []
 
     #mental mutations
     total_new_mutations = roll_dice(character_race['mental_mutations_roll_str'])
     if (total_new_mutations > 0):
-        mutation_list = []
-        for mutation in all_mutations:
-            if mutation['fields']['type'] == 'mental':
-                mutation_list.append(mutation)
-        
-        character_mutations = append_table_mutations(character_mutations, total_new_mutations, mutation_table)
-    
+        character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'mental')
 
     #physical mutations
     total_new_mutations = roll_dice(character_race['physical_mutations_roll_str'])
     if (total_new_mutations > 0):
-        mutation_list = []
-        for mutation in all_mutations:
-            if mutation['fields']['type'] == 'physical':
-                mutation_list.append(mutation)
-        
-        character_mutations = append_table_mutations(character_mutations, total_new_mutations, mutation_table)
-
+        character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'physical')
 
     #plant_mutations
     total_new_mutations = roll_dice(character_race['plant_mutations_roll_str'])
-    if (total_new_mutations > 0):
-        mutation_list = []
-        for mutation in all_mutations:
-            if mutation['fields']['type'] == 'plant':
-                mutation_list.append(mutation)
-        
-        character_mutations = append_table_mutations(character_mutations, total_new_mutations, mutation_table)
+    if (total_new_mutations > 0):        
+        character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'plant')
 
-
-    #random_human_animal_mutations
+    #human_animal_mutations
     total_new_mutations = roll_dice(character_race['random_human_animal_roll_str'])
-    if (total_new_mutations > 0):
-        mutation_list = []
-        for mutation in all_mutations:
-            if mutation['fields']['type'] == 'mental' or mutation['fields']['type'] == 'physical':
-                mutation_list.append(mutation)
-        
-        character_mutations = append_table_mutations(character_mutations, total_new_mutations, mutation_table)
+    if (total_new_mutations > 0):        
+        character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'human_animal')
 
-
-    #random_beneficial_any_mutations
+    #beneficial_any_mutations
     total_new_mutations = roll_dice(character_race['random_beneficial_any_roll_str'])
-    if (total_new_mutations > 0):
-        mutation_list = []
-        for mutation in all_mutations:
-            if mutation['fields']['effect_type'] == 'benefit':
-                mutation_list.append(mutation)
-        
-        character_mutations = append_table_mutations(character_mutations, total_new_mutations, mutation_table)
+    if (total_new_mutations > 0):        
+        character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'any_beneficial')
 
+    #mental_drawback_mutations
+    total_new_mutations = roll_dice(character_race['mental_drawback_roll_str'])
+    if (total_new_mutations > 0):
+        character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'mental_drawback')
+
+    #physical_drawback_mutations
+    total_new_mutations = roll_dice(character_race['physical_drawback_roll_str'])
+    if (total_new_mutations > 0):
+        character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'physical_drawback')
+
+    #any_mutations
+    total_new_mutations = roll_dice(character_race['random_any_roll_str'])
+    if (total_new_mutations > 0):        
+        character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'any')
 
     #special_animal_mutations
     total_new_mutations = roll_dice(character_race['special_animal_roll_str'])
     if (total_new_mutations > 0):
         character_mutations = append_random_special_mutations(character_mutations, total_new_mutations, rulebook['specialAnimalMutationRolls'], rulebook)
 
-
     #special_insect_mutations
     total_new_mutations = roll_dice(character_race['special_insect_roll_str'])
     if (total_new_mutations > 0):
         character_mutations = append_random_special_mutations(character_mutations, total_new_mutations, rulebook['specialInsectMutationRolls'], rulebook)
 
-
-    #mental_drawback_mutations
-    total_new_mutations = roll_dice(character_race['mental_drawback_roll_str'])
-    if (total_new_mutations > 0):
-        mutation_list = []
-        for mutation in all_mutations:
-            if mutation['fields']['effect_type'] == 'drawback' and mutation['fields']['type'] == 'mental':
-                mutation_list.append(mutation)
-        
-        character_mutations = append_table_mutations(character_mutations, total_new_mutations, mutation_table)
-
-
-    #physical_drawback_mutations
-    total_new_mutations = roll_dice(character_race['physical_drawback_roll_str'])
-    if (total_new_mutations > 0):
-        mutation_list = []
-        for mutation in all_mutations:
-            if mutation['fields']['effect_type'] == 'drawback' and mutation['fields']['type'] == 'physical':
-                mutation_list.append(mutation)
-        
-        character_mutations = append_table_mutations(character_mutations, total_new_mutations, mutation_table)
-
-    #random_any_mutations
-    total_new_mutations = roll_dice(character_race['random_any_roll_str'])
-    if (total_new_mutations > 0):
-        
-        mutation_count = 0
-        while mutation_count < total_new_mutations:
-            mutation_name = get_full_mutation_name(random.choice(all_mutations))
-            if mutation_name not in character_mutations:
-                character_mutations.append(mutation_name)
-                mutation_count += 1
-
     return character_mutations
 
 
-def append_table_mutations(character_mutations, total_new_mutations, mutation_table):
+def append_table_mutations(rulebook, character_mutations, total_new_mutations, mutation_table):
         mutation_count = 0
+        mutation_table = 'mental'
+
         while mutation_count < total_new_mutations:
-            mutation_name = get_full_mutation_name(random.choice(mutation_list))
-            if mutation_name not in character_mutations:
-                character_mutations.append(mutation_name)
-                mutation_count += 1
+            match mutation_table:
+                case 'mental':
+                    table = rulebook['mentalMutationRolls']
+                    d100_roll = random.randint(1, 100)
+                    mutation_row = list(filter(lambda roll_row: d100_roll == roll_row['fields']['roll'], table))[0]
+                    mutation_pk = mutation_row['fields']['advanced_result']
+                    mutation = get_mutation_by_pk(rulebook, mutation_pk)
+
+                    mutation_name = get_full_mutation_name(mutation)
+
+                    if mutation_name not in character_mutations:
+                        character_mutations.append(mutation_name)
+                        mutation_count += 1
 
         return character_mutations
 
