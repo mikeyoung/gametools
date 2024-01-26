@@ -8,24 +8,23 @@ import sys
 
 def main():
     player_name = None
-    finished = False
 
-    while not finished:
-        while player_name == None:
+    while True:
+        while True:
             player_name = input('Provide player name or [ENTER] to quit: ').strip()
             if player_name == '':
-                finished = True
-                break
+                print('Goodbye.\n')
+                sys.exit(0)
 
             if len(player_name) > 12:
                 print('Max 12 characters for player name please.\n')
-                player_name = None
                 continue
                 
             if not player_name.isalnum():
                 print('Alphanumeric characters only please.\n')
-                player_name = None
                 continue
+
+            break
 
         characters = []
 
@@ -34,8 +33,6 @@ def main():
             characters.append(new_character)
 
         create_characters_file(characters, player_name)
-
-    sys.exit(0)
 
 
 def get_random_character():
@@ -177,22 +174,80 @@ def get_character_mutations(rulebook, character_race):
 
 def append_table_mutations(rulebook, character_mutations, total_new_mutations, mutation_table):
         mutation_count = 0
-        mutation_table = 'mental'
 
         while mutation_count < total_new_mutations:
+            new_mutation = None
             match mutation_table:
                 case 'mental':
                     table = rulebook['mentalMutationRolls']
                     d100_roll = random.randint(1, 100)
                     mutation_row = list(filter(lambda roll_row: d100_roll == roll_row['fields']['roll'], table))[0]
-                    mutation_pk = mutation_row['fields']['advanced_result']
-                    mutation = get_mutation_by_pk(rulebook, mutation_pk)
+                    new_mutation_pk = mutation_row['fields']['advanced_result']
+                    mutation = get_mutation_by_pk(rulebook, new_mutation_pk)
 
-                    mutation_name = get_full_mutation_name(mutation)
+                case 'physical':
+                    table = rulebook['physicalMutationRolls']
+                    d100_roll = random.randint(1, 100)
+                    mutation_row = list(filter(lambda roll_row: d100_roll == roll_row['fields']['roll'], table))[0]
+                    new_mutation_pk = mutation_row['fields']['advanced_result']
+                    mutation = get_mutation_by_pk(rulebook, new_mutation_pk)
 
-                    if mutation_name not in character_mutations:
-                        character_mutations.append(mutation_name)
-                        mutation_count += 1
+                case 'plant':
+                    table = rulebook['plantMutationRolls']
+                    d100_roll = random.randint(1, 100)
+                    mutation_row = list(filter(lambda roll_row: d100_roll == roll_row['fields']['roll'], table))[0]
+                    new_mutation_pk = mutation_row['fields']['advanced_result']
+                    mutation = get_mutation_by_pk(rulebook, new_mutation_pk)
+
+                case 'human_animal':
+                    table = random.choice([rulebook['mentalMutationRolls'], rulebook['physicalMutationRolls']])
+                    d100_roll = random.randint(1, 100)
+                    mutation_row = list(filter(lambda roll_row: d100_roll == roll_row['fields']['roll'], table))[0]
+                    new_mutation_pk = mutation_row['fields']['advanced_result']
+                    mutation = get_mutation_by_pk(rulebook, new_mutation_pk)
+
+                case 'any_beneficial':
+                    while True:
+                        table = random.choice([rulebook['mentalMutationRolls'], rulebook['physicalMutationRolls'], rulebook['plantMutationRolls']])
+                        d100_roll = random.randint(1, 100)
+                        mutation_row = list(filter(lambda roll_row: d100_roll == roll_row['fields']['roll'], table))[0]
+                        new_mutation_pk = mutation_row['fields']['advanced_result']
+                        mutation = get_mutation_by_pk(rulebook, new_mutation_pk)
+                        if mutation['fields']['effect_type'] == 'benefit':
+                            break
+
+                case 'mental_drawback':
+                    table = rulebook['mentalMutationRolls']
+                    while True:
+                        d100_roll = random.randint(1, 100)
+                        mutation_row = list(filter(lambda roll_row: d100_roll == roll_row['fields']['roll'], table))[0]
+                        new_mutation_pk = mutation_row['fields']['advanced_result']
+                        mutation = get_mutation_by_pk(rulebook, new_mutation_pk)
+                        if mutation['fields']['effect_type'] == 'drawback':
+                            break
+
+                case 'physical_drawback':
+                    table = rulebook['physicalMutationRolls']
+                    while True:
+                        d100_roll = random.randint(1, 100)
+                        mutation_row = list(filter(lambda roll_row: d100_roll == roll_row['fields']['roll'], table))[0]
+                        new_mutation_pk = mutation_row['fields']['advanced_result']
+                        mutation = get_mutation_by_pk(rulebook, new_mutation_pk)
+                        if mutation['fields']['effect_type'] == 'drawback':
+                            break
+
+                case 'any':
+                    table = random.choice([rulebook['mentalMutationRolls'], rulebook['physicalMutationRolls'], rulebook['plantMutationRolls']])
+                    d100_roll = random.randint(1, 100)
+                    mutation_row = list(filter(lambda roll_row: d100_roll == roll_row['fields']['roll'], table))[0]
+                    new_mutation_pk = mutation_row['fields']['advanced_result']
+                    mutation = get_mutation_by_pk(rulebook, new_mutation_pk)
+
+            mutation_name = get_full_mutation_name(mutation)
+            if mutation_name not in character_mutations:
+                character_mutations.append(mutation_name)
+                mutation_count += 1
+
 
         return character_mutations
 
@@ -278,7 +333,7 @@ def get_splat_sheet_string(characters, player_name='', for_html=False):
         splat_sheet_contents += '\n'
         splat_sheet_contents += f'Constitution: {character.constitution}\n'
         splat_sheet_contents += f'--Poison Save Mod: {character.poison_death_mod}\n'
-        splat_sheet_contents += f'--Poison Save Mod: {character.radiation_mod}\n'
+        splat_sheet_contents += f'--Radiation Save Mod: {character.radiation_mod}\n'
         splat_sheet_contents += '\n'
         splat_sheet_contents += f'Intelligence: {character.intelligence}\n'
         splat_sheet_contents += f'--Technology Mod: {character.technology_mod}\n'
