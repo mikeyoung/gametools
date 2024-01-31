@@ -111,7 +111,6 @@ def get_random_backgrounds(rulebook, total_backgrounds):
     while len(background_list) < total_backgrounds:
         random_background = random.choice(rulebook['backgrounds'])['fields']
         if (random_background['name'] not in background_name_set):
-            print(random_background['name'])
             background_name_set.add(random_background['name'])
             background_list.append(random_background)
 
