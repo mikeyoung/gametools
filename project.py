@@ -13,7 +13,7 @@ def main():
         while True:
             player_name = input('Provide player name or [ENTER] to quit: ').strip()
             if player_name == '':
-                print('Goodbye.\n')
+                print('Goodbye\n')
                 sys.exit(0)
 
             if len(player_name) > 12:
@@ -87,7 +87,7 @@ def get_random_character():
     character.feats = random.choice(rulebook['feats'])['fields']
 
     #backgrounds
-    character.backgrounds = random.choice(rulebook['backgrounds'])['fields']
+    character.backgrounds = get_random_backgrounds(rulebook, 2)
 
     #thac0
     character.thac0 = 19
@@ -103,6 +103,19 @@ def get_random_character():
 
 def get_random_alignment():
     return random.choice(ALIGNMENTS)
+
+def get_random_backgrounds(rulebook, total_backgrounds):
+    background_name_set = set()
+    background_list = []
+    
+    while len(background_list) < total_backgrounds:
+        random_background = random.choice(rulebook['backgrounds'])['fields']
+        if (random_background['name'] not in background_name_set):
+            print(random_background['name'])
+            background_name_set.add(random_background['name'])
+            background_list.append(random_background)
+
+    return background_list
 
 
 def get_random_race(rulebook):
@@ -316,9 +329,19 @@ def get_splat_sheet_string(characters, player_name='', for_html=False):
     chararacter_number = 1
     for character in characters:
         splat_sheet_contents += f'---------------start record {chararacter_number:02d} of {len(characters):02d}---------------\n'
-        splat_sheet_contents += f'{character.alignment} {character.race["name"].replace(" (Advanced)","")} {character.backgrounds["name"]}\n\n'
+        splat_sheet_contents += f'{character.alignment} {character.race["name"].replace(" (Advanced)","")}'
+
+        for background in character.backgrounds:
+            splat_sheet_contents += f' {background["name"]}'
+        splat_sheet_contents += f'\n\n'
+
         splat_sheet_contents += f'Race: {character.race["name"]} ({character.race["page_number"]})\n'
-        splat_sheet_contents += f'Background: {character.backgrounds["name"]}\n'
+
+        splat_sheet_contents += f'Backgrounds:\n'
+        for background in character.backgrounds:
+            splat_sheet_contents += f'--{background["name"]} (1)\n'
+            
+        splat_sheet_contents += f'\n'
         splat_sheet_contents += f'Alignment: {character.alignment}\n'
 
         splat_sheet_contents += '\n'

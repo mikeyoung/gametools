@@ -1,5 +1,5 @@
 import pytest
-from project import roll_dice, get_rulebook, get_random_character, get_random_alignment, get_random_race
+from project import roll_dice, get_rulebook, get_random_character, get_random_alignment, get_random_race, get_random_backgrounds
 from mutantfuture.characters import CharacterBase
 from config import RULEBOOK_PATH, ALIGNMENTS
 
@@ -47,3 +47,15 @@ def test_get_random_race():
             break
 
     assert base_race_detected == False
+
+def test_get_random_backgrounds():
+    test_is_good = True
+    rulebook = get_rulebook(RULEBOOK_PATH)
+    backgrounds_list = get_random_backgrounds(rulebook, 100)
+    background_names = set()
+    for background in backgrounds_list:
+        if background['name'] in background_names:
+            test_is_good = False
+            break
+    
+    assert test_is_good
