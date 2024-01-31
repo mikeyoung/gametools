@@ -334,11 +334,11 @@ def get_splat_sheet_string(characters, player_name='', for_html=False):
             splat_sheet_contents += f' {background["name"]}'
         splat_sheet_contents += f'\n\n'
 
-        splat_sheet_contents += f'Race: {character.race["name"]} ({character.race["page_number"]})\n'
+        splat_sheet_contents += f'Race: {character.race["name"]} ({character.race["page_number"]})\n\n'
 
         splat_sheet_contents += f'Backgrounds:\n'
         for background in character.backgrounds:
-            splat_sheet_contents += f'--{background["name"]} (1)\n'
+            splat_sheet_contents += f'--{background["name"]}: 1\n'
             
         splat_sheet_contents += f'\n'
         splat_sheet_contents += f'Alignment: {character.alignment}\n'
