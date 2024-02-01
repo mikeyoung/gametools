@@ -256,7 +256,7 @@ def append_table_mutations(rulebook, character_mutations, total_new_mutations, m
                     mutation = get_mutation_by_pk(rulebook, new_mutation_pk)
 
             mutation_name = get_full_mutation_name(mutation)
-            if mutation_name not in character_mutations:
+            if mutation_name not in character_mutations and mutation['fields']['pc_eligible'] == True:
                 character_mutations.append(mutation_name)
                 mutation_count += 1
 
@@ -270,7 +270,7 @@ def append_random_special_mutations(character_mutations, total_new_mutations, mu
             random_mutation_pk = random.choice(mutation_list)['fields']['mutation']
             random_mutation = get_mutation_by_pk(rulebook, random_mutation_pk)
             mutation_name = get_full_mutation_name(random_mutation)
-            if mutation_name not in character_mutations:
+            if mutation_name not in character_mutations and random_mutation['fields']['pc_eligible'] == True:
                 character_mutations.append(mutation_name)
                 mutation_count += 1
 

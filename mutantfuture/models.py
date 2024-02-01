@@ -4,6 +4,7 @@ class Race(models.Model):
     name = models.CharField(max_length=50)
     hit_dice_sides = models.IntegerField()
     page_number = models.CharField(max_length=10)
+    description = models.TextField(null = True)
 
     #mutation rolls
     mental_mutations_roll_str = models.CharField(max_length = 12, default = 0)
@@ -22,13 +23,14 @@ class Race(models.Model):
         ('advanced', 'Advanced'),
     ])
 
-
     def __str__(self):
         return f'{self.name} hit_die:{self.hit_dice_sides} ({self.page_number})'
-    
+
+
 class Mutation(models.Model):
     name = models.CharField(max_length=100)
     page_number = models.CharField(max_length=10)
+    description = models.TextField(null = True)
 
     type = models.CharField(max_length=12, choices = [
         ('plant','Plant'),
@@ -55,6 +57,7 @@ class Mutation(models.Model):
     # def likes(self):
     #     return Like.objects.filter(post = self)
 
+
 class Background(models.Model):
     name = models.CharField(max_length = 50)
     roll = models.IntegerField(null = True)
@@ -66,6 +69,7 @@ class Background(models.Model):
 class Feat(models.Model):
     name = models.CharField(max_length = 50)
     page_number = models.CharField(max_length=10)
+    description = models.TextField(null = True)
 
     def __str__(self):
         return f'{self.name} ({self.page_number})'
@@ -142,6 +146,7 @@ class CharismaModSet(models.Model):
 
     def __str__(self):
         return f'{self.value}: reaction_mod:{self.reaction_mod} retainers:{self.retainers} retainer_morale:{self.retainer_morale}'
+
 
 class SpecialInsectMutationRoll(models.Model):
     roll = models.IntegerField()
