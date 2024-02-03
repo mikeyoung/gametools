@@ -313,7 +313,7 @@ const main = () => {
         }
 
         create_characters_file(characters);
-}
+};
 
 
 const get_random_character = () => {
@@ -380,16 +380,16 @@ const get_random_character = () => {
     character.hit_points = get_hit_points(character.race, character.constitution);
     
     return character;
-}
+};
 
 const randomChoice = (arr) => {
     let index = Math.floor(Math.random() * arr.length);
     return arr[index];
-}
+};
 
 const get_random_alignment = () => {
     return randomChoice(ALIGNMENTS);
-}
+};
 
 const get_random_backgrounds = (rulebook, total_backgrounds) => {
     background_name_set = new Set();
@@ -404,169 +404,205 @@ const get_random_backgrounds = (rulebook, total_backgrounds) => {
     }
 
     return background_list;
-}
+};
 
 
 const get_random_race = (rulebook) => {
     // filter out base versions for now
     const filtered_races = rulebook.races.filter((race) => {!race.fields.name.toLowerCase().includes('(base)')});
     return random.choice(filtered_races).fields;
-}
+};
 
-const get_mutation_by_pk(rulebook, mutation_id) {
-    all_mutations = rulebook.mutations;
-    return list(filter(lambda mutation: mutation.pk. == mutation_id, all_mutations))[0]
-}
-
-
-// def get_character_mutations(rulebook, character_race):
-//     character_mutations = []
-
-//     #mental mutations
-//     total_new_mutations = roll_dice(character_race.mental_mutations_roll_str.)
-//     if (total_new_mutations > 0):
-//         character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'mental')
-
-//     #physical mutations
-//     total_new_mutations = roll_dice(character_race.physical_mutations_roll_str.)
-//     if (total_new_mutations > 0):
-//         character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'physical')
-
-//     #plant_mutations
-//     total_new_mutations = roll_dice(character_race.plant_mutations_roll_str.)
-//     if (total_new_mutations > 0):        
-//         character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'plant')
-
-//     #human_animal_mutations
-//     total_new_mutations = roll_dice(character_race.random_human_animal_roll_str.)
-//     if (total_new_mutations > 0):        
-//         character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'human_animal')
-
-//     #beneficial_any_mutations
-//     total_new_mutations = roll_dice(character_race.random_beneficial_any_roll_str.)
-//     if (total_new_mutations > 0):        
-//         character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'any_beneficial')
-
-//     #mental_drawback_mutations
-//     total_new_mutations = roll_dice(character_race.mental_drawback_roll_str.)
-//     if (total_new_mutations > 0):
-//         character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'mental_drawback')
-
-//     #physical_drawback_mutations
-//     total_new_mutations = roll_dice(character_race.physical_drawback_roll_str.)
-//     if (total_new_mutations > 0):
-//         character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'physical_drawback')
-
-//     #any_mutations
-//     total_new_mutations = roll_dice(character_race.random_any_roll_str.)
-//     if (total_new_mutations > 0):        
-//         character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'any')
-
-//     #special_animal_mutations
-//     total_new_mutations = roll_dice(character_race.special_animal_roll_str.)
-//     if (total_new_mutations > 0):
-//         character_mutations = append_random_special_mutations(character_mutations, total_new_mutations, rulebook.specialAnimalMutationRolls., rulebook)
-
-//     #special_insect_mutations
-//     total_new_mutations = roll_dice(character_race.special_insect_roll_str.)
-//     if (total_new_mutations > 0):
-//         character_mutations = append_random_special_mutations(character_mutations, total_new_mutations, rulebook.specialInsectMutationRolls., rulebook)
-
-//     return character_mutations
+const get_mutation_by_pk = (rulebook, mutation_id) => {
+    return rulebook.mutations.filter((mutation) => {mutation.pk == mutation_id})[0];
+};
 
 
-// def append_table_mutations(rulebook, character_mutations, total_new_mutations, mutation_table):
-//         mutation_count = 0
+const get_character_mutations = (rulebook, character_race) => {
+    let character_mutations = [];
 
-//         while mutation_count < total_new_mutations:
-//             new_mutation = None
-//             match mutation_table:
-//                 case 'mental':
-//                     table = rulebook.mentalMutationRolls.
-//                     d100_roll = random.randint(1, 100)
-//                     mutation_row = list(filter(lambda roll_row: d100_roll == roll_row.fields..roll., table))[0]
-//                     new_mutation_pk = mutation_row.fields..advanced_result.
-//                     mutation = get_mutation_by_pk(rulebook, new_mutation_pk)
+    // mental mutations
+    total_new_mutations = roll_dice(character_race.mental_mutations_roll_str);
+    if (total_new_mutations > 0) {
+        character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'mental');
+    }
 
-//                 case 'physical':
-//                     table = rulebook.physicalMutationRolls.
-//                     d100_roll = random.randint(1, 100)
-//                     mutation_row = list(filter(lambda roll_row: d100_roll == roll_row.fields..roll., table))[0]
-//                     new_mutation_pk = mutation_row.fields..advanced_result.
-//                     mutation = get_mutation_by_pk(rulebook, new_mutation_pk)
+    // physical mutations
+    total_new_mutations = roll_dice(character_race.physical_mutations_roll_str);
+    if (total_new_mutations > 0) {
+        character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'physical');
+    }
 
-//                 case 'plant':
-//                     table = rulebook.plantMutationRolls.
-//                     d100_roll = random.randint(1, 100)
-//                     mutation_row = list(filter(lambda roll_row: d100_roll == roll_row.fields..roll., table))[0]
-//                     new_mutation_pk = mutation_row.fields..advanced_result.
-//                     mutation = get_mutation_by_pk(rulebook, new_mutation_pk)
+    // plant_mutations
+    total_new_mutations = roll_dice(character_race.plant_mutations_roll_str);
+    if (total_new_mutations > 0) {
+        character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'plant');
+    }
 
-//                 case 'human_animal':
-//                     table = random.choice([rulebook.mentalMutationRolls., rulebook.physicalMutationRolls.])
-//                     d100_roll = random.randint(1, 100)
-//                     mutation_row = list(filter(lambda roll_row: d100_roll == roll_row.fields..roll., table))[0]
-//                     new_mutation_pk = mutation_row.fields..advanced_result.
-//                     mutation = get_mutation_by_pk(rulebook, new_mutation_pk)
+    // human_animal_mutations
+    total_new_mutations = roll_dice(character_race.random_human_animal_roll_str);
+    if (total_new_mutations > 0) {
+        character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'human_animal');
+    }
 
-//                 case 'any_beneficial':
-//                     while True:
-//                         table = random.choice([rulebook.mentalMutationRolls., rulebook.physicalMutationRolls., rulebook.plantMutationRolls.])
-//                         d100_roll = random.randint(1, 100)
-//                         mutation_row = list(filter(lambda roll_row: d100_roll == roll_row.fields..roll., table))[0]
-//                         new_mutation_pk = mutation_row.fields..advanced_result.
-//                         mutation = get_mutation_by_pk(rulebook, new_mutation_pk)
-//                         if mutation.fields..effect_type. == 'benefit':
-//                             break
+    // beneficial_any_mutations
+    total_new_mutations = roll_dice(character_race.random_beneficial_any_roll_str);
+    if (total_new_mutations > 0) {
+        character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'any_beneficial');
+    }
 
-//                 case 'mental_drawback':
-//                     table = rulebook.mentalMutationRolls.
-//                     while True:
-//                         d100_roll = random.randint(1, 100)
-//                         mutation_row = list(filter(lambda roll_row: d100_roll == roll_row.fields..roll., table))[0]
-//                         new_mutation_pk = mutation_row.fields..advanced_result.
-//                         mutation = get_mutation_by_pk(rulebook, new_mutation_pk)
-//                         if mutation.fields..effect_type. == 'drawback':
-//                             break
+    // mental_drawback_mutations
+    total_new_mutations = roll_dice(character_race.mental_drawback_roll_str);
+    if (total_new_mutations > 0) {
+        character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'mental_drawback');
+    }
 
-//                 case 'physical_drawback':
-//                     table = rulebook.physicalMutationRolls.
-//                     while True:
-//                         d100_roll = random.randint(1, 100)
-//                         mutation_row = list(filter(lambda roll_row: d100_roll == roll_row.fields..roll., table))[0]
-//                         new_mutation_pk = mutation_row.fields..advanced_result.
-//                         mutation = get_mutation_by_pk(rulebook, new_mutation_pk)
-//                         if mutation.fields..effect_type. == 'drawback':
-//                             break
+    // physical_drawback_mutations
+    total_new_mutations = roll_dice(character_race.physical_drawback_roll_str);
+    if (total_new_mutations > 0) {
+        character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'physical_drawback');
+    }
 
-//                 case 'any':
-//                     table = random.choice([rulebook.mentalMutationRolls., rulebook.physicalMutationRolls., rulebook.plantMutationRolls.])
-//                     d100_roll = random.randint(1, 100)
-//                     mutation_row = list(filter(lambda roll_row: d100_roll == roll_row.fields..roll., table))[0]
-//                     new_mutation_pk = mutation_row.fields..advanced_result.
-//                     mutation = get_mutation_by_pk(rulebook, new_mutation_pk)
+    // any_mutations
+    total_new_mutations = roll_dice(character_race.random_any_roll_str);
+    if (total_new_mutations > 0) {
+        character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'any');
+    }
 
-//             mutation_name = get_full_mutation_name(mutation)
-//             if mutation_name not in character_mutations and mutation.fields..pc_eligible. == True:
-//                 character_mutations.append(mutation_name)
-//                 mutation_count += 1
+    // special_animal_mutations
+    total_new_mutations = roll_dice(character_race.special_animal_roll_str);
+    if (total_new_mutations > 0) {
+        character_mutations = append_random_special_mutations(character_mutations, total_new_mutations, rulebook.specialAnimalMutationRolls, rulebook);
+    }
+
+    // special_insect_mutations
+    total_new_mutations = roll_dice(character_race.special_insect_roll_str);
+    if (total_new_mutations > 0) {
+        character_mutations = append_random_special_mutations(character_mutations, total_new_mutations, rulebook.specialInsectMutationRolls, rulebook)
+    }
+
+    return character_mutations
+};
 
 
-//         return character_mutations
+const append_table_mutations = (rulebook, character_mutations, total_new_mutations, mutation_table) => {
+        let mutation_count = 0
 
+        while (mutation_count < total_new_mutations) {
+            let table = null;
+            let d100_roll = null;
+            let mutation_row = null;
+            let new_mutation_pk = null;
+            let mutation = null;
+            let mutation_name = null;
 
-// def append_random_special_mutations(character_mutations, total_new_mutations, mutation_list, rulebook):
-//         mutation_count = 0
-//         while mutation_count < total_new_mutations:
-//             random_mutation_pk = random.choice(mutation_list).fields..mutation.
-//             random_mutation = get_mutation_by_pk(rulebook, random_mutation_pk)
-//             mutation_name = get_full_mutation_name(random_mutation)
-//             if mutation_name not in character_mutations and random_mutation.fields..pc_eligible. == True:
-//                 character_mutations.append(mutation_name)
-//                 mutation_count += 1
+            switch (mutation_table) {
+                case 'mental':
+                    table = rulebook.mentalMutationRolls;
+                    d100_roll = random.randint(1, 100);
+                    mutation_row = table.filter((row) => {d100_roll == row.fields.roll})[0];
+                    new_mutation_pk = mutation_row.fields.advanced_result;
+                    mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
+                    break;
 
-//         return character_mutations
+                case 'physical':
+                    table = rulebook.physicalMutationRolls;
+                    d100_roll = random.randint(1, 100);
+                    mutation_row = table.filter((row) => {d100_roll == row.fields.roll})[0];
+                    new_mutation_pk = mutation_row.fields.advanced_result;
+                    mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
+                    break;
 
+                case 'plant':
+                    table = rulebook.plantMutationRolls;
+                    d100_roll = random.randint(1, 100);
+                    mutation_row = table.filter((row) => {d100_roll == row.fields.roll})[0];
+                    new_mutation_pk = mutation_row.fields.advanced_result;
+                    mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
+                    break;
+
+                case 'human_animal':
+                    table = randomChoice([rulebook.mentalMutationRolls, rulebook.physicalMutationRolls]);
+                    d100_roll = random.randint(1, 100);
+                    mutation_row = table.filter((row) => {d100_roll == row.fields.roll})[0];
+                    new_mutation_pk = mutation_row.fields.advanced_result;
+                    mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
+                    break;
+
+                case 'any_beneficial':
+                    while (true) {
+                        table = randomChoice([rulebook.mentalMutationRolls, rulebook.physicalMutationRolls, rulebook.plantMutationRolls]);
+                        d100_roll = random.randint(1, 100);
+                        mutation_row = table.filter((row) => {d100_roll == row.fields.roll})[0];
+                        new_mutation_pk = mutation_row.fields.advanced_result;
+                        mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
+                        if (mutation.fields.effect_type == 'benefit') {
+                            break;
+                        }
+                    }
+
+                    break;
+
+                case 'mental_drawback':
+                    table = rulebook.mentalMutationRolls;
+                    while (true) {
+                        d100_roll = random.randint(1, 100);
+                        mutation_row = table.filter((row) => {d100_roll == row.fields.roll})[0];
+                        new_mutation_pk = mutation_row.fields.advanced_result;
+                        mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
+                        if (mutation.fields.effect_type == 'drawback') {
+                            break;
+                        }
+                    }
+
+                    break;
+
+                case 'physical_drawback':
+                    table = rulebook.physicalMutationRolls;
+                    while (true) {
+                        d100_roll = random.randint(1, 100);
+                        mutation_row = table.filter((row) => {d100_roll == row.fields.roll})[0];
+                        new_mutation_pk = mutation_row.fields.advanced_result;
+                        mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
+                        if (mutation.fields.effect_type == 'drawback') {
+                            break;
+                        }
+                    }
+
+                    break;
+
+                case 'any':
+                    table = random.choice([rulebook.mentalMutationRolls, rulebook.physicalMutationRolls, rulebook.plantMutationRolls])
+                    d100_roll = random.randint(1, 100);
+                    mutation_row = table.filter((row) => {d100_roll == row.fields.roll})[0];
+                    new_mutation_pk = mutation_row.fields.advanced_result;
+                    mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
+            }
+
+            mutation_name = get_full_mutation_name(mutation)
+            if (!character_mutations.has(mutation_name) && mutation.fields.pc_eligible == true) {
+                character_mutations.push(mutation_name);
+                mutation_count += 1;
+            }
+        }
+
+        return character_mutations
+};
+
+const append_random_special_mutations = (character_mutations, total_new_mutations, mutation_list, rulebook) => {
+    let mutation_count = 0;
+    while (mutation_count < total_new_mutations) {
+        let random_mutation_pk = randomChoice(mutation_list).fields.mutation;
+        let random_mutation = get_mutation_by_pk(rulebook, random_mutation_pk);
+        let mutation_name = get_full_mutation_name(random_mutation);
+        if (!character_mutations.has(mutation_name) && random_mutation.fields.pc_eligible == true) {
+            character_mutations.push(mutation_name)
+            mutation_count += 1
+        }
+    }
+
+    return character_mutations
+};
 
 // def get_full_mutation_name(mutation):
 //     return f"{mutation.fields..name.} ({mutation.fields..type.}, {mutation.fields..effect_type.}, {mutation.fields..page_number.})"
