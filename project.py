@@ -288,7 +288,7 @@ def roll_dice(roll_str):
         num_dice = int(num_dice)
         num_sides = int(num_sides)
 
-        for _ in range(1, num_dice+1):
+        for _ in range(0, num_dice):
             total += random.randint(1,num_sides)
         
         return total

@@ -1,4 +1,4 @@
-const RULEBOOK_PATH = 'json/rulebook.json'
+const RULEBOOK_PATH = '/static/mutantfuture/json/rulebook.json'
 const ALIGNMENTS = ['Lawful', 'Neutral', 'Chaotic']
 const SPLAT_COUNT = 20
 
@@ -130,15 +130,6 @@ class CharacterBase {
         this.#poisonDeathMod = value;
     }
 
-    // Poison/Death Save Modifier
-    #poisonDeathMod;
-    get poisonDeathMod() {
-        return CharacterBase.format_mod(this.#poisonDeathMod);
-    }
-    set poisonDeathMod(value) {
-        this.#poisonDeathMod = value;
-    }
-
     // Radiation Save Modifier
     #radiationMod;
     get radiationMod() {
@@ -229,15 +220,6 @@ class CharacterBase {
         this.#poisonDeathSave = value;
     }
 
-    // Poison/Death Saving Throw
-    #poisonDeathSave;
-    get poisonDeathSave() {
-        return this.#poisonDeathSave;
-    }
-    set poisonDeathSave(value) {
-        this.#poisonDeathSave = value;
-    }
-
     // Stun Saving Throw
     #stunSave;
     get stunSave() {
@@ -303,21 +285,19 @@ class CharacterBase {
 
 }   
 
-
-const main = () => {
+const main = async () => {
         const characters = [];
 
         for (let i=0; i < SPLAT_COUNT; i++) {
-            let new_character = get_random_character();
+            let new_character = await get_random_character();
             characters.push(new_character);
         }
 
-        create_characters_file(characters);
+        print_character_list(characters);
 };
 
-
-const get_random_character = () => {
-    rulebook = get_rulebook(RULEBOOK_PATH);
+const get_random_character = async () => {
+    rulebook = await get_rulebook(RULEBOOK_PATH);
     character = new CharacterBase();
 
     // strength
@@ -365,7 +345,7 @@ const get_random_character = () => {
     character.mutations = get_character_mutations(rulebook, character.race);
 
     // feats
-    character.feats = random.choice(rulebook.feats).fields;
+    character.feats = randomChoice(rulebook.feats).fields;
 
     // backgrounds
     character.backgrounds = get_random_backgrounds(rulebook, 2);
@@ -406,17 +386,17 @@ const get_random_backgrounds = (rulebook, total_backgrounds) => {
     return background_list;
 };
 
-
 const get_random_race = (rulebook) => {
     // filter out base versions for now
-    const filtered_races = rulebook.races.filter((race) => {!race.fields.name.toLowerCase().includes('(base)')});
-    return random.choice(filtered_races).fields;
+    const filtered_races = rulebook.races.filter(race => !race.fields.name.toLowerCase().includes('(base)'));
+    const randomRace = randomChoice(filtered_races);
+    return randomRace.fields;
 };
 
 const get_mutation_by_pk = (rulebook, mutation_id) => {
-    return rulebook.mutations.filter((mutation) => {mutation.pk == mutation_id})[0];
+    let filtered_mutations = rulebook.mutations.filter(mutation => mutation.pk == mutation_id);
+    return filtered_mutations[0];
 };
-
 
 const get_character_mutations = (rulebook, character_race) => {
     let character_mutations = [];
@@ -484,7 +464,6 @@ const get_character_mutations = (rulebook, character_race) => {
     return character_mutations
 };
 
-
 const append_table_mutations = (rulebook, character_mutations, total_new_mutations, mutation_table) => {
         let mutation_count = 0
 
@@ -499,32 +478,36 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
             switch (mutation_table) {
                 case 'mental':
                     table = rulebook.mentalMutationRolls;
-                    d100_roll = random.randint(1, 100);
-                    mutation_row = table.filter((row) => {d100_roll == row.fields.roll})[0];
+                    d100_roll = randInt(1, 100);
+                    mutation_row = table.filter(row => d100_roll === row.fields.roll);
+                    mutation_row = mutation_row[0];
                     new_mutation_pk = mutation_row.fields.advanced_result;
                     mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
                     break;
 
                 case 'physical':
                     table = rulebook.physicalMutationRolls;
-                    d100_roll = random.randint(1, 100);
-                    mutation_row = table.filter((row) => {d100_roll == row.fields.roll})[0];
+                    d100_roll = randInt(1, 100);
+                    mutation_row = table.filter(row => d100_roll === row.fields.roll);
+                    mutation_row = mutation_row[0];
                     new_mutation_pk = mutation_row.fields.advanced_result;
                     mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
                     break;
 
                 case 'plant':
                     table = rulebook.plantMutationRolls;
-                    d100_roll = random.randint(1, 100);
-                    mutation_row = table.filter((row) => {d100_roll == row.fields.roll})[0];
+                    d100_roll = randInt(1, 100);
+                    mutation_row = table.filter(row => d100_roll === row.fields.roll);
+                    mutation_row = mutation_row[0];
                     new_mutation_pk = mutation_row.fields.advanced_result;
                     mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
                     break;
 
                 case 'human_animal':
                     table = randomChoice([rulebook.mentalMutationRolls, rulebook.physicalMutationRolls]);
-                    d100_roll = random.randint(1, 100);
-                    mutation_row = table.filter((row) => {d100_roll == row.fields.roll})[0];
+                    d100_roll = randInt(1, 100);
+                    mutation_row = table.filter(row => d100_roll === row.fields.roll);
+                    mutation_row = mutation_row[0];
                     new_mutation_pk = mutation_row.fields.advanced_result;
                     mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
                     break;
@@ -532,8 +515,9 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
                 case 'any_beneficial':
                     while (true) {
                         table = randomChoice([rulebook.mentalMutationRolls, rulebook.physicalMutationRolls, rulebook.plantMutationRolls]);
-                        d100_roll = random.randint(1, 100);
-                        mutation_row = table.filter((row) => {d100_roll == row.fields.roll})[0];
+                        d100_roll = randInt(1, 100);
+                        mutation_row = table.filter(row => d100_roll === row.fields.roll);
+                        mutation_row = mutation_row[0];
                         new_mutation_pk = mutation_row.fields.advanced_result;
                         mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
                         if (mutation.fields.effect_type == 'benefit') {
@@ -546,8 +530,9 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
                 case 'mental_drawback':
                     table = rulebook.mentalMutationRolls;
                     while (true) {
-                        d100_roll = random.randint(1, 100);
-                        mutation_row = table.filter((row) => {d100_roll == row.fields.roll})[0];
+                        d100_roll = randInt(1, 100);
+                        mutation_row = table.filter(row => d100_roll === row.fields.roll);
+                        mutation_row = mutation_row[0];
                         new_mutation_pk = mutation_row.fields.advanced_result;
                         mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
                         if (mutation.fields.effect_type == 'drawback') {
@@ -560,8 +545,9 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
                 case 'physical_drawback':
                     table = rulebook.physicalMutationRolls;
                     while (true) {
-                        d100_roll = random.randint(1, 100);
-                        mutation_row = table.filter((row) => {d100_roll == row.fields.roll})[0];
+                        d100_roll = randInt(1, 100);
+                        mutation_row = table.filter(row => d100_roll === row.fields.roll);
+                        mutation_row = mutation_row[0];
                         new_mutation_pk = mutation_row.fields.advanced_result;
                         mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
                         if (mutation.fields.effect_type == 'drawback') {
@@ -572,15 +558,19 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
                     break;
 
                 case 'any':
-                    table = random.choice([rulebook.mentalMutationRolls, rulebook.physicalMutationRolls, rulebook.plantMutationRolls])
-                    d100_roll = random.randint(1, 100);
-                    mutation_row = table.filter((row) => {d100_roll == row.fields.roll})[0];
+                    table = randomChoice([rulebook.mentalMutationRolls, rulebook.physicalMutationRolls, rulebook.plantMutationRolls])
+                    d100_roll = randInt(1, 100);
+                    mutation_row = table.filter(row => d100_roll === row.fields.roll);
+                    mutation_row = mutation_row[0];
                     new_mutation_pk = mutation_row.fields.advanced_result;
                     mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
             }
 
-            mutation_name = get_full_mutation_name(mutation)
-            if (!character_mutations.has(mutation_name) && mutation.fields.pc_eligible == true) {
+            mutation_name = get_full_mutation_name(mutation);
+
+            console.log(character_mutations);
+
+            if (!character_mutations.includes(mutation_name) && mutation.fields.pc_eligible == true) {
                 character_mutations.push(mutation_name);
                 mutation_count += 1;
             }
@@ -595,7 +585,10 @@ const append_random_special_mutations = (character_mutations, total_new_mutation
         let random_mutation_pk = randomChoice(mutation_list).fields.mutation;
         let random_mutation = get_mutation_by_pk(rulebook, random_mutation_pk);
         let mutation_name = get_full_mutation_name(random_mutation);
-        if (!character_mutations.has(mutation_name) && random_mutation.fields.pc_eligible == true) {
+
+        console.log(character_mutations);
+
+        if (!character_mutations.includes(mutation_name) && random_mutation.fields.pc_eligible == true) {
             character_mutations.push(mutation_name)
             mutation_count += 1
         }
@@ -604,132 +597,157 @@ const append_random_special_mutations = (character_mutations, total_new_mutation
     return character_mutations
 };
 
-// def get_full_mutation_name(mutation):
-//     return f"{mutation.fields..name.} ({mutation.fields..type.}, {mutation.fields..effect_type.}, {mutation.fields..page_number.})"
+const get_full_mutation_name = (mutation) => {
+    return `${mutation.fields.name} (${mutation.fields.type}, ${mutation.fields.effect_type}, ${mutation.fields.page_number})`
+};
 
+const roll_dice = (roll_str) => {
+    if (roll_str.toLowerCase().includes('d')) {
+        total = 0;
+        roll_elements = roll_str.split('d');
+        num_dice = roll_elements[0];
+        num_sides = roll_elements[1];
+        num_dice = parseInt(num_dice);
+        num_sides = parseInt(num_sides);
 
-// def roll_dice(roll_str):
-//     if 'd' in roll_str.lower():
-//         total = 0
-//         num_dice, num_sides = roll_str.split('d')
-//         num_dice = int(num_dice)
-//         num_sides = int(num_sides)
-
-//         for _ in range(1, num_dice+1):
-//             total += random.randint(1,num_sides)
+        for (let i=0; i < num_dice; i++) {
+            total += randInt(1,num_sides)
+        }
         
-//         return total
-//     else:
-//         return int(roll_str)
-    
+        return total;
+        
+    } else {
+        return parseInt(roll_str)
+    }
+};
 
-// def get_rulebook(json_file_path):
-//     try:
-//         with open(json_file_path, 'r') as f:
-//             data = json.load(f)
-//             return data[0]
-//     except FileNotFoundError:
-//         raise
+const get_rulebook = async (url) => {
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        return data[0];
+    } catch (error) {
+        console.error('There has been a problem with your fetch operation:', error);
+    }
+};
 
+const get_mod_by_attr_value = (attribute_table, mod_name, value) => {
+    const value_rows = attribute_table.filter(row => row.fields.value == value);
+    const value_row = value_rows[0];
+    return value_row.fields[mod_name];
+};
 
-// def get_mod_by_attr_value(attribute_table, mod_name, value):
-//     value_row = list(filter(lambda row : row.fields..value. == value, attribute_table))[0]
-//     return value_row.fields.[mod_name]
+const get_hit_points = (race, constitution_value) => {
+    fixed_hp_races = ['synthetic android', 'basic android'];
+    if (fixed_hp_races.includes(race.name.toLowerCase())) {
+        return 50;
+    } else {
+        sides = race.hit_dice_sides;
+        return roll_dice(`${constitution_value}d${sides}`);
+    }
+};
 
+const get_splat_sheet_string = (characters) => {
+    splat_sheet_contents = 'MUTANT FUTURE CHARACTER SPLAT';
 
-// def get_hit_points(race, constitution_value):
-//     fixed_hp_races = .synthetic android', 'basic android.
-//     if race.name..lower() in fixed_hp_races:
-//         return 50
-//     else:
-//         sides = race.hit_dice_sides.
-//         return roll_dice(f'{constitution_value}d{sides}')
-    
+    // console.log('--------------------------------------');
+    // console.log(characters);
+    // console.log('--------------------------------------');
 
-// def get_splat_sheet_string(characters, player_name='', for_html=False):
-//     splat_sheet_contents = 'MUTANT FUTURE CHARACTER SPLAT'
-//     if player_name != '':
-//         splat_sheet_contents += f' FOR PLAYER {player_name.upper()}'
-//     splat_sheet_contents += '\n\n'
+    chararacter_number = 1;
+    for (let character of characters) {
+        splat_sheet_contents += `---------------start record ${chararacter_number} of ${characters.length}---------------<br>`;
+        splat_sheet_contents += `${character.alignment} ${character.race.name.replace(" (Advanced)","")}`;
 
-//     chararacter_number = 1
-//     for character in characters:
-//         splat_sheet_contents += f'---------------start record {chararacter_number:02d} of {len(characters):02d}---------------\n'
-//         splat_sheet_contents += f'{character.alignment} {character.race["name"].replace(" (Advanced)","")}'
+        for (let background of character.backgrounds) {
+            splat_sheet_contents += ` ${background.name}`;
+        }
 
-//         for background in character.backgrounds:
-//             splat_sheet_contents += f' {background["name"]}'
-//         splat_sheet_contents += f'\n\n'
+        splat_sheet_contents += `<br><br>`;
 
-//         splat_sheet_contents += f'Race: {character.race["name"]} ({character.race["page_number"]})\n\n'
+        splat_sheet_contents += `Race: ${character.race["name"]} (${character.race["page_number"]})<br><br>`;
 
-//         splat_sheet_contents += f'Backgrounds:\n'
-//         for background in character.backgrounds:
-//             splat_sheet_contents += f'--{background["name"]}: 1\n'
+        splat_sheet_contents += `Backgrounds:<br>`;
+        for (let background of character.backgrounds) {
+            splat_sheet_contents += `--${background["name"]}: 1<br>`;
+        }
             
-//         splat_sheet_contents += f'\n'
-//         splat_sheet_contents += f'Alignment: {character.alignment}\n'
+        splat_sheet_contents += `<br>`;
+        splat_sheet_contents += `Alignment: ${character.alignment}<br>`;
 
-//         splat_sheet_contents += '\n'
-//         splat_sheet_contents += f'Strength: {character.strength}\n'
-//         splat_sheet_contents += f'--Strength Mod: {character.strength_mod}\n'
-//         splat_sheet_contents += f'--Damage Mod: {character.damage_mod}\n'
-//         splat_sheet_contents += '\n'
-//         splat_sheet_contents += f'Dexterity: {character.dexterity}\n'
-//         splat_sheet_contents += f'-- AC Mod: {character.ac_mod}\n'
-//         splat_sheet_contents += f'-- Missile Mod: {character.missile_mod}\n'
-//         splat_sheet_contents += f'-- Init Mod: {character.init_mod}\n'
-//         splat_sheet_contents += '\n'
-//         splat_sheet_contents += f'Constitution: {character.constitution}\n'
-//         splat_sheet_contents += f'--Poison Save Mod: {character.poison_death_mod}\n'
-//         splat_sheet_contents += f'--Radiation Save Mod: {character.radiation_mod}\n'
-//         splat_sheet_contents += '\n'
-//         splat_sheet_contents += f'Intelligence: {character.intelligence}\n'
-//         splat_sheet_contents += f'--Technology Mod: {character.technology_mod}\n'
-//         splat_sheet_contents += '\n'
-//         splat_sheet_contents += f'Willpower: {character.willpower}\n'
-//         splat_sheet_contents += '\n'
-//         splat_sheet_contents += f'Charisma: {character.charisma}\n'
-//         splat_sheet_contents += f'--Reaction Mod: {character.reaction_mod}\n'
-//         splat_sheet_contents += f'--Retainers: {character.retainers}\n'
-//         splat_sheet_contents += f'--Retainer Morale: {character.retainer_morale}\n'
-//         splat_sheet_contents += '\n'
-//         splat_sheet_contents += f'Hit Points: {character.hit_points}\n'
-//         splat_sheet_contents += '\n'
+        splat_sheet_contents += `<br>`;
+        splat_sheet_contents += `Strength: ${character.strength}<br>`;
+        splat_sheet_contents += `--Strength Mod: ${character.strength_mod}<br>`;
+        splat_sheet_contents += `--Damage Mod: ${character.damage_mod}<br>`;
+        splat_sheet_contents += `<br>`;
+        splat_sheet_contents += `Dexterity: ${character.dexterity}<br>`;
+        splat_sheet_contents += `-- AC Mod: ${character.ac_mod}<br>`;
+        splat_sheet_contents += `-- Missile Mod: ${character.missile_mod}<br>`;
+        splat_sheet_contents += `-- Init Mod: ${character.init_mod}<br>`;
+        splat_sheet_contents += `<br>`;
+        splat_sheet_contents += `Constitution: ${character.constitution}<br>`;
+        splat_sheet_contents += `--Poison Save Mod: ${character.poison_death_mod}<br>`;
+        splat_sheet_contents += `--Radiation Save Mod: ${character.radiation_mod}<br>`;
+        splat_sheet_contents += `<br>`;
+        splat_sheet_contents += `Intelligence: ${character.intelligence}<br>`;
+        splat_sheet_contents += `--Technology Mod: ${character.technology_mod}<br>`;
+        splat_sheet_contents += `<br>`;
+        splat_sheet_contents += `Willpower: ${character.willpower}<br>`;
+        splat_sheet_contents += `<br>`;
+        splat_sheet_contents += `Charisma: ${character.charisma}<br>`;
+        splat_sheet_contents += `--Reaction Mod: ${character.reaction_mod}<br>`;
+        splat_sheet_contents += `--Retainers: ${character.retainers}<br>`;
+        splat_sheet_contents += `--Retainer Morale: ${character.retainer_morale}<br>`;
+        splat_sheet_contents += `<br>`;
+        splat_sheet_contents += `Hit Points: ${character.hit_points}<br>`;
+        splat_sheet_contents += `<br>`;
 
-//         if len(character.mutations) > 0:
-//             splat_sheet_contents += f'Mutations:\n'
-//             for mutation in character.mutations:
-//                 splat_sheet_contents += f'--{mutation}\n'
-//         else:
-//             splat_sheet_contents += f'Mutations: None\n'
+        if (character.mutations.length > 0) {
+            splat_sheet_contents += `Mutations:<br>`;
+            for (let mutation of character.mutations) {
+                splat_sheet_contents += `--${mutation}<br>`;
+            }
+        } else {
+            splat_sheet_contents += `Mutations: None<br>`;
+        }
 
-//         splat_sheet_contents += '\n'
-//         splat_sheet_contents += f'Feat: {character.feats["name"]} ({character.feats["page_number"]})\n'
-//         splat_sheet_contents += f'\n'
-//         splat_sheet_contents += f'Gold: {character.gold}\n'
-//         splat_sheet_contents += f'\n'
-//         splat_sheet_contents += f'Saving Throws\n'
-//         splat_sheet_contents += f'--Energy Save: {character.energy_save}\n'
-//         splat_sheet_contents += f'--Poison/Death Save: {character.poison_death_save}\n'
-//         splat_sheet_contents += f'--Stun Save: {character.stun_save}\n'
-//         splat_sheet_contents += f'--Radiation Save: {character.radiation_save}\n'
-//         splat_sheet_contents += f'\n'
-//         splat_sheet_contents += f'----------------end record {chararacter_number:02d} of {len(characters):02d}----------------\n'
-//         splat_sheet_contents += f'\n'
-//         chararacter_number += 1
+        splat_sheet_contents += `<br>`;
+        splat_sheet_contents += `Feat: ${character.feats["name"]} (${character.feats["page_number"]})<br>`;
+        splat_sheet_contents += `<br>`;
+        splat_sheet_contents += `Gold: ${character.gold}<br>`;
+        splat_sheet_contents += `<br>`;
+        splat_sheet_contents += `Saving Throws<br>`;
+        splat_sheet_contents += `--Energy Save: ${character.energy_save}<br>`;
+        splat_sheet_contents += `--Poison/Death Save: ${character.poison_death_save}<br>`;
+        splat_sheet_contents += `--Stun Save: ${character.stun_save}<br>`;
+        splat_sheet_contents += `--Radiation Save: ${character.radiation_save}<br>`;
+        splat_sheet_contents += `<br>`;
+        splat_sheet_contents += `----------------end record ${chararacter_number} of ${characters.length}----------------<br>`;
+        splat_sheet_contents += `<br>`;
+        chararacter_number += 1
+    }
 
-//     if for_html:
-//         splat_sheet_contents = splat_sheet_contents.replace('\n','<br>')
+    return splat_sheet_contents
+};       
 
-//     return splat_sheet_contents
-        
+const create_characters_file = (characters) => {
+    // TODO: Write JS to return txt file
 
-// def create_characters_file(characters, player_name):
-//     with open(f'splat_sheets/characters_splat_{player_name}_{datetime.now():%Y-%m-%d_%H-%m-%d}.txt', 'w') as text_file:
-//         text_file_contents = get_splat_sheet_string(characters)
-//         text_file.write(text_file_contents)
+    // with open(`splat_sheets/characters_splat_{player_name}_{datetime.now():%Y-%m-%d_%H-%m-%d}.txt', 'w') as text_file:
+    //     text_file_contents = get_splat_sheet_string(characters)
+    //     text_file.write(text_file_contents)
+};
+
+const print_character_list = (characters) => {
+    document.querySelector('#character-list').innerHTML = get_splat_sheet_string(characters);
+};
+
+const randInt = (a, b) => {
+    return Math.floor(Math.random() * (b - a + 1)) + a;
+}
 
 
-// if __name__ == '__main__':
-//     main()
+main();
