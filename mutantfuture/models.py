@@ -4,7 +4,6 @@ class Race(models.Model):
     name = models.CharField(max_length=50)
     hit_dice_sides = models.IntegerField()
     page_number = models.CharField(max_length=10)
-    description = models.TextField(null = True)
 
     #mutation rolls
     mental_mutations_roll_str = models.CharField(max_length = 12, default = 0)
@@ -30,7 +29,6 @@ class Race(models.Model):
 class Mutation(models.Model):
     name = models.CharField(max_length=100)
     page_number = models.CharField(max_length=10)
-    description = models.TextField(null = True)
 
     type = models.CharField(max_length=12, choices = [
         ('plant','Plant'),
@@ -69,7 +67,6 @@ class Background(models.Model):
 class Feat(models.Model):
     name = models.CharField(max_length = 50)
     page_number = models.CharField(max_length=10)
-    description = models.TextField(null = True)
 
     def __str__(self):
         return f'{self.name} ({self.page_number})'
