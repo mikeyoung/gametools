@@ -29,7 +29,6 @@
 
       h1 {
         text-align: center;
-        filter: blur(0.5px);
       }
 
       ul {
@@ -48,20 +47,69 @@
         box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
       }
 
-      article {
+      article,
+      .print-button:active,
+      .print-button:hover,
+      .print-button:visited,
+      .print-button:link {
         filter: blur(0.5px);
-        color: rgba(0,0,0,.8);
+        color: rgba(0,0,0,.75);
+        text-decoration: none;
       }
 
       aside {
         display: block;
         text-align: right;
       }
+
+      @media print {
+        .print-button,
+        h1 {
+          display: none;
+        }
+
+        #character-list {
+          width: 100%;
+          min-width: 100%;
+          max-width: 100%;
+          margin: 0;
+          font-size: 14px;
+        }
+
+        li {
+          page-break-after: always;
+          box-shadow: none;
+          padding: 0;
+          margin: 0;
+          background: none;
+          display: none;
+        }
+
+        li:last-child {
+          page-break-after:avoid;          
+        }
+
+        article,
+        .print-button:active,
+        .print-button:hover,
+        .print-button:visited,
+        .print-button:link {
+          filter: none;
+          color: #000;
+          text-decoration: none;
+        }
+
+        li.printarea,
+        ul.printarea li {
+          display: block;
+        }
+      }
+
     </style>
   </head>
   <body>
     <h1>Mutant Future Character Splat</h1>
-    <ul id="character-list"></ul>
+    <ul class="printarea" id="character-list"></ul>
     <script src="/static/mutantfuture/script/main.js"></script>
   </body>
 </html>

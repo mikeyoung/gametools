@@ -7,7 +7,6 @@ class CharacterBase {
 
     static formatMod(modValue) {
         if (modValue > 0) {
-            console.log('---------------');
             return `+${modValue}`;
         } else {
             return `${modValue}`;
@@ -287,14 +286,24 @@ class CharacterBase {
 }   
 
 const main = async () => {
-        const characters = [];
+    const characters = [];
 
-        for (let i=0; i < SPLAT_COUNT; i++) {
-            let new_character = await get_random_character();
-            characters.push(new_character);
-        }
+    for (let i=0; i < SPLAT_COUNT; i++) {
+        let new_character = await get_random_character();
+        characters.push(new_character);
+    }
 
-        print_character_list(characters);
+    print_character_list(characters);
+    document.querySelectorAll('.print-button').forEach(el => {
+        el.addEventListener('click', (e) => {
+            document.querySelectorAll('.printarea').forEach( el => el.classList.remove('printarea'));
+            document.querySelector(`li[data-char_id="${e.target.dataset.char_id}"]`).classList.add('printarea');
+            print();
+            console.log('---------------------hello');
+            document.querySelectorAll('.printarea').forEach( el => el.classList.remove('printarea'));
+            document.querySelector(`ul`).classList.add('printarea');
+        });
+    });
 };
 
 const get_random_character = async () => {
@@ -658,7 +667,7 @@ const get_splat_sheet_string = (characters) => {
 
     chararacter_number = 1;
     for (let character of characters) {
-        splat_sheet_contents += `<li>`;
+        splat_sheet_contents += `<li data-char_id='${chararacter_number}'>`;
         splat_sheet_contents += `  <article>`;
         splat_sheet_contents += `<aside>${numPad(chararacter_number, 2)} of ${numPad(characters.length, 2)}</aside>`;
 
@@ -720,29 +729,21 @@ const get_splat_sheet_string = (characters) => {
         splat_sheet_contents += `<br>`;
         splat_sheet_contents += `Feat: ${character.feats["name"]} (${character.feats["page_number"]})<br>`;
         splat_sheet_contents += `<br>`;
-        splat_sheet_contents += `Gold: ${character.gold}<br>`;
-        splat_sheet_contents += `<br>`;
         splat_sheet_contents += `Saving Throws<br>`;
         splat_sheet_contents += `--Energy Save: ${character.energySave}<br>`;
         splat_sheet_contents += `--Poison/Death Save: ${character.poisonDeathSave}<br>`;
         splat_sheet_contents += `--Stun Save: ${character.stunSave}<br>`;
         splat_sheet_contents += `--Radiation Save: ${character.radiationSave}<br>`;
         splat_sheet_contents += `<br>`;
-        splat_sheet_contents += `<aside>${numPad(chararacter_number, 2)} of ${numPad(characters.length, 2)}</aside>`;
+        splat_sheet_contents += `Gold: ${character.gold}<br>`;
+        splat_sheet_contents += `<br>`;
+        splat_sheet_contents += `<aside><a href='javascript:void(0)' data-char_id='${chararacter_number}' class='print-button'>[PRINT]</a></aside>`;
         splat_sheet_contents += `  </article>`;
         splat_sheet_contents += `</li>`;
         chararacter_number += 1
     }
 
     return splat_sheet_contents
-};       
-
-const create_characters_file = (characters) => {
-    // TODO: Write JS to return txt file
-
-    // with open(`splat_sheets/characters_splat_{player_name}_{datetime.now():%Y-%m-%d_%H-%m-%d}.txt', 'w') as text_file:
-    //     text_file_contents = get_splat_sheet_string(characters)
-    //     text_file.write(text_file_contents)
 };
 
 const print_character_list = (characters) => {
