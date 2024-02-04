@@ -5,11 +5,12 @@ const SPLAT_COUNT = 20
 
 class CharacterBase {
 
-    static format_mod(mod_value) {
-        if (mod_value > 0) {
-            return `+${mod_value}`;
+    static formatMod(modValue) {
+        if (modValue > 0) {
+            console.log('---------------');
+            return `+${modValue}`;
         } else {
-            return `${mod_value}`;
+            return `${modValue}`;
         }
     }
 
@@ -61,7 +62,7 @@ class CharacterBase {
     // Strength Modifier
     #strengthMod;
     get strengthMod() {
-        return CharacterBase.format_mod(this.#strengthMod);
+        return CharacterBase.formatMod(this.#strengthMod);
     }
     set strengthMod(value) {
         this.#strengthMod = value;
@@ -70,7 +71,7 @@ class CharacterBase {
     // Damage Modifier
     #damageMod;
     get damageMod() {
-        return CharacterBase.format_mod(this.#damageMod);
+        return CharacterBase.formatMod(this.#damageMod);
     }
     set damageMod(value) {
         this.#damageMod = value;
@@ -88,7 +89,7 @@ class CharacterBase {
     // Armor Class Modifier
     #acMod;
     get acMod() {
-        return CharacterBase.format_mod(this.#acMod);
+        return CharacterBase.formatMod(this.#acMod);
     }
     set acMod(value) {
         this.#acMod = value;
@@ -97,7 +98,7 @@ class CharacterBase {
     // Missile Modifier
     #missileMod;
     get missileMod() {
-        return CharacterBase.format_mod(this.#missileMod);
+        return CharacterBase.formatMod(this.#missileMod);
     }
     set missileMod(value) {
         this.#missileMod = value;
@@ -106,7 +107,7 @@ class CharacterBase {
     // Initiative Modifier
     #initMod;
     get initMod() {
-        return CharacterBase.format_mod(this.#initMod);
+        return CharacterBase.formatMod(this.#initMod);
     }
     set initMod(value) {
         this.#initMod = value;
@@ -124,7 +125,7 @@ class CharacterBase {
     // Poison/Death Save Modifier
     #poisonDeathMod;
     get poisonDeathMod() {
-        return CharacterBase.format_mod(this.#poisonDeathMod);
+        return CharacterBase.formatMod(this.#poisonDeathMod);
     }
     set poisonDeathMod(value) {
         this.#poisonDeathMod = value;
@@ -133,7 +134,7 @@ class CharacterBase {
     // Radiation Save Modifier
     #radiationMod;
     get radiationMod() {
-        return CharacterBase.format_mod(this.#radiationMod);
+        return CharacterBase.formatMod(this.#radiationMod);
     }
     set radiationMod(value) {
         this.#radiationMod = value;
@@ -151,7 +152,7 @@ class CharacterBase {
     // Technology Modifier
     #technologyMod;
     get technologyMod() {
-        return CharacterBase.format_mod(this.#technologyMod);
+        return CharacterBase.formatMod(this.#technologyMod);
     }
     set technologyMod(value) {
         this.#technologyMod = value;
@@ -178,7 +179,7 @@ class CharacterBase {
     // Reaction Modifier
     #reactionMod;
     get reactionMod() {
-        return CharacterBase.format_mod(this.#reactionMod);
+        return CharacterBase.formatMod(this.#reactionMod);
     }
     set reactionMod(value) {
         this.#reactionMod = value;
@@ -190,7 +191,7 @@ class CharacterBase {
         return this.#retainers;
     }
     set retainers(value) {
-        this.#reactionMod = value;
+        this.#retainers = value;
     }
     
     // Retainer Morale
@@ -199,7 +200,7 @@ class CharacterBase {
         return this.#retainerMorale;
     }
     set retainerMorale(value) {
-        this.#reactionMod = value;
+        this.#retainerMorale = value;
     }
 
     // Energy Saving Throw
@@ -302,38 +303,38 @@ const get_random_character = async () => {
 
     // strength
     character.strength = roll_dice('3d6');
-    character.strength_mod = get_mod_by_attr_value(rulebook.strengthModSets, 'str_mod', character.strength);
-    character.damage_mod = get_mod_by_attr_value(rulebook.strengthModSets, 'dmg_mod', character.strength);
+    character.strengthMod = get_mod_by_attr_value(rulebook.strengthModSets, 'str_mod', character.strength);
+    character.damageMod = get_mod_by_attr_value(rulebook.strengthModSets, 'dmg_mod', character.strength);
 
     // dexterity
     character.dexterity = roll_dice('3d6');
-    character.ac_mod = get_mod_by_attr_value(rulebook.dexterityModSets, 'ac_mod', character.dexterity);
-    character.missile_mod = get_mod_by_attr_value(rulebook.dexterityModSets, 'missile_mod', character.dexterity);
-    character.init_mod = get_mod_by_attr_value(rulebook.dexterityModSets, 'init_mod', character.dexterity);
+    character.acMod = get_mod_by_attr_value(rulebook.dexterityModSets, 'ac_mod', character.dexterity);
+    character.missileMod = get_mod_by_attr_value(rulebook.dexterityModSets, 'missile_mod', character.dexterity);
+    character.initMod = get_mod_by_attr_value(rulebook.dexterityModSets, 'init_mod', character.dexterity);
 
     // constitution
     character.constitution = roll_dice('3d6');
-    character.poison_death_mod = get_mod_by_attr_value(rulebook.constitutionModSets, 'poison_death_mod', character.constitution);
-    character.radiation_mod = get_mod_by_attr_value(rulebook.constitutionModSets, 'radiation_mod', character.constitution);
+    character.poisonDeathMod = get_mod_by_attr_value(rulebook.constitutionModSets, 'poison_death_mod', character.constitution);
+    character.radiationMod = get_mod_by_attr_value(rulebook.constitutionModSets, 'radiation_mod', character.constitution);
 
     // intelligence
     character.intelligence = roll_dice('3d6');
-    character.technology_mod = get_mod_by_attr_value(rulebook.intelligenceModSets, 'tech_mod', character.intelligence);
+    character.technologyMod = get_mod_by_attr_value(rulebook.intelligenceModSets, 'tech_mod', character.intelligence);
 
     // willpower
     character.willpower = roll_dice('3d6');
 
     // charisma
     character.charisma = roll_dice('3d6');
-    character.reaction_mod = get_mod_by_attr_value(rulebook.charismaModSets, 'reaction_mod', character.charisma);
+    character.reactionMod = get_mod_by_attr_value(rulebook.charismaModSets, 'reaction_mod', character.charisma);
     character.retainers = get_mod_by_attr_value(rulebook.charismaModSets, 'retainers', character.charisma);
-    character.retainer_morale = get_mod_by_attr_value(rulebook.charismaModSets, 'retainer_morale', character.charisma);
+    character.retainerMorale = get_mod_by_attr_value(rulebook.charismaModSets, 'retainer_morale', character.charisma);
 
     // saves
-    character.energy_save = 15;
-    character.poison_death_save = 12;
-    character.stun_save = 14;
-    character.radiation_save = 13;
+    character.energySave = 15;
+    character.poisonDeathSave = 12;
+    character.stunSave = 14;
+    character.radiationSave = 13;
 
     // alignment
     character.alignment = get_random_alignment();
@@ -357,10 +358,16 @@ const get_random_character = async () => {
     character.gold = 10 * roll_dice('3d8');
 
     // hit points
-    character.hit_points = get_hit_points(character.race, character.constitution);
+    character.hitPoints = get_hit_points(character.race, character.constitution);
     
     return character;
 };
+
+const numPad = (num, size) => {
+    num = num.toString();
+    while (num.length < size) num = "0" + num;
+    return num;
+}
 
 const randomChoice = (arr) => {
     let index = Math.floor(Math.random() * arr.length);
@@ -568,8 +575,6 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
 
             mutation_name = get_full_mutation_name(mutation);
 
-            console.log(character_mutations);
-
             if (!character_mutations.includes(mutation_name) && mutation.fields.pc_eligible == true) {
                 character_mutations.push(mutation_name);
                 mutation_count += 1;
@@ -585,8 +590,6 @@ const append_random_special_mutations = (character_mutations, total_new_mutation
         let random_mutation_pk = randomChoice(mutation_list).fields.mutation;
         let random_mutation = get_mutation_by_pk(rulebook, random_mutation_pk);
         let mutation_name = get_full_mutation_name(random_mutation);
-
-        console.log(character_mutations);
 
         if (!character_mutations.includes(mutation_name) && random_mutation.fields.pc_eligible == true) {
             character_mutations.push(mutation_name)
@@ -651,22 +654,22 @@ const get_hit_points = (race, constitution_value) => {
 };
 
 const get_splat_sheet_string = (characters) => {
-    splat_sheet_contents = 'MUTANT FUTURE CHARACTER SPLAT';
-
-    // console.log('--------------------------------------');
-    // console.log(characters);
-    // console.log('--------------------------------------');
+    splat_sheet_contents = '';
 
     chararacter_number = 1;
     for (let character of characters) {
-        splat_sheet_contents += `---------------start record ${chararacter_number} of ${characters.length}---------------<br>`;
+        splat_sheet_contents += `<li>`;
+        splat_sheet_contents += `  <article>`;
+        splat_sheet_contents += `<aside>${numPad(chararacter_number, 2)} of ${numPad(characters.length, 2)}</aside>`;
+
+        splat_sheet_contents += `<h3>`;
         splat_sheet_contents += `${character.alignment} ${character.race.name.replace(" (Advanced)","")}`;
 
         for (let background of character.backgrounds) {
             splat_sheet_contents += ` ${background.name}`;
         }
 
-        splat_sheet_contents += `<br><br>`;
+        splat_sheet_contents += `</h3>`;
 
         splat_sheet_contents += `Race: ${character.race["name"]} (${character.race["page_number"]})<br><br>`;
 
@@ -680,29 +683,29 @@ const get_splat_sheet_string = (characters) => {
 
         splat_sheet_contents += `<br>`;
         splat_sheet_contents += `Strength: ${character.strength}<br>`;
-        splat_sheet_contents += `--Strength Mod: ${character.strength_mod}<br>`;
-        splat_sheet_contents += `--Damage Mod: ${character.damage_mod}<br>`;
+        splat_sheet_contents += `--Strength Mod: ${character.strengthMod}<br>`;
+        splat_sheet_contents += `--Damage Mod: ${character.damageMod}<br>`;
         splat_sheet_contents += `<br>`;
         splat_sheet_contents += `Dexterity: ${character.dexterity}<br>`;
-        splat_sheet_contents += `-- AC Mod: ${character.ac_mod}<br>`;
-        splat_sheet_contents += `-- Missile Mod: ${character.missile_mod}<br>`;
-        splat_sheet_contents += `-- Init Mod: ${character.init_mod}<br>`;
+        splat_sheet_contents += `-- AC Mod: ${character.acMod}<br>`;
+        splat_sheet_contents += `-- Missile Mod: ${character.missileMod}<br>`;
+        splat_sheet_contents += `-- Init Mod: ${character.initMod}<br>`;
         splat_sheet_contents += `<br>`;
         splat_sheet_contents += `Constitution: ${character.constitution}<br>`;
-        splat_sheet_contents += `--Poison Save Mod: ${character.poison_death_mod}<br>`;
-        splat_sheet_contents += `--Radiation Save Mod: ${character.radiation_mod}<br>`;
+        splat_sheet_contents += `--Poison Save Mod: ${character.poisonDeathMod}<br>`;
+        splat_sheet_contents += `--Radiation Save Mod: ${character.radiationMod}<br>`;
         splat_sheet_contents += `<br>`;
         splat_sheet_contents += `Intelligence: ${character.intelligence}<br>`;
-        splat_sheet_contents += `--Technology Mod: ${character.technology_mod}<br>`;
+        splat_sheet_contents += `--Technology Mod: ${character.technologyMod}<br>`;
         splat_sheet_contents += `<br>`;
         splat_sheet_contents += `Willpower: ${character.willpower}<br>`;
         splat_sheet_contents += `<br>`;
         splat_sheet_contents += `Charisma: ${character.charisma}<br>`;
-        splat_sheet_contents += `--Reaction Mod: ${character.reaction_mod}<br>`;
+        splat_sheet_contents += `--Reaction Mod: ${character.reactionMod}<br>`;
         splat_sheet_contents += `--Retainers: ${character.retainers}<br>`;
-        splat_sheet_contents += `--Retainer Morale: ${character.retainer_morale}<br>`;
+        splat_sheet_contents += `--Retainer Morale: ${character.retainerMorale}<br>`;
         splat_sheet_contents += `<br>`;
-        splat_sheet_contents += `Hit Points: ${character.hit_points}<br>`;
+        splat_sheet_contents += `Hit Points: ${character.hitPoints}<br>`;
         splat_sheet_contents += `<br>`;
 
         if (character.mutations.length > 0) {
@@ -720,13 +723,14 @@ const get_splat_sheet_string = (characters) => {
         splat_sheet_contents += `Gold: ${character.gold}<br>`;
         splat_sheet_contents += `<br>`;
         splat_sheet_contents += `Saving Throws<br>`;
-        splat_sheet_contents += `--Energy Save: ${character.energy_save}<br>`;
-        splat_sheet_contents += `--Poison/Death Save: ${character.poison_death_save}<br>`;
-        splat_sheet_contents += `--Stun Save: ${character.stun_save}<br>`;
-        splat_sheet_contents += `--Radiation Save: ${character.radiation_save}<br>`;
+        splat_sheet_contents += `--Energy Save: ${character.energySave}<br>`;
+        splat_sheet_contents += `--Poison/Death Save: ${character.poisonDeathSave}<br>`;
+        splat_sheet_contents += `--Stun Save: ${character.stunSave}<br>`;
+        splat_sheet_contents += `--Radiation Save: ${character.radiationSave}<br>`;
         splat_sheet_contents += `<br>`;
-        splat_sheet_contents += `----------------end record ${chararacter_number} of ${characters.length}----------------<br>`;
-        splat_sheet_contents += `<br>`;
+        splat_sheet_contents += `<aside>${numPad(chararacter_number, 2)} of ${numPad(characters.length, 2)}</aside>`;
+        splat_sheet_contents += `  </article>`;
+        splat_sheet_contents += `</li>`;
         chararacter_number += 1
     }
 

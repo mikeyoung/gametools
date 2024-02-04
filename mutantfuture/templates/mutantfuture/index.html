@@ -7,10 +7,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Mutant Future Character Splat</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
+
+    <style>
+      body {
+          background-color: #b7f5e5;
+          color: #000 !important;
+          font-family: 'Special Elite', serif;
+          font-size: 18px;
+      }
+
+      #character-list {
+        width: 50%;
+        min-width: 300px;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        text-align: center;
+        filter: blur(0.5px);
+      }
+
+      ul {
+        padding: 0;
+        margin: 0;
+        list-style-type: none;
+      }
+
+      li {
+        display: block;
+        padding: 15px;
+        background-color: #F8F5E1;
+        background-image:url('/static/mutantfuture/images/paper_bg.jpg');
+        background-size: cover;
+        margin: 30px 0;
+      }
+
+      article {
+        filter: blur(0.5px);
+      }
+
+      aside {
+        display: block;
+        text-align: right;
+      }
+    </style>
   </head>
   <body>
     <h1>Mutant Future Character Splat</h1>
-    <div id="character-list"></div>
+    <ul id="character-list"></ul>
     <script src="/static/mutantfuture/script/main.js"></script>
   </body>
 </html>
