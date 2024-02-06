@@ -299,7 +299,6 @@ const main = async () => {
             document.querySelectorAll('.printarea').forEach( el => el.classList.remove('printarea'));
             document.querySelector(`li[data-char_id="${e.target.dataset.char_id}"]`).classList.add('printarea');
             print();
-            console.log('---------------------hello');
             document.querySelectorAll('.printarea').forEach( el => el.classList.remove('printarea'));
             document.querySelector(`ul`).classList.add('printarea');
         });
