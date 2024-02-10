@@ -1,4 +1,5 @@
 from django.db import models
+from tinymce.models import HTMLField
 
 class Race(models.Model):
     name = models.CharField(max_length=50)
@@ -29,6 +30,7 @@ class Race(models.Model):
 class Mutation(models.Model):
     name = models.CharField(max_length=100)
     page_number = models.CharField(max_length=10)
+    description = HTMLField(null = True)
 
     type = models.CharField(max_length=12, choices = [
         ('plant','Plant'),

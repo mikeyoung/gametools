@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ['mikeyoung.pythonanywhere.com', '127.0.0.1']
 
 INSTALLED_APPS = [
     'mutantfuture',
+    'tinymce',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -124,3 +125,11 @@ STATIC_ROOT = os.path.join(BASE_DIR, "/gametools/mutantfuture/static")
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+TINYMCE_DEFAULT_CONFIG = {
+    # Other configuration settings...
+    'plugins': 'code',
+    'toolbar': ['code undo redo styleselect bold italic alignleft aligncenter alignright alignjustify outdent indent'],
+    'height': 400,
+    'width': '100%',
+}
