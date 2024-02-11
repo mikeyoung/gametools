@@ -128,8 +128,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 TINYMCE_DEFAULT_CONFIG = {
     # Other configuration settings...
-    'plugins': 'code',
-    'toolbar': ['code undo redo styleselect bold italic alignleft aligncenter alignright alignjustify outdent indent'],
+    'plugins': 'code lists table',
+    'toolbar': ['code undo redo styleselect bold italic alignleft aligncenter alignright alignjustify outdent indent numlist bullist table tabledelete | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol'],
     'height': 400,
     'width': '100%',
 }

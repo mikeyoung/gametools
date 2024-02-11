@@ -101,6 +101,38 @@ def get_random_character():
     return character
 
 
+def apply_racial_modifiers(character):
+    #BASE RACES
+
+
+    # ADVANCED RACES
+    if character.race == 'Pure Human (Advanced)':
+        character.constitution += 3
+        character.constitution = character.constitution if character.constitution < 19 else 18
+
+        character.intelligence += 3
+        character.intelligence = character.intelligence if character.intelligence < 22 else 21
+
+        character.charisma += 3
+        character.charisma = character.charisma if character.charisma < 22 else 21
+
+    if character.race == 'Homo Erectus':
+        character.strength += 3
+        character.strength = character.strength if character.strength < 22 else 21
+
+        character.dexterity += 3
+        character.dexterity = character.dexterity if character.dexterity < 22 else 21
+
+        character.constitution += 3
+        character.constitution = character.constitution if character.constitution < 19 else 18
+
+        character.intelligence -= 3
+        if character.intelligence < 3:
+            character.intelligence = 3
+        elif character.intelligence > 12:
+            character.intelligence = 12
+
+
 def get_random_alignment():
     return random.choice(ALIGNMENTS)
 
@@ -311,12 +343,8 @@ def get_mod_by_attr_value(attribute_table, mod_name, value):
 
 
 def get_hit_points(race, constitution_value):
-    fixed_hp_races = ['synthetic android', 'basic android']
-    if race['name'].lower() in fixed_hp_races:
-        return 50
-    else:
-        sides = race['hit_dice_sides']
-        return roll_dice(f'{constitution_value}d{sides}')
+    sides = race['hit_dice_sides']
+    return roll_dice(f'{constitution_value}d{sides}')
     
 
 def get_splat_sheet_string(characters, player_name='', for_html=False):
