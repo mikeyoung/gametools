@@ -6,18 +6,24 @@ class Race(models.Model):
     hit_dice_sides = models.IntegerField()
     page_number = models.CharField(max_length=10)
     description = HTMLField(null = True)
+    str_mod = models.IntegerField(default = 0)
+    dex_mod = models.IntegerField(default = 0)
+    con_mod = models.IntegerField(default = 0)
+    int_mod = models.IntegerField(default = 0)
+    wil_mod = models.IntegerField(default = 0)
+    cha_mod = models.IntegerField(default = 0)
 
     #mutation rolls
-    mental_mutations_roll_str = models.CharField(max_length = 12, default = 0)
-    physical_mutations_roll_str = models.CharField(max_length = 12, default = 0)
-    plant_mutations_roll_str = models.CharField(max_length = 12, default = 0)
-    random_human_animal_roll_str = models.CharField(max_length = 12, default = 0)
-    random_beneficial_any_roll_str = models.CharField(max_length = 12, default = 0)
-    special_animal_roll_str = models.CharField(max_length = 12, default = 0)
-    special_insect_roll_str = models.CharField(max_length = 12, default = 0)
-    mental_drawback_roll_str = models.CharField(max_length = 12, default = 0)
-    physical_drawback_roll_str = models.CharField(max_length = 12, default = 0)
-    random_any_roll_str = models.CharField(max_length = 12, default = 0)
+    mental_mutations_roll_str = models.CharField(max_length = 12, default = '0')
+    physical_mutations_roll_str = models.CharField(max_length = 12, default = '0')
+    plant_mutations_roll_str = models.CharField(max_length = 12, default = '0')
+    random_human_animal_roll_str = models.CharField(max_length = 12, default = '0')
+    random_beneficial_any_roll_str = models.CharField(max_length = 12, default = '0')
+    special_animal_roll_str = models.CharField(max_length = 12, default = '0')
+    special_insect_roll_str = models.CharField(max_length = 12, default = '0')
+    mental_drawback_roll_str = models.CharField(max_length = 12, default = '0')
+    physical_drawback_roll_str = models.CharField(max_length = 12, default = '0')
+    random_any_roll_str = models.CharField(max_length = 12, default = '0')
 
     source = models.CharField(max_length=12, default = 'base', choices = [
         ('base', 'Base'),
@@ -32,6 +38,12 @@ class Mutation(models.Model):
     name = models.CharField(max_length=100)
     page_number = models.CharField(max_length=10)
     description = HTMLField(null = True)
+    str_mod = models.IntegerField(default = 0)
+    dex_mod = models.IntegerField(default = 0)
+    con_mod = models.IntegerField(default = 0)
+    int_mod = models.IntegerField(default = 0)
+    wil_mod = models.IntegerField(default = 0)
+    cha_mod = models.IntegerField(default = 0)
 
     type = models.CharField(max_length=12, choices = [
         ('plant','Plant'),
@@ -43,6 +55,18 @@ class Mutation(models.Model):
         ('base', 'Base'),
         ('advanced', 'Advanced'),
     ])
+
+    form_rolls = models.IntegerField(default = 0)
+    form1 = models.CharField(max_length=32, null = True)
+    form2 = models.CharField(max_length=32, null = True)
+    form3 = models.CharField(max_length=32, null = True)
+    form4 = models.CharField(max_length=32, null = True)
+    form5 = models.CharField(max_length=32, null = True)
+    form6 = models.CharField(max_length=32, null = True)
+    form7 = models.CharField(max_length=32, null = True)
+    form8 = models.CharField(max_length=32, null = True)
+    form9 = models.CharField(max_length=32, null = True)
+    form10 = models.CharField(max_length=32, null = True)
 
     effect_type = models.CharField(max_length=12, default = 'benefit', choices = [
         ('benefit', 'Benefit'),

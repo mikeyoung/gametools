@@ -102,35 +102,13 @@ def get_random_character():
 
 
 def apply_racial_modifiers(character):
-    #BASE RACES
+    pass
 
+def apply_mutant_modifiers(character):
+    pass
 
-    # ADVANCED RACES
-    if character.race == 'Pure Human (Advanced)':
-        character.constitution += 3
-        character.constitution = character.constitution if character.constitution < 19 else 18
-
-        character.intelligence += 3
-        character.intelligence = character.intelligence if character.intelligence < 22 else 21
-
-        character.charisma += 3
-        character.charisma = character.charisma if character.charisma < 22 else 21
-
-    if character.race == 'Homo Erectus':
-        character.strength += 3
-        character.strength = character.strength if character.strength < 22 else 21
-
-        character.dexterity += 3
-        character.dexterity = character.dexterity if character.dexterity < 22 else 21
-
-        character.constitution += 3
-        character.constitution = character.constitution if character.constitution < 19 else 18
-
-        character.intelligence -= 3
-        if character.intelligence < 3:
-            character.intelligence = 3
-        elif character.intelligence > 12:
-            character.intelligence = 12
+def apply_feat_modifiers(character):
+    pass
 
 
 def get_random_alignment():
