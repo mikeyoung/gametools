@@ -367,9 +367,23 @@ const get_random_character = async () => {
 
     // hit points
     character.hitPoints = get_hit_points(character.race, character.constitution);
+
+    character = applyRacialMods(character);
     
     return character;
 };
+
+const applyRacialMods = (character) => {
+    const character_race_lower = character.race.name.toLowerCase();
+    switch (character_race_lower) {
+        case 'brainiac':
+            if (character.constitution > 12) {
+                character.constitution = 12;
+            }
+            break;
+    }
+    return character;
+}
 
 const numPad = (num, size) => {
     num = num.toString();
