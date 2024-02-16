@@ -701,7 +701,7 @@ const get_splat_sheet_string = (characters) => {
         splat_sheet_contents += `Backgrounds:<br>`;
         for (let background of backgrounds_set) {
             const rank = character.backgrounds.reduce((acc, str) => str === background ? acc + 1 : acc, 0)
-            splat_sheet_contents += `--${background} (${rank})<br>`;
+            splat_sheet_contents += `--${background}: ${rank}<br>`;
         }
             
         splat_sheet_contents += `<br>`;
