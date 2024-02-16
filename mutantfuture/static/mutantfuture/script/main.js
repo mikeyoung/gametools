@@ -387,15 +387,10 @@ const get_random_alignment = () => {
 };
 
 const get_random_backgrounds = (rulebook, total_backgrounds) => {
-    background_name_set = new Set();
-    background_list = [];
+    const background_list = [];
     
     while (background_list.length < total_backgrounds) {
-        random_background = randomChoice(rulebook.backgrounds).fields;
-        if (!background_name_set.has(random_background.name)) {
-            background_name_set.add(random_background.name);
-            background_list.push(random_background);
-        }
+        background_list.push(randomChoice(rulebook.backgrounds).fields.name);
     }
 
     return background_list;
@@ -629,7 +624,7 @@ const get_mutation_form = (mutation) => {
 
 const get_full_mutation_name = (mutation) => {
     const mutation_form = get_mutation_form(mutation);
-    const formatted_form = mutation_form ? ` (${mutation_form})` : ''; 
+    const formatted_form = mutation_form ? ` > ${mutation_form}` : ''; 
     return `${mutation.fields.name}${formatted_form} [${mutation.fields.type}, ${mutation.fields.effect_type}, ${mutation.fields.page_number}]`;
 };
 
@@ -694,8 +689,9 @@ const get_splat_sheet_string = (characters) => {
         splat_sheet_contents += `<h3>`;
         splat_sheet_contents += `${character.alignment} ${character.race.name.replace(" (Advanced)","")}`;
 
-        for (let background of character.backgrounds) {
-            splat_sheet_contents += ` ${background.name}`;
+        backgrounds_set = new Set(character.backgrounds);
+        for (let background of backgrounds_set) {
+            splat_sheet_contents += ` ${background}`;
         }
 
         splat_sheet_contents += `</h3>`;
@@ -703,8 +699,9 @@ const get_splat_sheet_string = (characters) => {
         splat_sheet_contents += `Race: ${character.race["name"]} (${character.race["page_number"]})<br><br>`;
 
         splat_sheet_contents += `Backgrounds:<br>`;
-        for (let background of character.backgrounds) {
-            splat_sheet_contents += `--${background["name"]}: 1<br>`;
+        for (let background of backgrounds_set) {
+            const rank = character.backgrounds.reduce((acc, str) => str === background ? acc + 1 : acc, 0)
+            splat_sheet_contents += `--${background} (${rank})<br>`;
         }
             
         splat_sheet_contents += `<br>`;
