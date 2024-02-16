@@ -6,12 +6,6 @@ class Race(models.Model):
     hit_dice_sides = models.IntegerField()
     page_number = models.CharField(max_length=10)
     description = HTMLField(null = True)
-    str_mod = models.IntegerField(default = 0)
-    dex_mod = models.IntegerField(default = 0)
-    con_mod = models.IntegerField(default = 0)
-    int_mod = models.IntegerField(default = 0)
-    wil_mod = models.IntegerField(default = 0)
-    cha_mod = models.IntegerField(default = 0)
 
     #mutation rolls
     mental_mutations_roll_str = models.CharField(max_length = 12, default = '0')
@@ -38,12 +32,6 @@ class Mutation(models.Model):
     name = models.CharField(max_length=100)
     page_number = models.CharField(max_length=10)
     description = HTMLField(null = True)
-    str_mod = models.IntegerField(default = 0)
-    dex_mod = models.IntegerField(default = 0)
-    con_mod = models.IntegerField(default = 0)
-    int_mod = models.IntegerField(default = 0)
-    wil_mod = models.IntegerField(default = 0)
-    cha_mod = models.IntegerField(default = 0)
 
     type = models.CharField(max_length=12, choices = [
         ('plant','Plant'),
@@ -57,16 +45,16 @@ class Mutation(models.Model):
     ])
 
     form_rolls = models.IntegerField(default = 0)
-    form1 = models.CharField(max_length=32, null = True)
-    form2 = models.CharField(max_length=32, null = True)
-    form3 = models.CharField(max_length=32, null = True)
-    form4 = models.CharField(max_length=32, null = True)
-    form5 = models.CharField(max_length=32, null = True)
-    form6 = models.CharField(max_length=32, null = True)
-    form7 = models.CharField(max_length=32, null = True)
-    form8 = models.CharField(max_length=32, null = True)
-    form9 = models.CharField(max_length=32, null = True)
-    form10 = models.CharField(max_length=32, null = True)
+    form1 = models.CharField(max_length=32, null = True, blank = True)
+    form2 = models.CharField(max_length=32, null = True, blank = True)
+    form3 = models.CharField(max_length=32, null = True, blank = True)
+    form4 = models.CharField(max_length=32, null = True, blank = True)
+    form5 = models.CharField(max_length=32, null = True, blank = True)
+    form6 = models.CharField(max_length=32, null = True, blank = True)
+    form7 = models.CharField(max_length=32, null = True, blank = True)
+    form8 = models.CharField(max_length=32, null = True, blank = True)
+    form9 = models.CharField(max_length=32, null = True, blank = True)
+    form10 = models.CharField(max_length=32, null = True, blank = True)
 
     effect_type = models.CharField(max_length=12, default = 'benefit', choices = [
         ('benefit', 'Benefit'),
@@ -95,7 +83,8 @@ class Feat(models.Model):
     name = models.CharField(max_length = 50)
     page_number = models.CharField(max_length=10)
     description = HTMLField(null = True)
-
+    pc_eligible = models.BooleanField(default = True)
+    
     def __str__(self):
         return f'{self.name} ({self.page_number})'
 

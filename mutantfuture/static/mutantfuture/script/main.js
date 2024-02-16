@@ -354,7 +354,7 @@ const get_random_character = async () => {
     character.mutations = get_character_mutations(rulebook, character.race);
 
     // feats
-    character.feats = randomChoice(rulebook.feats).fields;
+    character.feats = randomChoice(rulebook.feats.filter(feat => feat.fields.pc_eligible)).fields;
 
     // backgrounds
     character.backgrounds = get_random_backgrounds(rulebook, 2);
