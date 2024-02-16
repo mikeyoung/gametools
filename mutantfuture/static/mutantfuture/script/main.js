@@ -608,8 +608,29 @@ const append_random_special_mutations = (character_mutations, total_new_mutation
     return character_mutations
 };
 
+const get_mutation_form = (mutation) => {
+    mutation.form = null;
+
+    let possibleForms = [];
+    for (i=1; i < 11; i++) {
+        if (mutation.fields[`form${i}`] === null) {
+            break;
+        } else {
+            possibleForms.push(mutation.fields[`form${i}`]);
+        }
+    }
+
+    if (possibleForms.length > 0) {
+        mutation.form = randomChoice(possibleForms);
+    }
+
+    return mutation.form;
+}
+
 const get_full_mutation_name = (mutation) => {
-    return `${mutation.fields.name} (${mutation.fields.type}, ${mutation.fields.effect_type}, ${mutation.fields.page_number})`
+    const mutation_form = get_mutation_form(mutation);
+    const formatted_form = mutation_form ? ` (${mutation_form})` : ''; 
+    return `${mutation.fields.name}${formatted_form} [${mutation.fields.type}, ${mutation.fields.effect_type}, ${mutation.fields.page_number}]`;
 };
 
 const roll_dice = (roll_str) => {
