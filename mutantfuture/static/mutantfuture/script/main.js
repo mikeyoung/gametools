@@ -450,6 +450,11 @@ const applyMutationMods = (character) => {
             character.reactionMod -= 2;
             break;
         }
+
+        if (mutation.toLowerCase().startsWith('eye-catching appearance')) {
+            character.reactionMod += 2;
+            break;
+        }
     }
 
     return character;
