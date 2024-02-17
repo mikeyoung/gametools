@@ -339,32 +339,21 @@ const get_random_character = async () => {
 
     // strength
     character.strength = roll_dice('3d6');
-    character.strengthMod = get_mod_by_attr_value(rulebook.strengthModSets, 'str_mod', character.strength);
-    character.damageMod = get_mod_by_attr_value(rulebook.strengthModSets, 'dmg_mod', character.strength);
 
     // dexterity
     character.dexterity = roll_dice('3d6');
-    character.acMod = get_mod_by_attr_value(rulebook.dexterityModSets, 'ac_mod', character.dexterity);
-    character.missileMod = get_mod_by_attr_value(rulebook.dexterityModSets, 'missile_mod', character.dexterity);
-    character.initMod = get_mod_by_attr_value(rulebook.dexterityModSets, 'init_mod', character.dexterity);
 
     // constitution
     character.constitution = roll_dice('3d6');
-    character.poisonDeathMod = get_mod_by_attr_value(rulebook.constitutionModSets, 'poison_death_mod', character.constitution);
-    character.radiationMod = get_mod_by_attr_value(rulebook.constitutionModSets, 'radiation_mod', character.constitution);
 
     // intelligence
     character.intelligence = roll_dice('3d6');
-    character.technologyMod = get_mod_by_attr_value(rulebook.intelligenceModSets, 'tech_mod', character.intelligence);
 
     // willpower
     character.willpower = roll_dice('3d6');
 
     // charisma
     character.charisma = roll_dice('3d6');
-    character.reactionMod = get_mod_by_attr_value(rulebook.charismaModSets, 'reaction_mod', character.charisma);
-    character.retainers = get_mod_by_attr_value(rulebook.charismaModSets, 'retainers', character.charisma);
-    character.retainerMorale = get_mod_by_attr_value(rulebook.charismaModSets, 'retainer_morale', character.charisma);
 
     // saves
     character.energySave = 15;
@@ -398,9 +387,36 @@ const get_random_character = async () => {
 
     character = applyRacialMods(character);
     character = applyMutationMods(character);
+
+    character = applyAbilityMods(character);
     
     return character;
 };
+
+const applyAbilityMods = (character) => {
+    // strength
+    character.strengthMod = get_mod_by_attr_value(rulebook.strengthModSets, 'str_mod', character.strength);
+    character.damageMod = get_mod_by_attr_value(rulebook.strengthModSets, 'dmg_mod', character.strength);
+
+    // dexterity
+    character.acMod = get_mod_by_attr_value(rulebook.dexterityModSets, 'ac_mod', character.dexterity);
+    character.missileMod = get_mod_by_attr_value(rulebook.dexterityModSets, 'missile_mod', character.dexterity);
+    character.initMod = get_mod_by_attr_value(rulebook.dexterityModSets, 'init_mod', character.dexterity);
+
+    // constitution
+    character.poisonDeathMod = get_mod_by_attr_value(rulebook.constitutionModSets, 'poison_death_mod', character.constitution);
+    character.radiationMod = get_mod_by_attr_value(rulebook.constitutionModSets, 'radiation_mod', character.constitution);
+
+    // intelligence
+    character.technologyMod = get_mod_by_attr_value(rulebook.intelligenceModSets, 'tech_mod', character.intelligence);
+
+    // charisma
+    character.reactionMod = get_mod_by_attr_value(rulebook.charismaModSets, 'reaction_mod', character.charisma);
+    character.retainers = get_mod_by_attr_value(rulebook.charismaModSets, 'retainers', character.charisma);
+    character.retainerMorale = get_mod_by_attr_value(rulebook.charismaModSets, 'retainer_morale', character.charisma);
+
+    return character;
+}
 
 const applyRacialMods = (character) => {
     const character_race_lower = character.race.name.toLowerCase();
@@ -470,6 +486,13 @@ const applyMutationMods = (character) => {
             } else {
                 character.mutations[i] = character.mutations[i].replace('Unreliable Mutation', `Unreliable Mutation > None`);
             }
+            continue;
+        }
+
+        if (character.mutations[i].toLowerCase().startsWith('degeneration')) {
+            let ability = character.mutations[i].slice(character.mutations[i].indexOf('> ') + 2, character.mutations[i].indexOf(' ['));
+            ability = ability.toLowerCase();
+            character[ability] -= 1;
             continue;
         }
 
