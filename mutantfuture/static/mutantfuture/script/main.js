@@ -475,17 +475,17 @@ const applyMutationMods = (character) => {
         if (character.mutations[i].toLowerCase().startsWith('unreliable mutation')) {
             let affected_mutation = select_beneficial_mutation(character.mutations);
             
-            if (affected_mutation.includes('>')) {
-                affected_mutation = affected_mutation.slice(0, affected_mutation.indexOf(' >'));
-            } else {
-                affected_mutation = affected_mutation.slice(0, affected_mutation.indexOf(' ['));
-            }
-
             if (affected_mutation) {
+                if (affected_mutation.includes('>')) {
+                    affected_mutation = affected_mutation.slice(0, affected_mutation.indexOf(' >'));
+                } else {
+                    affected_mutation = affected_mutation.slice(0, affected_mutation.indexOf(' ['));
+                }
                 character.mutations[i] = character.mutations[i].replace('Unreliable Mutation', `Unreliable Mutation > ${affected_mutation}`);
             } else {
                 character.mutations[i] = character.mutations[i].replace('Unreliable Mutation', `Unreliable Mutation > None`);
             }
+
             continue;
         }
 
@@ -508,7 +508,7 @@ const applyMutationMods = (character) => {
 
 const get_random_poison_class = (rulebook) => {
     table = rulebook.poisonClassRolls;
-    d100_roll = randInt(1, 100);
+    d100_roll = roll_dice('1d100');
     poison_class_row = table.filter(row => d100_roll === row.fields.roll);
     poison_class_row = poison_class_row[0];
     return poison_class_row.fields.poison_class
@@ -639,7 +639,7 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
             switch (mutation_table) {
                 case 'mental':
                     table = rulebook.mentalMutationRolls;
-                    d100_roll = randInt(1, 100);
+                    d100_roll = roll_dice('1d100');
                     mutation_row = table.filter(row => d100_roll === row.fields.roll);
                     mutation_row = mutation_row[0];
                     new_mutation_pk = mutation_row.fields.advanced_result;
@@ -648,7 +648,7 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
 
                 case 'physical':
                     table = rulebook.physicalMutationRolls;
-                    d100_roll = randInt(1, 100);
+                    d100_roll = roll_dice('1d100');
                     mutation_row = table.filter(row => d100_roll === row.fields.roll);
                     mutation_row = mutation_row[0];
                     new_mutation_pk = mutation_row.fields.advanced_result;
@@ -657,7 +657,7 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
 
                 case 'plant':
                     table = rulebook.plantMutationRolls;
-                    d100_roll = randInt(1, 100);
+                    d100_roll = roll_dice('1d100');
                     mutation_row = table.filter(row => d100_roll === row.fields.roll);
                     mutation_row = mutation_row[0];
                     new_mutation_pk = mutation_row.fields.advanced_result;
@@ -666,7 +666,7 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
 
                 case 'human_animal':
                     table = randomChoice([rulebook.mentalMutationRolls, rulebook.physicalMutationRolls]);
-                    d100_roll = randInt(1, 100);
+                    d100_roll = roll_dice('1d100');
                     mutation_row = table.filter(row => d100_roll === row.fields.roll);
                     mutation_row = mutation_row[0];
                     new_mutation_pk = mutation_row.fields.advanced_result;
@@ -676,7 +676,7 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
                 case 'any_beneficial':
                     while (true) {
                         table = randomChoice([rulebook.mentalMutationRolls, rulebook.physicalMutationRolls, rulebook.plantMutationRolls]);
-                        d100_roll = randInt(1, 100);
+                        d100_roll = roll_dice('1d100');
                         mutation_row = table.filter(row => d100_roll === row.fields.roll);
                         mutation_row = mutation_row[0];
                         new_mutation_pk = mutation_row.fields.advanced_result;
@@ -691,7 +691,7 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
                 case 'mental_drawback':
                     table = rulebook.mentalMutationRolls;
                     while (true) {
-                        d100_roll = randInt(1, 100);
+                        d100_roll = roll_dice('1d100');
                         mutation_row = table.filter(row => d100_roll === row.fields.roll);
                         mutation_row = mutation_row[0];
                         new_mutation_pk = mutation_row.fields.advanced_result;
@@ -706,7 +706,7 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
                 case 'physical_drawback':
                     table = rulebook.physicalMutationRolls;
                     while (true) {
-                        d100_roll = randInt(1, 100);
+                        d100_roll = roll_dice('1d100');
                         mutation_row = table.filter(row => d100_roll === row.fields.roll);
                         mutation_row = mutation_row[0];
                         new_mutation_pk = mutation_row.fields.advanced_result;
@@ -746,7 +746,7 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
 
 const get_any_random_mutation = (rulebook) => {
     table = randomChoice([rulebook.mentalMutationRolls, rulebook.physicalMutationRolls, rulebook.plantMutationRolls]);
-    d100_roll = randInt(1, 100);
+    d100_roll = roll_dice('1d100');
     mutation_row = table.filter(row => d100_roll === row.fields.roll);
     mutation_row = mutation_row[0];
     new_mutation_pk = mutation_row.fields.advanced_result;
@@ -817,6 +817,14 @@ const get_full_mutation_name = (mutation, rulebook) => {
     } else if (mutation.fields.name.toLowerCase() === 'carnivore') {
         const mouth_count = roll_dice('1d12');
         formatted_form = ` > ${mouth_count} Mouths`;
+    } else if (mutation.fields.name.toLowerCase() === 'abnormal size') {
+        const size_type = roll_dice('1d2');
+        const size_roll = roll_dice('1d20');
+        if (size_type === 1) {
+            formatted_form = ` > 1/${size_roll} Normal Size`;
+        } else {
+            formatted_form = ` > ${size_roll} Times Normal Size`;
+        }
     } else {
         formatted_form = mutation_form ? ` > ${mutation_form}` : '';
     }
