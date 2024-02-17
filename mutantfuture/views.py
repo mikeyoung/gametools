@@ -31,6 +31,7 @@ def create_json(request):
                 'charismaModSets': json.loads(serializers.serialize('json', models.CharismaModSet.objects.all())),
                 'specialInsectMutationRolls': json.loads(serializers.serialize('json', models.SpecialInsectMutationRoll.objects.all())),
                 'specialAnimalMutationRolls': json.loads(serializers.serialize('json', models.SpecialAnimalMutationRoll.objects.all())),
+                'poisonClassRolls': json.loads(serializers.serialize('json', models.PoisonClassRoll.objects.all())),
             },
         }
         

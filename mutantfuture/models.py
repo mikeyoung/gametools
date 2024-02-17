@@ -66,10 +66,6 @@ class Mutation(models.Model):
     def __str__(self):
         return f'{self.name} [{self.type}, {self.source}, {self.effect_type}] ({self.page_number})'
 
-    # @property
-    # def likes(self):
-    #     return Like.objects.filter(post = self)
-
 
 class Background(models.Model):
     name = models.CharField(max_length = 50)
@@ -77,6 +73,13 @@ class Background(models.Model):
 
     def __str__(self):
         return self.name
+
+class PoisonClassRoll(models.Model):
+    roll = models.IntegerField()
+    poison_class = models.IntegerField()
+
+    def __str__(self):
+        return  f'{self.roll}: {self.poison_class}' 
 
 
 class Feat(models.Model):

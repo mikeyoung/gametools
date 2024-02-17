@@ -506,6 +506,14 @@ const applyMutationMods = (character) => {
     return character;
 }
 
+const get_random_poison_class = (rulebook) => {
+    table = rulebook.poisonClassRolls;
+    d100_roll = randInt(1, 100);
+    poison_class_row = table.filter(row => d100_roll === row.fields.roll);
+    poison_class_row = poison_class_row[0];
+    return poison_class_row.fields.poison_class
+}
+
 const numPad = (num, size) => {
     num = num.toString();
     while (num.length < size) num = "0" + num;
@@ -798,12 +806,22 @@ const get_mutation_form = (mutation) => {
 
 const get_full_mutation_name = (mutation, rulebook) => {
     const mutation_form = get_mutation_form(mutation);
-    let formatted_form = mutation_form ? ` > ${mutation_form}` : '';
+    let formatted_form = null;
 
     if (mutation.fields.name.toLowerCase() === 'mutagenic touch') {
         const inflicted_mutation = get_any_random_mutation(rulebook).fields.name;
         formatted_form = ` > ${inflicted_mutation}`;
+    } else if (['projectile thorns', 'injected poison sap', 'dermal poison slime'].includes(mutation.fields.name.toLowerCase())) {
+        const random_poison_class = get_random_poison_class(rulebook);
+        formatted_form = ` > Poison Class ${random_poison_class}`;
+    } else if (mutation.fields.name.toLowerCase() === 'carnivore') {
+        const mouth_count = roll_dice('1d12');
+        formatted_form = ` > ${mouth_count} Mouths`;
+    } else {
+        formatted_form = mutation_form ? ` > ${mutation_form}` : '';
     }
+
+
 
     return `${mutation.fields.name}${formatted_form} [${mutation.fields.type}, ${mutation.fields.effect_type}, ${mutation.fields.page_number}]`;
 };
