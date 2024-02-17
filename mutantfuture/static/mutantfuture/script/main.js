@@ -1,6 +1,7 @@
 const RULEBOOK_PATH = '/static/mutantfuture/json/rulebook.json'
 const ALIGNMENTS = ['Lawful', 'Neutral', 'Chaotic']
 const SPLAT_COUNT = 20
+const IRRADIATED_DISALLOWED_MUTATIONS = ['regenerative capability', 'natural vampiric weapon', 'acute hyper healing'];
 
 
 class CharacterBase {
@@ -11,6 +12,18 @@ class CharacterBase {
         } else {
             return `${modValue}`;
         }
+    }
+
+    static getBoundValue(abilityScore) {
+        if (abilityScore < 3) {
+            return 3;
+        }
+
+        if (abilityScore > 21) {
+            return 21;
+        }
+
+        return abilityScore;
     }
 
     // Race   
@@ -55,7 +68,7 @@ class CharacterBase {
         return this.#strength;
     }
     set strength(value) {
-        this.#strength = value;
+        this.#strength = CharacterBase.getBoundValue(value);
     }
 
     // Strength Modifier
@@ -82,7 +95,7 @@ class CharacterBase {
         return this.#dexterity;
     }
     set dexterity(value) {
-        this.#dexterity = value;
+        this.#dexterity = CharacterBase.getBoundValue(value);
     }
 
     // Armor Class Modifier
@@ -118,7 +131,13 @@ class CharacterBase {
         return this.#constitution;
     }
     set constitution(value) {
-        this.#constitution = value;
+        if (value < 3) {
+            this.#constitution = 3;
+        } else if (value > 18) {
+            this.#constitution = 18;
+        } else {
+            this.#constitution = value;
+        }
     }
 
     // Poison/Death Save Modifier
@@ -145,7 +164,7 @@ class CharacterBase {
         return this.#intelligence;
     }
     set intelligence(value) {
-        this.#intelligence = value;
+        this.#intelligence = CharacterBase.getBoundValue(value);
     }
 
     // Technology Modifier
@@ -163,7 +182,7 @@ class CharacterBase {
         return this.#willpower;
     }
     set willpower(value) {
-        this.#willpower = value;
+        this.#willpower = CharacterBase.getBoundValue(value);
     }
 
     // Charisma   
@@ -172,7 +191,7 @@ class CharacterBase {
         return this.#charisma;
     }
     set charisma(value) {
-        this.#charisma = value;
+        this.#charisma = CharacterBase.getBoundValue(value);
     }
 
     // Reaction Modifier
@@ -382,6 +401,7 @@ const applyRacialMods = (character) => {
             }
             break;
     }
+
     return character;
 }
 
@@ -425,70 +445,74 @@ const get_mutation_by_pk = (rulebook, mutation_id) => {
 const get_character_mutations = (rulebook, character_race) => {
     let character_mutations = [];
 
+    if (character_race.name.toLowerCase() === 'irradiated') {
+        character_mutations.push('Unique Sense > Radiation [race mutation, A4]');
+    }
+
     // mental mutations
     total_new_mutations = roll_dice(character_race.mental_mutations_roll_str);
     if (total_new_mutations > 0) {
-        character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'mental');
+        character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'mental', character_race);
     }
 
     // physical mutations
     total_new_mutations = roll_dice(character_race.physical_mutations_roll_str);
     if (total_new_mutations > 0) {
-        character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'physical');
+        character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'physical', character_race);
     }
 
     // plant_mutations
     total_new_mutations = roll_dice(character_race.plant_mutations_roll_str);
     if (total_new_mutations > 0) {
-        character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'plant');
+        character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'plant', character_race);
     }
 
     // human_animal_mutations
     total_new_mutations = roll_dice(character_race.random_human_animal_roll_str);
     if (total_new_mutations > 0) {
-        character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'human_animal');
+        character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'human_animal', character_race);
     }
 
     // beneficial_any_mutations
     total_new_mutations = roll_dice(character_race.random_beneficial_any_roll_str);
     if (total_new_mutations > 0) {
-        character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'any_beneficial');
+        character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'any_beneficial', character_race);
     }
 
     // mental_drawback_mutations
     total_new_mutations = roll_dice(character_race.mental_drawback_roll_str);
     if (total_new_mutations > 0) {
-        character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'mental_drawback');
+        character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'mental_drawback', character_race);
     }
 
     // physical_drawback_mutations
     total_new_mutations = roll_dice(character_race.physical_drawback_roll_str);
     if (total_new_mutations > 0) {
-        character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'physical_drawback');
+        character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'physical_drawback', character_race);
     }
 
     // any_mutations
     total_new_mutations = roll_dice(character_race.random_any_roll_str);
     if (total_new_mutations > 0) {
-        character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'any');
+        character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'any', character_race);
     }
 
     // special_animal_mutations
     total_new_mutations = roll_dice(character_race.special_animal_roll_str);
     if (total_new_mutations > 0) {
-        character_mutations = append_random_special_mutations(character_mutations, total_new_mutations, rulebook.specialAnimalMutationRolls, rulebook);
+        character_mutations = append_random_special_mutations(character_mutations, total_new_mutations, rulebook.specialAnimalMutationRolls, rulebook, character_race);
     }
 
     // special_insect_mutations
     total_new_mutations = roll_dice(character_race.special_insect_roll_str);
     if (total_new_mutations > 0) {
-        character_mutations = append_random_special_mutations(character_mutations, total_new_mutations, rulebook.specialInsectMutationRolls, rulebook)
+        character_mutations = append_random_special_mutations(character_mutations, total_new_mutations, rulebook.specialInsectMutationRolls, rulebook, character_race)
     }
 
     return character_mutations
 };
 
-const append_table_mutations = (rulebook, character_mutations, total_new_mutations, mutation_table) => {
+const append_table_mutations = (rulebook, character_mutations, total_new_mutations, mutation_table, character_race) => {
         let mutation_count = 0
 
         while (mutation_count < total_new_mutations) {
@@ -592,23 +616,45 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
 
             mutation_name = get_full_mutation_name(mutation);
 
-            if (!character_mutations.includes(mutation_name) && mutation.fields.pc_eligible == true) {
-                character_mutations.push(mutation_name);
-                mutation_count += 1;
+            if (character_mutations.includes(mutation_name)) {
+                continue;
             }
+
+            if (mutation.fields.pc_eligible === false) {
+                continue;
+            }
+
+            if (character_race.name.toLowerCase() == 'irradiated' && IRRADIATED_DISALLOWED_MUTATIONS.includes(mutation.fields.name)) {
+                continue;
+            }
+    
+            character_mutations.push(mutation_name);
+            mutation_count += 1;
         }
 
         return character_mutations
 };
 
-const append_random_special_mutations = (character_mutations, total_new_mutations, mutation_list, rulebook) => {
+const append_random_special_mutations = (character_mutations, total_new_mutations, mutation_list, rulebook, character_race) => {
     let mutation_count = 0;
     while (mutation_count < total_new_mutations) {
-        let random_mutation_pk = randomChoice(mutation_list).fields.mutation;
-        let random_mutation = get_mutation_by_pk(rulebook, random_mutation_pk);
-        let mutation_name = get_full_mutation_name(random_mutation);
+        let mutation_pk = randomChoice(mutation_list).fields.mutation;
+        let mutation = get_mutation_by_pk(rulebook, mutation_pk);
+        let mutation_name = get_full_mutation_name(mutation);
 
-        if (!character_mutations.includes(mutation_name) && random_mutation.fields.pc_eligible == true) {
+        if (character_race.name.toLowerCase() == 'irradiated' && IRRADIATED_DISALLOWED_MUTATIONS.includes(mutation.fields.name)) {
+            continue;
+        }
+
+        if (character_mutations.includes(mutation_name)) {
+            continue;
+        }
+
+        if (mutation.fields.pc_eligible === false) {
+            continue;
+        }
+
+        if (!character_mutations.includes(mutation_name) && mutation.fields.pc_eligible == true) {
             character_mutations.push(mutation_name)
             mutation_count += 1
         }
