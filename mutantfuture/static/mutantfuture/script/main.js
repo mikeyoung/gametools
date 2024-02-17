@@ -397,6 +397,8 @@ const get_random_character = async () => {
     character.hitPoints = roll_dice(`${character.constitution}d${character.race.hit_dice_sides}`);
 
     character = applyRacialMods(character);
+
+    character = applyMutationMods(character);
     
     return character;
 };
@@ -432,6 +434,16 @@ const applyRacialMods = (character) => {
             character.charisma += 3;
             character.intelligence += 3;
             character.constitution += 3;
+    }
+
+    return character;
+}
+
+const applyMutationMods = (character) => {
+    for (mutation of character.mutations) {
+        if (mutation.toLowerCase().startsWith('attractive')) {
+            character.reactionMod -= 2;
+        }
     }
 
     return character;
