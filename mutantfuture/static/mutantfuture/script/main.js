@@ -472,6 +472,12 @@ const applyMutationMods = (character) => {
             }
             continue;
         }
+
+        // put this at end after any mutations that could affect constitution score
+        if (character.mutations[i].toLowerCase().startsWith('petrified')) {
+            character.hitPoints = character.constiution * 10;
+            continue;
+        }
     }
 
     return character;
@@ -688,7 +694,7 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
 
             mutation_name = get_full_mutation_name(mutation, rulebook);
 
-            if (character_mutations.some(mutation => { mutation.startsWith(mutation.name) })) {
+            if (character_mutations.some(mutation => { mutation.startsWith(mutation_name) })) {
                 continue;
             }
 
@@ -729,7 +735,7 @@ const append_random_special_mutations = (character_mutations, total_new_mutation
         let mutation = get_mutation_by_pk(rulebook, mutation_pk);
         let mutation_name = get_full_mutation_name(mutation, rulebook);
 
-        if (character_mutations.some(mutation => { mutation.startsWith(mutation.name) })) {
+        if (character_mutations.some(mutation => { mutation.startsWith(mutation_name) })) {
             continue;
         }
 
