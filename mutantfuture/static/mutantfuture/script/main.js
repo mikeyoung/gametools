@@ -3,6 +3,15 @@ const ALIGNMENTS = ['Lawful', 'Neutral', 'Chaotic']
 const SPLAT_COUNT = 20
 const IRRADIATED_DISALLOWED_MUTATIONS = ['regenerative capability', 'natural vampiric weapon', 'acute hyper healing'];
 
+let ruleset = 'advanced';
+
+// TODO: set up base rules
+// * give mutant animals natural weapon
+// * filter races to base races
+// * remove feats
+// * remove backgrounds
+// * set calls to mutation tables to use the base column
+
 
 class CharacterBase {
 
@@ -385,7 +394,7 @@ const get_random_character = async () => {
     character.gold = 10 * roll_dice('3d8');
 
     // hit points
-    character.hitPoints = get_hit_points(character.race, character.constitution);
+    character.hitPoints = roll_dice(`${character.constitution}d${character.race.hit_dice_sides}`);
 
     character = applyRacialMods(character);
     
@@ -400,6 +409,29 @@ const applyRacialMods = (character) => {
                 character.constitution = 12;
             }
             break;
+        
+        case 'homo erectus':
+            character.strength += 3;
+            character.dexterity += 3;
+            character.constitution += 3;
+            character.intelligence -= 3;
+            if (character.intelligence > 12) {
+                character.intelligence = 12;
+            }
+            break;
+
+        case 'basic android':
+            character.hitPoints = 50;
+            break;
+
+        case 'synthetic android':
+            character.hitPoints = 50;
+            break;
+        
+        case 'pure human':
+            character.charisma += 3;
+            character.intelligence += 3;
+            character.constitution += 3;
     }
 
     return character;
@@ -725,16 +757,6 @@ const get_mod_by_attr_value = (attribute_table, mod_name, value) => {
     const value_rows = attribute_table.filter(row => row.fields.value == value);
     const value_row = value_rows[0];
     return value_row.fields[mod_name];
-};
-
-const get_hit_points = (race, constitution_value) => {
-    fixed_hp_races = ['synthetic android', 'basic android'];
-    if (fixed_hp_races.includes(race.name.toLowerCase())) {
-        return 50;
-    } else {
-        sides = race.hit_dice_sides;
-        return roll_dice(`${constitution_value}d${sides}`);
-    }
 };
 
 const get_splat_sheet_string = (characters) => {

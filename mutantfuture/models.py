@@ -3,7 +3,7 @@ from tinymce.models import HTMLField
 
 class Race(models.Model):
     name = models.CharField(max_length=50)
-    hit_dice_sides = models.IntegerField()
+    hit_dice_sides = models.IntegerField(default = 0)
     page_number = models.CharField(max_length=10)
     description = HTMLField(null = True)
 
