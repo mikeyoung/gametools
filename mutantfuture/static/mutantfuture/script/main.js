@@ -475,7 +475,7 @@ const applyMutationMods = (character) => {
 
         // put this at end after any mutations that could affect constitution score
         if (character.mutations[i].toLowerCase().startsWith('petrified')) {
-            character.hitPoints = character.constiution * 10;
+            character.hitPoints = character.constitution * 10;
             continue;
         }
     }
