@@ -817,19 +817,19 @@ const get_full_mutation_name = (mutation, rulebook) => {
     } else if (mutation.fields.name.toLowerCase() === 'carnivore') {
         const mouth_count = roll_dice('1d12');
         formatted_form = ` > ${mouth_count} Mouths`;
-    } else if (mutation.fields.name.toLowerCase() === 'abnormal size') {
-        const size_type = roll_dice('1d2');
-        const size_roll = roll_dice('1d20');
-        if (size_type === 1) {
-            formatted_form = ` > 1/${size_roll} Normal Size`;
+    } else if (mutation.fields.name.toLowerCase() === 'dwarfism') {
+        const height = 6 - (roll_dice('1d4') + 1);
+        if (height > 1) {
+            formatted_form = ` (${height} Feet Tall)`;
         } else {
-            formatted_form = ` > ${size_roll} Times Normal Size`;
+            formatted_form = ` (1 Foot Tall)`;
         }
+    } else if (mutation.fields.name.toLowerCase() === 'gigantism') {
+        const height = 6 + roll_dice('3d6');
+        formatted_form = ` (${height} Feet Tall)`;
     } else {
         formatted_form = mutation_form ? ` > ${mutation_form}` : '';
     }
-
-
 
     return `${mutation.fields.name}${formatted_form} [${mutation.fields.type}, ${mutation.fields.effect_type}, ${mutation.fields.page_number}]`;
 };
@@ -932,8 +932,20 @@ const get_splat_sheet_string = (characters) => {
 
         if (character.mutations.length > 0) {
             splat_sheet_contents += `Mutations:<br>`;
+            let hasDwarfism = false;
+            let hasGigantism = false;
             for (let mutation of character.mutations) {
+                if (mutation.toLowerCase().startsWith('dwarfism')) {
+                    hasDwarfism = true;
+                }
+                if (mutation.toLowerCase().startsWith('gigantism')) {
+                    hasGigantism = true;
+                }
                 splat_sheet_contents += `--${mutation}<br>`;
+            }
+
+            if (hasDwarfism && hasGigantism) {
+                splat_sheet_contents += 'NOTE: The combination of dwarfism and gigantism entirely negates the effects of both mutations.  Character is 6 feet tall.<br>';
             }
         } else {
             splat_sheet_contents += `Mutations: None<br>`;
