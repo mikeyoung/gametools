@@ -656,15 +656,11 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
                     break;
 
                 case 'any':
-                    table = randomChoice([rulebook.mentalMutationRolls, rulebook.physicalMutationRolls, rulebook.plantMutationRolls])
-                    d100_roll = randInt(1, 100);
-                    mutation_row = table.filter(row => d100_roll === row.fields.roll);
-                    mutation_row = mutation_row[0];
-                    new_mutation_pk = mutation_row.fields.advanced_result;
-                    mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
+                    mutation = get_any_random_mutation(rulebook);
+                    break;
             }
 
-            mutation_name = get_full_mutation_name(mutation);
+            mutation_name = get_full_mutation_name(mutation, rulebook);
 
             if (character_mutations.some(mutation => { mutation.startsWith(mutation.name) })) {
                 continue;
@@ -685,12 +681,22 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
         return character_mutations
 };
 
+const get_any_random_mutation = (rulebook) => {
+    table = randomChoice([rulebook.mentalMutationRolls, rulebook.physicalMutationRolls, rulebook.plantMutationRolls]);
+    d100_roll = randInt(1, 100);
+    mutation_row = table.filter(row => d100_roll === row.fields.roll);
+    mutation_row = mutation_row[0];
+    new_mutation_pk = mutation_row.fields.advanced_result;
+    mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
+    return mutation;
+}
+
 const append_random_special_mutations = (character_mutations, total_new_mutations, mutation_list, rulebook, character_race) => {
     let mutation_count = 0;
     while (mutation_count < total_new_mutations) {
         let mutation_pk = randomChoice(mutation_list).fields.mutation;
         let mutation = get_mutation_by_pk(rulebook, mutation_pk);
-        let mutation_name = get_full_mutation_name(mutation);
+        let mutation_name = get_full_mutation_name(mutation, rulebook);
 
         if (character_mutations.some(mutation => { mutation.startsWith(mutation.name) })) {
             continue;
@@ -730,9 +736,15 @@ const get_mutation_form = (mutation) => {
     return mutation.form;
 }
 
-const get_full_mutation_name = (mutation) => {
+const get_full_mutation_name = (mutation, rulebook) => {
     const mutation_form = get_mutation_form(mutation);
-    const formatted_form = mutation_form ? ` > ${mutation_form}` : ''; 
+    let formatted_form = mutation_form ? ` > ${mutation_form}` : '';
+
+    if (mutation.fields.name.toLowerCase() === 'mutagenic touch') {
+        const inflicted_mutation = get_any_random_mutation(rulebook).fields.name;
+        formatted_form = ` > ${inflicted_mutation}`;
+    }
+
     return `${mutation.fields.name}${formatted_form} [${mutation.fields.type}, ${mutation.fields.effect_type}, ${mutation.fields.page_number}]`;
 };
 
