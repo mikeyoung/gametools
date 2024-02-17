@@ -443,6 +443,12 @@ const applyMutationMods = (character) => {
     for (mutation of character.mutations) {
         if (mutation.toLowerCase().startsWith('attractive')) {
             character.reactionMod -= 2;
+            break;
+        }
+
+        if (mutation.toLowerCase().startsWith('attractive')) {
+            character.reactionMod -= 2;
+            break;
         }
     }
 
@@ -660,7 +666,7 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
 
             mutation_name = get_full_mutation_name(mutation);
 
-            if (character_mutations.includes(mutation_name)) {
+            if (character_mutations.some(mutation => { mutation.startsWith(mutation.name) })) {
                 continue;
             }
 
@@ -686,11 +692,7 @@ const append_random_special_mutations = (character_mutations, total_new_mutation
         let mutation = get_mutation_by_pk(rulebook, mutation_pk);
         let mutation_name = get_full_mutation_name(mutation);
 
-        if (character_race.name.toLowerCase() == 'irradiated' && IRRADIATED_DISALLOWED_MUTATIONS.includes(mutation.fields.name)) {
-            continue;
-        }
-
-        if (character_mutations.includes(mutation_name)) {
+        if (character_mutations.some(mutation => { mutation.startsWith(mutation.name) })) {
             continue;
         }
 
@@ -698,10 +700,12 @@ const append_random_special_mutations = (character_mutations, total_new_mutation
             continue;
         }
 
-        if (!character_mutations.includes(mutation_name) && mutation.fields.pc_eligible == true) {
-            character_mutations.push(mutation_name)
-            mutation_count += 1
+        if (character_race.name.toLowerCase() == 'irradiated' && IRRADIATED_DISALLOWED_MUTATIONS.includes(mutation.fields.name)) {
+            continue;
         }
+
+        character_mutations.push(mutation_name)
+        mutation_count += 1
     }
 
     return character_mutations
