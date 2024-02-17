@@ -397,7 +397,6 @@ const get_random_character = async () => {
     character.hitPoints = roll_dice(`${character.constitution}d${character.race.hit_dice_sides}`);
 
     character = applyRacialMods(character);
-
     character = applyMutationMods(character);
     
     return character;
@@ -440,20 +439,35 @@ const applyRacialMods = (character) => {
 }
 
 const applyMutationMods = (character) => {
-    for (mutation of character.mutations) {
-        if (mutation.toLowerCase().startsWith('attractive')) {
+    for (let i = 0; i < character.mutations.length; i++) {
+        if (character.mutations[i].toLowerCase().startsWith('attractive')) {
             character.reactionMod -= 2;
-            break;
+            continue;
         }
 
-        if (mutation.toLowerCase().startsWith('attractive')) {
-            character.reactionMod -= 2;
-            break;
-        }
-
-        if (mutation.toLowerCase().startsWith('eye-catching appearance')) {
+        if (character.mutations[i].toLowerCase().startsWith('eye-catching appearance')) {
             character.reactionMod += 2;
-            break;
+            continue;
+        }
+
+        if (character.mutations[i].toLowerCase().startsWith('physical immaturity')) {
+            character.strength -= 2;
+            character.constitution -= 2;
+            continue;
+        }
+
+        if (character.mutations[i].toLowerCase().startsWith('unreliable mutation')) {
+            let affected_mutation = select_beneficial_mutation(character.mutations);
+            affected_mutation = affected_mutation.slice(0, affected_mutation.indexOf(' ['));
+            if (affected_mutation.includes('>')) {
+                affected_mutation = affected_mutation.slice(0, affected_mutation.indexOf(' >'));
+            }
+            if (affected_mutation) {
+                character.mutations[i] = character.mutations[i].replace('Unreliable Mutation', `Unreliable Mutation > ${affected_mutation}`);
+            } else {
+                character.mutations[i] = character.mutations[i].replace('Unreliable Mutation', `Unreliable Mutation > None`);
+            }
+            continue;
         }
     }
 
@@ -467,8 +481,12 @@ const numPad = (num, size) => {
 }
 
 const randomChoice = (arr) => {
-    let index = Math.floor(Math.random() * arr.length);
-    return arr[index];
+    if (arr.length > 0) {
+        let index = Math.floor(Math.random() * arr.length);
+        return arr[index];
+    } else {
+        return null;
+    }
 };
 
 const get_random_alignment = () => {
@@ -694,6 +712,11 @@ const get_any_random_mutation = (rulebook) => {
     new_mutation_pk = mutation_row.fields.advanced_result;
     mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
     return mutation;
+}
+
+const select_beneficial_mutation = (mutationList) => {
+    const beneficialMutations = mutationList.filter(mutation => mutation.toLowerCase().includes('benefit'));
+    return randomChoice(beneficialMutations);
 }
 
 const append_random_special_mutations = (character_mutations, total_new_mutations, mutation_list, rulebook, character_race) => {
