@@ -496,6 +496,11 @@ const applyMutationMods = (character) => {
             continue;
         }
 
+        if (character.mutations[i].toLowerCase().startsWith('weak will')) {
+            character.willpower = 3;
+            continue;
+        }
+
         // put this at end after any mutations that could affect constitution score
         if (character.mutations[i].toLowerCase().startsWith('petrified')) {
             character.hitPoints = character.constitution * 10;
