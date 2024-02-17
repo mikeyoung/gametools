@@ -458,10 +458,13 @@ const applyMutationMods = (character) => {
 
         if (character.mutations[i].toLowerCase().startsWith('unreliable mutation')) {
             let affected_mutation = select_beneficial_mutation(character.mutations);
-            affected_mutation = affected_mutation.slice(0, affected_mutation.indexOf(' ['));
+            
             if (affected_mutation.includes('>')) {
                 affected_mutation = affected_mutation.slice(0, affected_mutation.indexOf(' >'));
+            } else {
+                affected_mutation = affected_mutation.slice(0, affected_mutation.indexOf(' ['));
             }
+
             if (affected_mutation) {
                 character.mutations[i] = character.mutations[i].replace('Unreliable Mutation', `Unreliable Mutation > ${affected_mutation}`);
             } else {
