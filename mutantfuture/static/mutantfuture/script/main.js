@@ -1,6 +1,5 @@
 const RULEBOOK_PATH = '/static/mutantfuture/json/rulebook.json'
 const ALIGNMENTS = ['Lawful', 'Neutral', 'Chaotic']
-const SPLAT_COUNT = 20
 const IRRADIATED_DISALLOWED_MUTATIONS = ['regenerative capability', 'natural vampiric weapon', 'acute hyper healing'];
 const ANIMALS = ["Dog", "Cat", "Cow", "Horse", "Sheep", "Pig", "Chicken", "Duck", "Rabbit", "Deer", "Mouse", "Rat", "Squirrel", "Fox", "Bear", "Lion", "Tiger", "Elephant", "Giraffe", "Zebra", "Monkey", "Gorilla", "Kangaroo", "Koala", "Penguin", "Ostrich", "Eagle", "Hawk", "Parrot", "Pigeon", "Sparrow", "Owl", "Crow", "Peacock", "Swan", "Dolphin", "Whale", "Shark", "Octopus", "Jellyfish", "Crab", "Lobster", "Starfish", "Stingray", "Trout", "Salmon", "Tuna", "Goldfish", "Carp", "Clam", "Snail", "Frog", "Toad", "Turtle", "Snake", "Lizard", "Alligator", "Crocodile", "Dinosaur", "Bat", "Hyena", "Cheetah", "Leopard", "Hippopotamus", "Rhinoceros", "Buffalo", "Antelope", "Gazelle", "Moose", "Beaver", "Otter", "Skunk", "Raccoon", "Badger", "Hedgehog", "Porcupine", "Platypus", "Wombat", "Opossum", "Armadillo", "Sloth", "Ant", "Bee", "Butterfly", "Ladybug", "Spider", "Mosquito", "Fly", "Grasshopper", "Cockroach", "Dragonfly", "Hummingbird", "Woodpecker", "Flamingo", "Pelican", "Albatross", "Seagull", "Finch", "Canary", "Toucan", "Puma", "Lynx"];
 const PLANTS = [
@@ -119,12 +118,9 @@ const PLANTS = [
     "Pumpkin Plant"
 ];
 
-
-
-
-
-
-
+const urlParams = new URLSearchParams(window.location.search);
+let splat_count = urlParams.get('count');
+splat_count = splat_count ? splat_count : 20;
 
 let ruleset = 'advanced';
 
@@ -439,7 +435,7 @@ class CharacterBase {
 const main = async () => {
     const characters = [];
 
-    for (let i=0; i < SPLAT_COUNT; i++) {
+    for (let i=0; i < splat_count; i++) {
         let new_character = await get_random_character();
         characters.push(new_character);
     }
