@@ -1241,7 +1241,7 @@ const get_splat_sheet_string = (characters) => {
         splat_sheet_contents += `<br>`;
         splat_sheet_contents += `Gold: ${character.gold}<br>`;
         splat_sheet_contents += `<br>`;
-        splat_sheet_contents += `Feat: Chosen by player after choosing character.<br>`;
+        splat_sheet_contents += `Feat: Chosen by player after selecting character.<br>`;
         splat_sheet_contents += `<br>`;
         splat_sheet_contents += `<aside><a href='javascript:void(0)' data-char_id='${chararacter_number}' class='print-button'>[PRINT]</a></aside>`;
         splat_sheet_contents += `  </article>`;
