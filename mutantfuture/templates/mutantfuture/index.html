@@ -1,117 +1,18 @@
+{% extends "./base.html" %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Mutant Future Character Splat</title>
+{% block title %}Mutant Future Tools{% endblock %}
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
+{% block head_content %}
+  <link rel="stylesheet" href="{% static 'mutantfuture/style/home.css' %}">
+{% endblock %}
 
-    <style>
-      body {
-          background-color: #b7f5e5;
-          color: #000 !important;
-          font-family: 'Special Elite', serif;
-          font-size: 18px;
-          padding: 0;
-          margin: 0;
-      }
-
-      #character-list {
-        width: 100%;
-        min-width: 300px;
-        max-width: 768px;
-        margin: 0 auto;
-      }
-
-      h1 {
-        text-align: center;
-      }
-
-      ul {
-        padding: 0;
-        margin: 0;
-        list-style-type: none;
-      }
-
-      li {
-        display: block;
-        padding: 15px;
-        background-color: #F8F5E1;
-        background-image:url('/static/mutantfuture/images/paper_bg.jpg');
-        background-size: cover;
-        margin: 30px 0;
-        box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
-      }
-
-      article,
-      .print-button:active,
-      .print-button:hover,
-      .print-button:visited,
-      .print-button:link {
-        filter: blur(0.5px);
-        color: rgba(0,0,0,.75);
-        text-decoration: none;
-      }
-
-      aside {
-        display: block;
-        text-align: right;
-      }
-
-      @media print {
-        .print-button,
-        h1 {
-          display: none;
-        }
-
-        #character-list {
-          width: 100%;
-          min-width: 100%;
-          max-width: 100%;
-          margin: 0;
-          font-size: 14px;
-        }
-
-        li {
-          page-break-after: always;
-          box-shadow: none;
-          padding: 0;
-          margin: 0;
-          background: none;
-          display: none;
-        }
-
-        li:last-child {
-          page-break-after:avoid;          
-        }
-
-        article,
-        .print-button:active,
-        .print-button:hover,
-        .print-button:visited,
-        .print-button:link {
-          filter: none;
-          color: #000;
-          text-decoration: none;
-        }
-
-        li.printarea,
-        ul.printarea li {
-          display: block;
-        }
-      }
-
-    </style>
-  </head>
-  <body>
-    <h1>Mutant Future Character Splat</h1>
-    <ul class="printarea" id="character-list"></ul>
-    <script src="/static/mutantfuture/script/main.js"></script>
-  </body>
-</html>
+{% block body_content %}
+  <h1>Mutant Future Tools</h1>
+  <nav>
+    <ul class="tools-list">
+      <li><a href="{% url 'mutations' %}">Mutations Reference</a></li>
+      <li><a href="{% url 'splat' %}">Character Splat Generator</a></li>
+    </ul>
+  </nav>
+{% endblock %}

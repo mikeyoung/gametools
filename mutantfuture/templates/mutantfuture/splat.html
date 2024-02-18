@@ -1,0 +1,18 @@
+{% extends "./base.html" %}
+{% load static %}
+
+{% block title %}Mutant Future Character Splat{% endblock %}
+
+{% block head_content %}
+  <link rel="stylesheet" href="{% static 'mutantfuture/style/splat.css' %}">
+{% endblock %}
+
+
+{% block body_content %}
+  <h1>Mutant Future Character Splat</h1>
+  <ul class="printarea" id="character-list"></ul>
+{% endblock %}
+   
+{% block bottom_scripts %}
+  <script src="{% static 'mutantfuture/script/splat.js' %}"></script>
+{% endblock %}

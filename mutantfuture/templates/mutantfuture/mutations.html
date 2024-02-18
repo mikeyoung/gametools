@@ -1,0 +1,17 @@
+{% extends "./base.html" %}
+{% load static %}
+
+{% block title %}Mutant Future Mutations Reference{% endblock %}
+
+{% block head_content %}
+  <link rel="stylesheet" href="{% static 'mutantfuture/style/tingle.min.css"' %}">
+{% endblock %}
+
+{% block body_content %}
+  <h1>Mutations Reference</h1>
+{% endblock %}
+   
+{% block bottom_scripts %}
+  <script src="{% static 'mutantfuture/script/tingle.min.js' %}"></script>
+  <script src="{% static 'mutantfuture/script/mutations.js' %}"></script>
+{% endblock %}

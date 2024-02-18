@@ -12,6 +12,15 @@ from django.forms.models import model_to_dict
 def index(request):
     return render(request, 'mutantfuture/index.html')
 
+
+def splat(request):
+    return render(request, 'mutantfuture/splat.html')
+
+
+def mutations(request):
+    return render(request, 'mutantfuture/mutations.html')
+
+
 @login_required
 def create_json(request):
     try: 
