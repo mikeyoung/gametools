@@ -2,6 +2,129 @@ const RULEBOOK_PATH = '/static/mutantfuture/json/rulebook.json'
 const ALIGNMENTS = ['Lawful', 'Neutral', 'Chaotic']
 const SPLAT_COUNT = 20
 const IRRADIATED_DISALLOWED_MUTATIONS = ['regenerative capability', 'natural vampiric weapon', 'acute hyper healing'];
+const ANIMALS = ["Dog", "Cat", "Cow", "Horse", "Sheep", "Pig", "Chicken", "Duck", "Rabbit", "Deer", "Mouse", "Rat", "Squirrel", "Fox", "Bear", "Lion", "Tiger", "Elephant", "Giraffe", "Zebra", "Monkey", "Gorilla", "Kangaroo", "Koala", "Penguin", "Ostrich", "Eagle", "Hawk", "Parrot", "Pigeon", "Sparrow", "Owl", "Crow", "Peacock", "Swan", "Dolphin", "Whale", "Shark", "Octopus", "Jellyfish", "Crab", "Lobster", "Starfish", "Stingray", "Trout", "Salmon", "Tuna", "Goldfish", "Carp", "Clam", "Snail", "Frog", "Toad", "Turtle", "Snake", "Lizard", "Alligator", "Crocodile", "Dinosaur", "Bat", "Hyena", "Cheetah", "Leopard", "Hippopotamus", "Rhinoceros", "Buffalo", "Antelope", "Gazelle", "Moose", "Beaver", "Otter", "Skunk", "Raccoon", "Badger", "Hedgehog", "Porcupine", "Platypus", "Wombat", "Opossum", "Armadillo", "Sloth", "Ant", "Bee", "Butterfly", "Ladybug", "Spider", "Mosquito", "Fly", "Grasshopper", "Cockroach", "Dragonfly", "Hummingbird", "Woodpecker", "Flamingo", "Pelican", "Albatross", "Seagull", "Finch", "Canary", "Toucan", "Puma", "Lynx"];
+const PLANTS = [
+    // Non-edible garden plants
+    "Rose Plant",
+    "Lily Plant",
+    "Tulip Plant",
+    "Daffodil Plant",
+    "Marigold Plant",
+    "Petunia Plant",
+    "Begonia Plant",
+    "Iris Plant",
+    "Dahlia Plant",
+    "Hydrangea Plant",
+
+    // Edible garden plants
+    "Tomato Plant",
+    "Cucumber Plant",
+    "Carrot Plant",
+    "Lettuce Plant",
+    "Spinach Plant",
+    "Pepper Plant",
+    "Radish Plant",
+    "Pea Plant",
+    "Bean Plant",
+    "Zucchini Plant",
+
+    // Common houseplants
+    "Spider Plant",
+    "Snake Plant",
+    "Pothos Plant",
+    "Aloe Vera Plant",
+    "Jade Plant",
+    "Peace Lily Plant",
+    "Rubber Plant",
+    "Fiddle Leaf Fig Plant",
+    "Boston Fern Plant",
+    "Philodendron Plant",
+    "Dieffenbachia Plant",
+    "ZZ Plant",
+    "Schefflera Plant",
+    "Parlor Palm Plant",
+    "Yucca Plant",
+    "Dracaena Plant",
+    "Croton Plant",
+    "Aglaonema Plant",
+    "Kentia Palm Plant",
+    "Bird of Paradise Plant",
+    "Monstera Deliciosa Plant",
+    "Chinese Money Plant",
+    "Calathea Plant",
+    "Anthurium Plant",
+    "Begonia Maculata Plant",
+    "Hoya Plant",
+    "String of Pearls Plant",
+    "Prayer Plant",
+    "English Ivy Plant",
+    "Pilea Peperomioides Plant",
+
+    // Types of trees
+    "Oak Tree",
+    "Maple Tree",
+    "Pine Tree",
+    "Willow Tree",
+    "Birch Tree",
+    "Cherry Tree",
+    "Apple Tree",
+    "Magnolia Tree",
+    "Elm Tree",
+    "Cedar Tree",
+    "Spruce Tree",
+    "Redwood Tree",
+    "Palm Tree",
+    "Beech Tree",
+    "Bonsai Tree",
+    "Cypress Tree",
+    "Fir Tree",
+    "Walnut Tree",
+    "Ash Tree",
+    "Poplar Tree",
+
+    // Types of mushrooms
+    "Button Mushroom",
+    "Portobello Mushroom",
+    "Shiitake Mushroom",
+    "Oyster Mushroom",
+    "Cremini Mushroom",
+    "Porcini Mushroom",
+    "Chanterelle Mushroom",
+    "Morel Mushroom",
+    "Enoki Mushroom",
+    "Maitake Mushroom",
+
+    // Oceanic plants
+    "Kelp Plant",
+    "Seagrass Plant",
+    "Coral Plant",
+    "Algae Plant",
+    "Seaweed Plant",
+    "Dulse Plant",
+    "Eelgrass Plant",
+    "Sea Lettuce Plant",
+    "Sea Palm Plant",
+    "Rockweed Plant",
+
+    // Commonly farmed plants
+    "Wheat Plant",
+    "Corn Plant",
+    "Rice Plant",
+    "Barley Plant",
+    "Soybean Plant",
+    "Potato Plant",
+    "Cabbage Plant",
+    "Onion Plant",
+    "Garlic Plant",
+    "Pumpkin Plant"
+];
+
+
+
+
+
+
+
 
 let ruleset = 'advanced';
 
@@ -551,8 +674,11 @@ const get_random_backgrounds = (rulebook, total_backgrounds) => {
 const get_random_race = (rulebook) => {
     // filter out base versions for now
     const filtered_races = rulebook.races.filter(race => !race.fields.name.toLowerCase().includes('(base)'));
-    const randomRace = randomChoice(filtered_races);
-    return randomRace.fields;
+    let randomRace = randomChoice(filtered_races);
+    randomRace = randomRace.fields;
+    randomRace.name = randomRace.name.replace('Animal', `Animal (${randomChoice(ANIMALS)})`);
+    randomRace.name = randomRace.name.replace('Plant', `Plant (${randomChoice(PLANTS)})`);
+    return randomRace;
 };
 
 const get_mutation_by_pk = (rulebook, mutation_id) => {
@@ -832,6 +958,45 @@ const get_full_mutation_name = (mutation, rulebook) => {
     } else if (mutation.fields.name.toLowerCase() === 'gigantism') {
         const height = 6 + roll_dice('3d6');
         formatted_form = ` (${height} Feet Tall)`;
+    } else if (mutation.fields.name.toLowerCase() === 'aberrant form') {
+        const lower_mutation_form = mutation_form.toLowerCase();
+        switch (lower_mutation_form) {
+            case 'enlarged parts':
+                formatted_form = ` > ${mutation_form} > Consult ML`;
+                break;
+
+            case 'xenomorphism':
+                const natural_weapon = roll_dice('1d2') === 1 ? 'w/ Natural Weapon' : 'w/o Natural Weapon';
+                formatted_form = ` > ${mutation_form} ${natural_weapon}: ${randomChoice(ANIMALS)} > Consult ML`;
+                break;
+
+            case 'extra parts':
+                formatted_form = ` > ${mutation_form} > Consult ML`;
+                break;
+
+            case 'natural weapon':
+                const damage_die_roll = roll_dice('1d4');
+                let damage_die = null;
+                switch (damage_die_roll) {
+                    case 1:
+                        damage_die = '1d4';
+                        break;
+                    case 2:
+                        damage_die = '1d6';
+                        break;
+                    case 3:
+                        damage_die = '1d8';
+                        break;
+                    case 4:
+                        damage_die = '1d10';
+                        break;
+                }
+
+                const toxicity = roll_dice('1d4') === 1 ? `Toxic: Poison Class ${get_random_poison_class(rulebook)}` : 'Non-Toxic';
+
+                formatted_form = ` > ${mutation_form} ${damage_die}, ${toxicity}`;
+                break;
+        }
     } else {
         formatted_form = mutation_form ? ` > ${mutation_form}` : '';
     }
@@ -888,7 +1053,15 @@ const get_splat_sheet_string = (characters) => {
         splat_sheet_contents += `<aside>${numPad(chararacter_number, 2)} of ${numPad(characters.length, 2)}</aside>`;
 
         splat_sheet_contents += `<h3>`;
-        splat_sheet_contents += `${character.alignment} ${character.race.name.replace(" (Advanced)","")}`;
+
+        let character_race_display = character.race.name;
+        character_race_display = character_race_display.replace(' (Advanced)','');
+        character_race_display = character_race_display.replace('(','');
+        character_race_display = character_race_display.replace(')','');
+        character_race_display = character_race_display.replace('Mutant Animal','');
+        character_race_display = character_race_display.replace('Mutant Plant','');
+
+        splat_sheet_contents += `${character.alignment} ${character_race_display}`;
 
         backgrounds_set = new Set(character.backgrounds);
         for (let background of backgrounds_set) {
