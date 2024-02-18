@@ -26,6 +26,16 @@ class Race(models.Model):
 
     def __str__(self):
         return f'{self.name} hit_die:{self.hit_dice_sides} ({self.page_number})'
+    
+
+class Feat(models.Model):
+    name = models.CharField(max_length = 50)
+    page_number = models.CharField(max_length=10)
+    description = HTMLField(null = True)
+    pc_eligible = models.BooleanField(default = True)
+
+    def __str__(self):
+        return f'{self.name} ({self.page_number})'
 
 
 class Mutation(models.Model):

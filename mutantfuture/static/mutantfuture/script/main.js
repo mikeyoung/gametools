@@ -247,6 +247,7 @@ let ruleset = 'advanced';
 // * give mutant animals natural weapon
 // * filter races to base races
 // * remove backgrounds
+// * remove feats
 // * set calls to mutation tables to use the base column
 
 
@@ -512,6 +513,15 @@ class CharacterBase {
         this.#thac0 = value;
     }
 
+    // Feats
+    #feats;
+    get feats() {
+        return this.#feats;
+    }
+    set feats(value) {
+        this.#feats = value;
+    }
+
     // Gold
     #gold;
     get gold() {
@@ -597,6 +607,9 @@ const get_random_character = async () => {
 
     // mutations
     character.mutations = get_character_mutations(rulebook, character.race);
+
+    // feats
+    character.feats = randomChoice(rulebook.feats.filter(feat => feat.fields.pc_eligible)).fields;
 
     // backgrounds
     character.backgrounds = get_random_backgrounds(rulebook, 2);
@@ -1233,6 +1246,9 @@ const get_splat_sheet_string = (characters) => {
         }
 
         splat_sheet_contents += `<br>`;
+        splat_sheet_contents += `Feat: ${character.feats["name"]} (${character.feats["page_number"]})<br>`;
+
+        splat_sheet_contents += `<br>`;
         splat_sheet_contents += `Saving Throws<br>`;
         splat_sheet_contents += `--Energy Save: ${character.energySave}<br>`;
         splat_sheet_contents += `--Poison/Death Save: ${character.poisonDeathSave}<br>`;
@@ -1240,8 +1256,6 @@ const get_splat_sheet_string = (characters) => {
         splat_sheet_contents += `--Radiation Save: ${character.radiationSave}<br>`;
         splat_sheet_contents += `<br>`;
         splat_sheet_contents += `Gold: ${character.gold}<br>`;
-        splat_sheet_contents += `<br>`;
-        splat_sheet_contents += `Feat: Chosen by player after selecting character.<br>`;
         splat_sheet_contents += `<br>`;
         splat_sheet_contents += `<aside><a href='javascript:void(0)' data-char_id='${chararacter_number}' class='print-button'>[PRINT]</a></aside>`;
         splat_sheet_contents += `  </article>`;
