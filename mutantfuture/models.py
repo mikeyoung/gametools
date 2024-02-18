@@ -82,16 +82,6 @@ class PoisonClassRoll(models.Model):
         return  f'{self.roll}: {self.poison_class}' 
 
 
-class Feat(models.Model):
-    name = models.CharField(max_length = 50)
-    page_number = models.CharField(max_length=10)
-    description = HTMLField(null = True)
-    pc_eligible = models.BooleanField(default = True)
-    
-    def __str__(self):
-        return f'{self.name} ({self.page_number})'
-
-
 class PhysicalMutationRoll(models.Model):
     roll = models.IntegerField(null = True, unique = True)
     base_result = models.ForeignKey(Mutation, on_delete=models.CASCADE, related_name="base_physical_mutation_rolls", null=True)

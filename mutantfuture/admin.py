@@ -6,7 +6,6 @@ from mutantfuture import models
 admin.site.register(models.Race)
 admin.site.register(models.Mutation)
 admin.site.register(models.Background)
-admin.site.register(models.Feat)
 admin.site.register(models.PhysicalMutationRoll)
 admin.site.register(models.MentalMutationRoll)
 admin.site.register(models.PlantMutationRoll)

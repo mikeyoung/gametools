@@ -118,6 +118,125 @@ const PLANTS = [
     "Pumpkin Plant"
 ];
 
+const INSECTS = [
+    "Ladybug",
+    "Ant",
+    "Bee",
+    "Butterfly",
+    "Moth",
+    "Beetle",
+    "Dragonfly",
+    "Grasshopper",
+    "Cricket",
+    "Cockroach",
+    "Fly",
+    "Mosquito",
+    "Wasp",
+    "Hornet",
+    "Termite",
+    "Spider",
+    "Tick",
+    "Flea",
+    "Bedbug",
+    "Louse",
+    "Mite",
+    "Centipede",
+    "Millipede",
+    "Scorpion",
+    "Tarantula",
+    "Caterpillar",
+    "Earwig",
+    "Silverfish",
+    "Firefly",
+    "Aphid",
+    "Cicada",
+    "Stinkbug",
+    "Weevil",
+    "Mayfly",
+    "Junebug",
+    "Gnat",
+    "Fruit Fly",
+    "Horsefly",
+    "Butterfly",
+    "Skipper",
+    "Snout",
+    "Swallowtail",
+    "Moth",
+    "Geometer",
+    "Hawk Moth",
+    "Noctuid",
+    "Pyralid",
+    "Tussock Moth",
+    "Beetle",
+    "Longhorn Beetle",
+    "Rove Beetle",
+    "Scarab Beetle",
+    "Stag Beetle",
+    "Weevil",
+    "True Bug",
+    "Cicada",
+    "Leafhopper",
+    "Planthopper",
+    "Shield Bug",
+    "Stink Bug",
+    "Water Bug",
+    "Fly",
+    "Crane Fly",
+    "Hoverfly",
+    "Horse Fly",
+    "Housefly",
+    "Mosquito",
+    "Moth Fly",
+    "Robber Fly",
+    "Bee",
+    "Ant",
+    "Bumblebee",
+    "Honey Bee",
+    "Sweat Bee",
+    "Wasp",
+    "Yellowjacket",
+    "Butterfly",
+    "Moth",
+    "Skipper",
+    "Dragonfly",
+    "Damselfly",
+    "Mayfly",
+    "Stonefly",
+    "Caddisfly",
+    "Silverfish",
+    "Firebrat",
+    "Bristletail",
+    "Thrips",
+    "Louse",
+    "Flea",
+    "Beetle",
+    "True Bug",
+    "Fly",
+    "Bee",
+    "Ant",
+    "Wasp",
+    "Butterfly",
+    "Moth",
+    "Dragonfly",
+    "Damselfly",
+    "Mayfly",
+    "Stonefly",
+    "Caddisfly",
+    "Silverfish",
+    "Firebrat",
+    "Bristletail",
+    "Thrips",
+    "Louse",
+    "Flea"
+];
+
+
+
+
+
+
+
+
 const urlParams = new URLSearchParams(window.location.search);
 let splat_count = urlParams.get('count');
 splat_count = splat_count ? splat_count : 20;
@@ -127,7 +246,6 @@ let ruleset = 'advanced';
 // TODO: set up base rules
 // * give mutant animals natural weapon
 // * filter races to base races
-// * remove feats
 // * remove backgrounds
 // * set calls to mutation tables to use the base column
 
@@ -411,15 +529,6 @@ class CharacterBase {
     set mutations(value) {
         this.#mutations = value;
     }
-
-    // Feats
-    #feats;
-    get feats() {
-        return this.#feats;
-    }
-    set feats(value) {
-        this.#feats = value;
-    }
     
     // Backgrounds
     #backgrounds;
@@ -489,9 +598,6 @@ const get_random_character = async () => {
     // mutations
     character.mutations = get_character_mutations(rulebook, character.race);
 
-    // feats
-    character.feats = randomChoice(rulebook.feats.filter(feat => feat.fields.pc_eligible)).fields;
-
     // backgrounds
     character.backgrounds = get_random_backgrounds(rulebook, 2);
 
@@ -506,7 +612,6 @@ const get_random_character = async () => {
 
     character = applyRacialMods(character);
     character = applyMutationMods(character);
-
     character = applyAbilityMods(character);
     
     return character;
@@ -674,6 +779,7 @@ const get_random_race = (rulebook) => {
     randomRace = randomRace.fields;
     randomRace.name = randomRace.name.replace('Animal', `Animal (${randomChoice(ANIMALS)})`);
     randomRace.name = randomRace.name.replace('Plant', `Plant (${randomChoice(PLANTS)})`);
+    randomRace.name = randomRace.name.replace('Insect', `Insect (${randomChoice(INSECTS)})`)
     return randomRace;
 };
 
@@ -963,7 +1069,7 @@ const get_full_mutation_name = (mutation, rulebook) => {
 
             case 'xenomorphism':
                 const natural_weapon = roll_dice('1d2') === 1 ? 'w/ Natural Weapon' : 'w/o Natural Weapon';
-                formatted_form = ` > ${mutation_form} ${natural_weapon}: ${randomChoice(ANIMALS)} > Consult ML`;
+                formatted_form = ` > ${mutation_form} ${natural_weapon} > Consult ML`;
                 break;
 
             case 'extra parts':
@@ -1056,6 +1162,7 @@ const get_splat_sheet_string = (characters) => {
         character_race_display = character_race_display.replace(')','');
         character_race_display = character_race_display.replace('Mutant Animal','');
         character_race_display = character_race_display.replace('Mutant Plant','');
+        character_race_display = character_race_display.replace('Mutant Insect','');
 
         splat_sheet_contents += `${character.alignment} ${character_race_display}`;
 
@@ -1126,8 +1233,6 @@ const get_splat_sheet_string = (characters) => {
         }
 
         splat_sheet_contents += `<br>`;
-        splat_sheet_contents += `Feat: ${character.feats["name"]} (${character.feats["page_number"]})<br>`;
-        splat_sheet_contents += `<br>`;
         splat_sheet_contents += `Saving Throws<br>`;
         splat_sheet_contents += `--Energy Save: ${character.energySave}<br>`;
         splat_sheet_contents += `--Poison/Death Save: ${character.poisonDeathSave}<br>`;
@@ -1135,6 +1240,8 @@ const get_splat_sheet_string = (characters) => {
         splat_sheet_contents += `--Radiation Save: ${character.radiationSave}<br>`;
         splat_sheet_contents += `<br>`;
         splat_sheet_contents += `Gold: ${character.gold}<br>`;
+        splat_sheet_contents += `<br>`;
+        splat_sheet_contents += `Feat: Consult ML. Final step.<br>`;
         splat_sheet_contents += `<br>`;
         splat_sheet_contents += `<aside><a href='javascript:void(0)' data-char_id='${chararacter_number}' class='print-button'>[PRINT]</a></aside>`;
         splat_sheet_contents += `  </article>`;
