@@ -3,7 +3,6 @@ const ALIGNMENTS = ['Lawful', 'Neutral', 'Chaotic']
 const IRRADIATED_DISALLOWED_MUTATIONS = ['regenerative capability', 'natural vampiric weapon', 'acute hyper healing'];
 const ANIMALS = ["Dog", "Cat", "Cow", "Horse", "Sheep", "Pig", "Chicken", "Duck", "Rabbit", "Deer", "Mouse", "Rat", "Squirrel", "Fox", "Bear", "Lion", "Tiger", "Elephant", "Giraffe", "Zebra", "Monkey", "Gorilla", "Kangaroo", "Koala", "Penguin", "Ostrich", "Eagle", "Hawk", "Parrot", "Pigeon", "Sparrow", "Owl", "Crow", "Peacock", "Swan", "Dolphin", "Whale", "Shark", "Octopus", "Jellyfish", "Crab", "Lobster", "Starfish", "Stingray", "Trout", "Salmon", "Tuna", "Goldfish", "Carp", "Clam", "Snail", "Frog", "Toad", "Turtle", "Snake", "Lizard", "Alligator", "Crocodile", "Dinosaur", "Bat", "Hyena", "Cheetah", "Leopard", "Hippopotamus", "Rhinoceros", "Buffalo", "Antelope", "Gazelle", "Moose", "Beaver", "Otter", "Skunk", "Raccoon", "Badger", "Hedgehog", "Porcupine", "Platypus", "Wombat", "Opossum", "Armadillo", "Sloth", "Ant", "Bee", "Butterfly", "Ladybug", "Spider", "Mosquito", "Fly", "Grasshopper", "Cockroach", "Dragonfly", "Hummingbird", "Woodpecker", "Flamingo", "Pelican", "Albatross", "Seagull", "Finch", "Canary", "Toucan", "Puma", "Lynx"];
 const PLANTS = [
-    // Non-edible garden plants
     "Rose Plant",
     "Lily Plant",
     "Tulip Plant",
@@ -14,8 +13,6 @@ const PLANTS = [
     "Iris Plant",
     "Dahlia Plant",
     "Hydrangea Plant",
-
-    // Edible garden plants
     "Tomato Plant",
     "Cucumber Plant",
     "Carrot Plant",
@@ -26,8 +23,6 @@ const PLANTS = [
     "Pea Plant",
     "Bean Plant",
     "Zucchini Plant",
-
-    // Common houseplants
     "Spider Plant",
     "Snake Plant",
     "Pothos Plant",
@@ -58,8 +53,6 @@ const PLANTS = [
     "Prayer Plant",
     "English Ivy Plant",
     "Pilea Peperomioides Plant",
-
-    // Types of trees
     "Oak Tree",
     "Maple Tree",
     "Pine Tree",
@@ -80,8 +73,6 @@ const PLANTS = [
     "Walnut Tree",
     "Ash Tree",
     "Poplar Tree",
-
-    // Types of mushrooms
     "Button Mushroom",
     "Portobello Mushroom",
     "Shiitake Mushroom",
@@ -92,8 +83,6 @@ const PLANTS = [
     "Morel Mushroom",
     "Enoki Mushroom",
     "Maitake Mushroom",
-
-    // Oceanic plants
     "Kelp Plant",
     "Seagrass Plant",
     "Coral Plant",
@@ -104,8 +93,6 @@ const PLANTS = [
     "Sea Lettuce Plant",
     "Sea Palm Plant",
     "Rockweed Plant",
-
-    // Commonly farmed plants
     "Wheat Plant",
     "Corn Plant",
     "Rice Plant",
@@ -119,123 +106,16 @@ const PLANTS = [
 ];
 
 const INSECTS = [
-    "Ladybug",
-    "Ant",
-    "Bee",
-    "Butterfly",
-    "Moth",
-    "Beetle",
-    "Dragonfly",
-    "Grasshopper",
-    "Cricket",
-    "Cockroach",
-    "Fly",
-    "Mosquito",
-    "Wasp",
-    "Hornet",
-    "Termite",
-    "Spider",
-    "Tick",
-    "Flea",
-    "Bedbug",
-    "Louse",
-    "Mite",
-    "Centipede",
-    "Millipede",
-    "Scorpion",
-    "Tarantula",
-    "Caterpillar",
-    "Earwig",
-    "Silverfish",
-    "Firefly",
-    "Aphid",
-    "Cicada",
-    "Stinkbug",
-    "Weevil",
-    "Mayfly",
-    "Junebug",
-    "Gnat",
-    "Fruit Fly",
-    "Horsefly",
-    "Butterfly",
-    "Skipper",
-    "Snout",
-    "Swallowtail",
-    "Moth",
-    "Geometer",
-    "Hawk Moth",
-    "Noctuid",
-    "Pyralid",
-    "Tussock Moth",
-    "Beetle",
-    "Longhorn Beetle",
-    "Rove Beetle",
-    "Scarab Beetle",
-    "Stag Beetle",
-    "Weevil",
-    "True Bug",
-    "Cicada",
-    "Leafhopper",
-    "Planthopper",
-    "Shield Bug",
-    "Stink Bug",
-    "Water Bug",
-    "Fly",
-    "Crane Fly",
-    "Hoverfly",
-    "Horse Fly",
-    "Housefly",
-    "Mosquito",
-    "Moth Fly",
-    "Robber Fly",
-    "Bee",
-    "Ant",
-    "Bumblebee",
-    "Honey Bee",
-    "Sweat Bee",
-    "Wasp",
-    "Yellowjacket",
-    "Butterfly",
-    "Moth",
-    "Skipper",
-    "Dragonfly",
-    "Damselfly",
-    "Mayfly",
-    "Stonefly",
-    "Caddisfly",
-    "Silverfish",
-    "Firebrat",
-    "Bristletail",
-    "Thrips",
-    "Louse",
-    "Flea",
-    "Beetle",
-    "True Bug",
-    "Fly",
-    "Bee",
-    "Ant",
-    "Wasp",
-    "Butterfly",
-    "Moth",
-    "Dragonfly",
-    "Damselfly",
-    "Mayfly",
-    "Stonefly",
-    "Caddisfly",
-    "Silverfish",
-    "Firebrat",
-    "Bristletail",
-    "Thrips",
-    "Louse",
-    "Flea"
+    "Fire Ant", "Carpenter Ant", "Bulldog Ant", "Army Ant", "Leafcutter Ant", "Harvester Ant", "Pharaoh Ant", "Pavement Ant", "Argentine Ant", "Odorous House Ant",
+    "Ladybug", "Longhorn Beetle", "Weevil", "Ground Beetle", "Dung Beetle", "Rhinoceros Beetle", "Stag Beetle", "Colorado Potato Beetle", "Click Beetle", "Firefly",
+    "Housefly", "Fruit Fly", "Tsetse Fly", "Horse Fly", "Deer Fly",
+    "Water Strider", "Backswimmer", "Water Boatman", "Giant Water Bug", "Water Scorpion", "Mosquito Larva", "Dragonfly Nymph", "Damselfly Nymph", "Mayfly Nymph", "Caddisfly Larva",
+    "Bee", "Butterfly", "Moth", "Cockroach", "Mosquito", "Dragonfly", "Grasshopper", "Cricket", "Termite", "Aphid",
+    "Cicada", "Mantis", "Wasp", "Hornet", "Bedbug", "Flea", "Tick", "Spider", "Scorpion", "Centipede",
+    "Millipede", "Louse", "Silverfish", "Earwig", "Mayfly", "Sandfly", "Blowfly", "Botfly", "Snipe Fly", "Flesh Fly",
+    "Hoverfly", "Damselfly", "Stonefly", "Whitefly", "Greenfly", "Blackfly", "Sawfly", "Caddisfly", "Dobsonfly", "Snakefly",
+    "Lacewing", "Antlion", "Doodlebug", "Thrips", "Leafhopper", "Treehopper", "Planthopper", "Froghopper", "Cicada Killer", "Yellowjacket"
 ];
-
-
-
-
-
-
-
 
 const urlParams = new URLSearchParams(window.location.search);
 let splat_count = urlParams.get('count');
