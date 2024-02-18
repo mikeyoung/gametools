@@ -1246,7 +1246,7 @@ const get_splat_sheet_string = (characters) => {
         splat_sheet_contents += `<aside><a href='javascript:void(0)' data-char_id='${chararacter_number}' class='print-button'>[PRINT]</a></aside>`;
         splat_sheet_contents += `  </article>`;
         splat_sheet_contents += `</li>`;
-        chararacter_number += 1
+        chararacter_number += 1;
     }
 
     return splat_sheet_contents
