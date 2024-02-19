@@ -7,14 +7,18 @@ body {
     margin: 0;
 }
 
+
+a {
+  color: #000 !important;
+}
+
+
 .main-nav {
   display: block;
   padding: 10px;
   font-size: 16px;
+  text-align: center;
 
-  & a {
-    color: #000 !important;
-  }
 }
 
 h1 {

@@ -1,5 +1,5 @@
-const RULEBOOK_PATH = '/static/mutantfuture/json/rulebook.json'
-const ALIGNMENTS = ['Lawful', 'Neutral', 'Chaotic']
+const RULEBOOK_PATH = '/static/mutantfuture/json/rulebook.json';
+const ALIGNMENTS = ['Lawful', 'Neutral', 'Chaotic'];
 const IRRADIATED_DISALLOWED_MUTATIONS = ['regenerative capability', 'natural vampiric weapon', 'acute hyper healing'];
 const ANIMALS = ["Dog", "Cat", "Cow", "Horse", "Sheep", "Pig", "Chicken", "Duck", "Rabbit", "Deer", "Mouse", "Rat", "Squirrel", "Fox", "Bear", "Lion", "Tiger", "Elephant", "Giraffe", "Zebra", "Monkey", "Gorilla", "Kangaroo", "Koala", "Penguin", "Ostrich", "Eagle", "Hawk", "Parrot", "Pigeon", "Sparrow", "Owl", "Crow", "Peacock", "Swan", "Dolphin", "Whale", "Shark", "Octopus", "Jellyfish", "Crab", "Lobster", "Starfish", "Stingray", "Trout", "Salmon", "Tuna", "Goldfish", "Carp", "Clam", "Snail", "Frog", "Toad", "Turtle", "Snake", "Lizard", "Alligator", "Crocodile", "Dinosaur", "Bat", "Hyena", "Cheetah", "Leopard", "Hippopotamus", "Rhinoceros", "Buffalo", "Antelope", "Gazelle", "Moose", "Beaver", "Otter", "Skunk", "Raccoon", "Badger", "Hedgehog", "Porcupine", "Platypus", "Wombat", "Opossum", "Armadillo", "Sloth", "Ant", "Bee", "Butterfly", "Ladybug", "Spider", "Mosquito", "Fly", "Grasshopper", "Cockroach", "Dragonfly", "Hummingbird", "Woodpecker", "Flamingo", "Pelican", "Albatross", "Seagull", "Finch", "Canary", "Toucan", "Puma", "Lynx"];
 const PLANTS = [
@@ -431,7 +431,7 @@ class CharacterBase {
 
 }   
 
-const main = async () => {
+const splat_main = async () => {
     const characters = [];
 
     for (let i=0; i < splat_count; i++) {
@@ -1157,4 +1157,4 @@ const randInt = (a, b) => {
 }
 
 
-main();
+splat_main();
