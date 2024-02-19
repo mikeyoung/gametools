@@ -8,8 +8,11 @@ body {
 }
 
 
-a {
-  color: #000 !important;
+a:link,
+a:hover,
+a:active,
+a:visited {
+  color: #000;
 }
 
 
@@ -34,12 +37,12 @@ ul {
 }
 
 article,
-.print-button:active,
-.print-button:hover,
-.print-button:visited,
-.print-button:link {
+a.print-button:active,
+a.print-button:hover,
+a.print-button:visited,
+a.print-button:link {
   filter: blur(0.5px);
-  color: rgba(0,0,0,.75);
+  color: rgba(0,0,0,.75) !important;
   text-decoration: none;
 }
 
