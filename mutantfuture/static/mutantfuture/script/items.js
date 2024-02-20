@@ -6,6 +6,7 @@ category = category ? category : 'mutations';
 category = category.toLocaleLowerCase();
 
 
+document.querySelector('#main-header').innerHTML = `${category} Reference`;
 
 
 

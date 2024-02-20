@@ -28,3 +28,7 @@ ul {
 .tingle-modal__closeLabel {
     font-family: 'Special Elite', serif;
 }
+
+h1 {
+    text-transform: capitalize;
+}
