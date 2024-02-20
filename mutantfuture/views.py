@@ -17,8 +17,8 @@ def splat(request):
     return render(request, 'mutantfuture/splat.html')
 
 
-def mutations(request):
-    return render(request, 'mutantfuture/mutations.html')
+def items(request):
+    return render(request, 'mutantfuture/items.html')
 
 
 @login_required
