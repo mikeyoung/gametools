@@ -1,4 +1,3 @@
-const urlParams = new URLSearchParams(window.location.search);
 let category = urlParams.get('cat');
 category = category ? category : 'mutations';
 category = category.toLocaleLowerCase();

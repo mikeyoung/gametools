@@ -116,7 +116,6 @@ const INSECTS = [
     "Lacewing", "Antlion", "Doodlebug", "Thrips", "Leafhopper", "Treehopper", "Planthopper", "Froghopper", "Cicada Killer", "Yellowjacket"
 ];
 
-const urlParams = new URLSearchParams(window.location.search);
 let splat_count = urlParams.get('count');
 splat_count = splat_count ? splat_count : 20;
 
