@@ -1,3 +1,5 @@
+from django.conf import settings
+
 """
 URL configuration for gametools project.
 
@@ -19,6 +21,8 @@ from django.urls import include, path
 
 urlpatterns = [
     path("", include("mutantfuture.urls")),
-    path('admin/', admin.site.urls),
     path('tinymce/', include('tinymce.urls')),
 ]
+
+if settings.ADMIN_ENABLED:
+    urlpatterns.append(path('admin/', admin.site.urls))

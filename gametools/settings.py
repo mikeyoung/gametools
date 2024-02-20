@@ -24,7 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-+ok_qj5x5(aij*^$6zu_wk8rcb6cbwdwp%371pk&csg56q9eu_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
+
+# Set access to the admin url route
+ADMIN_ENABLED = False
 
 ALLOWED_HOSTS = ['mikeyoung.pythonanywhere.com', '127.0.0.1']
 
