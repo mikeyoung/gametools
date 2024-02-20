@@ -16,10 +16,10 @@
   <body>
     <nav class="main-nav">
       <a href="{% url 'index'  %}">Home</a> |
-      <a href="{% url 'splat' %}">Splat</a> |
       <a href="{% url 'items' %}?cat=races">Races</a> |
       <a href="{% url 'items' %}?cat=mutations">Mutations</a> |
       <a href="{% url 'items' %}?cat=feats">Feats</a>
+      <a href="{% url 'splat' %}">Splat</a> |
     </nav>
     {% block body_content %}{% endblock %}
 
