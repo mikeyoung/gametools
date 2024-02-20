@@ -1,3 +1,5 @@
+const RULEBOOK_PATH = '/static/mutantfuture/json/rulebook.json';
+
 const get_rulebook = async (url) => {
     try {
         const response = await fetch(url);

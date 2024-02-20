@@ -1,14 +1,9 @@
-const RULEBOOK_PATH = '/static/mutantfuture/json/rulebook.json';
-
 const urlParams = new URLSearchParams(window.location.search);
 let category = urlParams.get('cat');
 category = category ? category : 'mutations';
 category = category.toLocaleLowerCase();
 
-
 document.querySelector('#main-header').innerHTML = `${category} Reference`;
-
-
 
 const get_item_by_pk = (rulebook, item_pk) => {
     let filtered_items = rulebook[category].filter(item => item.pk == item_pk);
