@@ -1038,9 +1038,9 @@ const get_splat_sheet_string = (characters) => {
         character_race_display = character_race_display.replace(' (Advanced)','');
         character_race_display = character_race_display.replace('(','');
         character_race_display = character_race_display.replace(')','');
-        character_race_display = character_race_display.replace('Mutant Animal','');
-        character_race_display = character_race_display.replace('Mutant Plant','');
-        character_race_display = character_race_display.replace('Mutant Insect','');
+        character_race_display = character_race_display.replace('Animal','');
+        character_race_display = character_race_display.replace('Plant','');
+        character_race_display = character_race_display.replace('Insect','');
 
         splat_sheet_contents += `${character.alignment} ${character_race_display}`;
 

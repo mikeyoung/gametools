@@ -17,7 +17,9 @@ li {
   
 @media print {
   .print-button,
-  h1 {
+  h1,
+  .category-intro,
+  nav.main-nav {
     display: none;
   }
 
