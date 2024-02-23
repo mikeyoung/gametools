@@ -7,7 +7,6 @@ body {
     margin: 0;
 }
 
-
 a:link,
 a:hover,
 a:active,
@@ -18,11 +17,6 @@ a:visited {
 a.item-link {
   text-decoration: none;
   font-weight: 400;
-}
-
-a.item-link:hover,
-a.irradiated-sense-link:hover {
-  text-decoration: underline;
 }
 
 .main-nav {
@@ -50,11 +44,16 @@ a.print-button:active,
 a.print-button:hover,
 a.print-button:visited,
 a.print-button:link,
-a.item-link,
+article a.item-link,
 a.irradiated-sense-link {
   filter: blur(0.5px);
   color: rgba(0,0,0,.75) !important;
   text-decoration: none;
+}
+
+a.item-link:hover,
+a.irradiated-sense-link:hover {
+  text-decoration: underline !important;
 }
 
 aside {
