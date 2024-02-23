@@ -856,9 +856,10 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
             }
             
             let mutation_already_present = false;
-            if (character_mutations.some(mutation => { mutation.fields.name === new_mutation.fields.name })) {
-                mutation_already_present = true;
-                break;
+            for (mutation of character_mutations) {
+                if (mutation.fields.name === new_mutation.fields.name) {
+                    mutation_already_present = true;
+                }
             }
             if (mutation_already_present) {
                 continue;
@@ -901,9 +902,10 @@ const append_random_special_mutations = (character_mutations, total_new_mutation
         let new_mutation = get_mutation_by_pk(rulebook, mutation_pk);
 
         let mutation_already_present = false;
-        if (character_mutations.some(mutation => { mutation.fields.name === new_mutation.fields.name })) {
-            mutation_already_present = true;
-            break;
+        for (mutation of character_mutations) {
+            if (mutation.fields.name === new_mutation.fields.name) {
+                mutation_already_present = true;
+            }
         }
         if (mutation_already_present) {
             continue;
@@ -1117,7 +1119,16 @@ const get_splat_sheet_string = (characters) => {
 
             let hasDwarfism = false;
             let hasGigantism = false;
+
+            let mutationNames = [];
+
             for (let mutation of character.mutations) {
+                if (mutationNames.includes(mutation.fields.name)) {
+                    alert('dupe: ' + mutation.fields.name);
+                }
+
+                mutationNames.push(mutation.fields.name);
+
                 if (mutation.fields.name.toLowerCase().startsWith('dwarfism')) {
                     hasDwarfism = true;
                 }
