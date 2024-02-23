@@ -766,8 +766,7 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
             let d100_roll = null;
             let mutation_row = null;
             let new_mutation_pk = null;
-            let mutation = null;
-            let mutation_name = null;
+            let new_mutation = null;
 
             switch (mutation_table) {
                 case 'mental':
@@ -776,7 +775,7 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
                     mutation_row = table.filter(row => d100_roll === row.fields.roll);
                     mutation_row = mutation_row[0];
                     new_mutation_pk = mutation_row.fields.advanced_result;
-                    mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
+                    new_mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
                     break;
 
                 case 'physical':
@@ -785,7 +784,7 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
                     mutation_row = table.filter(row => d100_roll === row.fields.roll);
                     mutation_row = mutation_row[0];
                     new_mutation_pk = mutation_row.fields.advanced_result;
-                    mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
+                    new_mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
                     break;
 
                 case 'plant':
@@ -794,7 +793,7 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
                     mutation_row = table.filter(row => d100_roll === row.fields.roll);
                     mutation_row = mutation_row[0];
                     new_mutation_pk = mutation_row.fields.advanced_result;
-                    mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
+                    new_mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
                     break;
 
                 case 'human_animal':
@@ -803,7 +802,7 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
                     mutation_row = table.filter(row => d100_roll === row.fields.roll);
                     mutation_row = mutation_row[0];
                     new_mutation_pk = mutation_row.fields.advanced_result;
-                    mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
+                    new_mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
                     break;
 
                 case 'any_beneficial':
@@ -813,8 +812,8 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
                         mutation_row = table.filter(row => d100_roll === row.fields.roll);
                         mutation_row = mutation_row[0];
                         new_mutation_pk = mutation_row.fields.advanced_result;
-                        mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
-                        if (mutation.fields.effect_type == 'benefit') {
+                        new_mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
+                        if (new_mutation.fields.effect_type == 'benefit') {
                             break;
                         }
                     }
@@ -828,8 +827,8 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
                         mutation_row = table.filter(row => d100_roll === row.fields.roll);
                         mutation_row = mutation_row[0];
                         new_mutation_pk = mutation_row.fields.advanced_result;
-                        mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
-                        if (mutation.fields.effect_type == 'drawback') {
+                        new_mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
+                        if (new_mutation.fields.effect_type == 'drawback') {
                             break;
                         }
                     }
@@ -843,8 +842,8 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
                         mutation_row = table.filter(row => d100_roll === row.fields.roll);
                         mutation_row = mutation_row[0];
                         new_mutation_pk = mutation_row.fields.advanced_result;
-                        mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
-                        if (mutation.fields.effect_type == 'drawback') {
+                        new_mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
+                        if (new_mutation.fields.effect_type == 'drawback') {
                             break;
                         }
                     }
@@ -852,24 +851,28 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
                     break;
 
                 case 'any':
-                    mutation = get_any_random_mutation(rulebook);
+                    new_mutation = get_any_random_mutation(rulebook);
                     break;
             }
-
-            mutation_name = get_full_mutation_name(mutation, rulebook);
-            if (character_mutations.some(mutation => { mutation_name.startsWith(mutation.fields.name) })) {
-                continue;
+            
+            let mutation_already_present = false;
+            if (character_mutations.some(mutation => { mutation.fields.name === new_mutation.fields.name })) {
+                mutation_already_present = true;
+                break;
             }
-
-            if (mutation.fields.pc_eligible === false) {
-                continue;
-            }
-
-            if (character_race.fields.name.toLowerCase() == 'irradiated' && IRRADIATED_DISALLOWED_MUTATIONS.includes(mutation.fields.name)) {
+            if (mutation_already_present) {
                 continue;
             }
     
-            character_mutations.push(mutation);
+            if (new_mutation.fields.pc_eligible === false) {
+                continue;
+            }
+
+            if (character_race.fields.name.toLowerCase() == 'irradiated' && IRRADIATED_DISALLOWED_MUTATIONS.includes(new_mutation.fields.name)) {
+                continue;
+            }
+    
+            character_mutations.push(new_mutation);
             mutation_count += 1;
         }
 
@@ -895,26 +898,30 @@ const append_random_special_mutations = (character_mutations, total_new_mutation
     let mutation_count = 0;
     while (mutation_count < total_new_mutations) {
         let mutation_pk = randomChoice(mutation_list).fields.mutation;
-        let mutation = get_mutation_by_pk(rulebook, mutation_pk);
-        let mutation_name = get_full_mutation_name(mutation, rulebook);
+        let new_mutation = get_mutation_by_pk(rulebook, mutation_pk);
 
-        if (character_mutations.some(mutation => { mutation_name.startsWith(mutation.fields.name) })) {
+        let mutation_already_present = false;
+        if (character_mutations.some(mutation => { mutation.fields.name === new_mutation.fields.name })) {
+            mutation_already_present = true;
+            break;
+        }
+        if (mutation_already_present) {
             continue;
         }
 
-        if (mutation.fields.pc_eligible === false) {
+        if (new_mutation.fields.pc_eligible === false) {
             continue;
         }
 
-        if (character_race.fields.name.toLowerCase() == 'irradiated' && IRRADIATED_DISALLOWED_MUTATIONS.includes(mutation.fields.name)) {
+        if (character_race.fields.name.toLowerCase() == 'irradiated' && IRRADIATED_DISALLOWED_MUTATIONS.includes(new_mutation.fields.name)) {
             continue;
         }
 
-        character_mutations.push(mutation)
+        character_mutations.push(new_mutation)
         mutation_count += 1
     }
 
-    return character_mutations
+    return character_mutations;
 };
 
 const get_mutation_form = (mutation) => {
