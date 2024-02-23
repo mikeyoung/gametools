@@ -1105,7 +1105,7 @@ const get_splat_sheet_string = (characters) => {
             splat_sheet_contents += `Mutations:<br>`;
 
             if (character.race.fields.name.toLowerCase() === 'irradiated') {
-                splat_sheet_contents += `--Unique Sense > Radiation [race mutation, A4]<br>`;
+                splat_sheet_contents += `--<a href='javascript:void(0)' class='irradiated-sense-link'>Unique Sense > Radiation [race mutation, A4]</a><br>`;
             }
 
             let hasDwarfism = false;
@@ -1174,10 +1174,32 @@ const get_splat_sheet_string = (characters) => {
 const print_character_list = (characters, rulebook) => {
     document.querySelector('#character-list').innerHTML = get_splat_sheet_string(characters);
     attach_item_event_handlers(rulebook);
+    document.querySelectorAll('.irradiated-sense-link').forEach((el) => {
+        el.addEventListener('click', () => {
+            display_irradiated_bonus();
+        });
+    })
 };
 
 const randInt = (a, b) => {
     return Math.floor(Math.random() * (b - a + 1)) + a;
+}
+
+const display_irradiated_bonus = () => {
+    // instanciate new modal
+    let modal = new tingle.modal({
+        closeMethods: ['overlay', 'button', 'escape'],
+        closeLabel: "Close",
+        cssClass: ['custom-class-1']
+    });
+
+    let modalContent = `<article>`;
+    modalContent += `<h3>Unique Sense (Radiation)</h3>`;
+    modalContent += `The irradiated can detect concentrations of radiation. All irradiated gain the mutation Unique Sense (Radiation) as a bonus. They can sense radiation fields 1 mile or larger in diameter at a distance of up to 10 miles.`;
+    modalContent += `</article>`;
+    modal.setContent(modalContent);
+
+    modal.open();
 }
 
 document.addEventListener('DOMContentLoaded', splat_main);

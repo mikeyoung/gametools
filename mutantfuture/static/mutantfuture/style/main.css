@@ -20,7 +20,8 @@ a.item-link {
   font-weight: 400;
 }
 
-a.item-link:hover {
+a.item-link:hover,
+a.irradiated-sense-link:hover {
   text-decoration: underline;
 }
 
@@ -49,7 +50,8 @@ a.print-button:active,
 a.print-button:hover,
 a.print-button:visited,
 a.print-button:link,
-a.item-link {
+a.item-link,
+a.irradiated-sense-link {
   filter: blur(0.5px);
   color: rgba(0,0,0,.75) !important;
   text-decoration: none;
