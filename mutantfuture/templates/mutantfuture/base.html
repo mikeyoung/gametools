@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'mutantfuture/style/tingle.min.css' %}">
     <link rel="stylesheet" href="{% static 'mutantfuture/style/main.css' %}">
     {% block head_content %}{% endblock %}
   </head>
@@ -22,7 +23,7 @@
       <a href="{% url 'splat' %}">Splat</a>
     </nav>
     {% block body_content %}{% endblock %}
-
+    <script src="{% static 'mutantfuture/script/tingle.min.js' %}"></script>
     <script src="{% static 'mutantfuture/script/global.js' %}"></script>
     {% block bottom_scripts %}{% endblock %}
   </body>

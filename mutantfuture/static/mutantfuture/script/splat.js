@@ -125,7 +125,7 @@ let ruleset = 'advanced';
 // * give mutant animals natural weapon
 // * filter races to base races
 // * remove backgrounds
-// * remove feats
+// * remove feat
 // * set calls to mutation tables to use the base column
 
 
@@ -391,13 +391,13 @@ class CharacterBase {
         this.#thac0 = value;
     }
 
-    // Feats
-    #feats;
-    get feats() {
-        return this.#feats;
+    // feat
+    #feat;
+    get feat() {
+        return this.#feat;
     }
-    set feats(value) {
-        this.#feats = value;
+    set feat(value) {
+        this.#feat = value;
     }
 
     // Gold
@@ -430,6 +430,8 @@ class CharacterBase {
 }   
 
 const splat_main = async () => {
+    rulebook = await get_rulebook(RULEBOOK_PATH);
+
     const characters = [];
 
     for (let i=0; i < splat_count; i++) {
@@ -437,7 +439,7 @@ const splat_main = async () => {
         characters.push(new_character);
     }
 
-    print_character_list(characters);
+    print_character_list(characters, rulebook);
     document.querySelectorAll('.print-button').forEach(el => {
         el.addEventListener('click', (e) => {
             document.querySelectorAll('.printarea').forEach( el => el.classList.remove('printarea'));
@@ -449,8 +451,7 @@ const splat_main = async () => {
     });
 };
 
-const get_random_character = async () => {
-    rulebook = await get_rulebook(RULEBOOK_PATH);
+const get_random_character = () => {
     character = new CharacterBase();
 
     // strength
@@ -486,8 +487,8 @@ const get_random_character = async () => {
     // mutations
     character.mutations = get_character_mutations(rulebook, character.race);
 
-    // feats
-    character.feats = randomChoice(rulebook.feats.filter(feat => feat.fields.pc_eligible)).fields;
+    // feat
+    character.feat = get_random_feat(rulebook, character.race);
 
     // backgrounds
     character.backgrounds = get_random_backgrounds(rulebook, 2);
@@ -499,7 +500,7 @@ const get_random_character = async () => {
     character.gold = 10 * roll_dice('3d8');
 
     // hit points
-    character.hitPoints = roll_dice(`${character.constitution}d${character.race.hit_dice_sides}`);
+    character.hitPoints = roll_dice(`${character.constitution}d${character.race.fields.hit_dice_sides}`);
 
     character = applyRacialMods(character);
     character = applyMutationMods(character);
@@ -507,6 +508,28 @@ const get_random_character = async () => {
     
     return character;
 };
+
+const get_random_feat = (rulebook, race) => {
+    let selected_feat = null;
+    while (selected_feat === null) {
+        let random_feat = randomChoice(rulebook.feats.filter(feat => feat.fields.pc_eligible));
+        const bonus_mutations_ineligible_races = [
+            'pure human (base)',
+            'pure human (advanced)',
+            'basic android',
+            'synthetic android',
+            'replicant android',
+            'pure cyborg'
+        ];
+
+        if (random_feat.fields.name.toLowerCase().startsWith('bonus mutation') && bonus_mutations_ineligible_races.includes(race.fields.name.toLowerCase())) {
+            continue;
+        }
+        selected_feat = random_feat;
+    }
+
+    return selected_feat;
+}
 
 const applyAbilityMods = (character) => {
     // strength
@@ -534,7 +557,7 @@ const applyAbilityMods = (character) => {
 }
 
 const applyRacialMods = (character) => {
-    const character_race_lower = character.race.name.toLowerCase();
+    const character_race_lower = character.race.fields.name.toLowerCase();
     switch (character_race_lower) {
         case 'brainiac':
             if (character.constitution > 12) {
@@ -571,53 +594,36 @@ const applyRacialMods = (character) => {
 
 const applyMutationMods = (character) => {
     for (let i = 0; i < character.mutations.length; i++) {
-        if (character.mutations[i].toLowerCase().startsWith('attractive')) {
+        if (character.mutations[i].fields.name.toLowerCase().startsWith('attractive')) {
             character.reactionMod -= 2;
             continue;
         }
 
-        if (character.mutations[i].toLowerCase().startsWith('eye-catching appearance')) {
+        if (character.mutations[i].fields.name.toLowerCase().startsWith('eye-catching appearance')) {
             character.reactionMod += 2;
             continue;
         }
 
-        if (character.mutations[i].toLowerCase().startsWith('physical immaturity')) {
+        if (character.mutations[i].fields.name.toLowerCase().startsWith('physical immaturity')) {
             character.strength -= 2;
             character.constitution -= 2;
             continue;
         }
 
-        if (character.mutations[i].toLowerCase().startsWith('unreliable mutation')) {
-            let affected_mutation = select_beneficial_mutation(character.mutations);
-            
-            if (affected_mutation) {
-                if (affected_mutation.includes('>')) {
-                    affected_mutation = affected_mutation.slice(0, affected_mutation.indexOf(' >'));
-                } else {
-                    affected_mutation = affected_mutation.slice(0, affected_mutation.indexOf(' ['));
-                }
-                character.mutations[i] = character.mutations[i].replace('Unreliable Mutation', `Unreliable Mutation > ${affected_mutation}`);
-            } else {
-                character.mutations[i] = character.mutations[i].replace('Unreliable Mutation', `Unreliable Mutation > None`);
-            }
-
-            continue;
-        }
-
-        if (character.mutations[i].toLowerCase().startsWith('degeneration')) {
-            let ability = character.mutations[i].slice(character.mutations[i].indexOf('> ') + 2, character.mutations[i].indexOf(' ['));
+        if (character.mutations[i].fields.name.toLowerCase().startsWith('degeneration')) {
+            let ability = character.mutations[i].fields.name.slice(character.mutations[i].fields.name.indexOf('> ') + 2, character.mutations[i].fields.name.indexOf(' ['));
             ability = ability.toLowerCase();
             character[ability] -= 1;
             continue;
         }
 
-        if (character.mutations[i].toLowerCase().startsWith('weak will')) {
+        if (character.mutations[i].fields.name.toLowerCase().startsWith('weak will')) {
             character.willpower = 3;
             continue;
         }
 
         // put this at end after any mutations that could affect constitution score
-        if (character.mutations[i].toLowerCase().startsWith('petrified')) {
+        if (character.mutations[i].fields.name.toLowerCase().startsWith('petrified')) {
             character.hitPoints = character.constitution * 10;
             continue;
         }
@@ -666,12 +672,19 @@ const get_random_backgrounds = (rulebook, total_backgrounds) => {
 const get_random_race = (rulebook) => {
     // filter out base versions for now
     const filtered_races = rulebook.races.filter(race => !race.fields.name.toLowerCase().includes('(base)'));
-    let randomRace = randomChoice(filtered_races);
-    randomRace = randomRace.fields;
-    randomRace.name = randomRace.name.replace('Animal', `Animal (${randomChoice(ANIMALS)})`);
-    randomRace.name = randomRace.name.replace('Plant', `Plant (${randomChoice(PLANTS)})`);
-    randomRace.name = randomRace.name.replace('Insect', `Insect (${randomChoice(INSECTS)})`)
-    return randomRace;
+    // let randomRaceName = randomRace.fields.name;
+
+    // randomRaceName = randomRaceName
+    //     .replace('Animal', `Animal (${randomChoice(ANIMALS)})`)
+    //     .replace('Plant', `Plant (${randomChoice(PLANTS)})`)
+    //     .replace('Insect', `Insect (${randomChoice(INSECTS)})`);
+    
+    // randomRace.fields.name = randomRaceName;
+
+    // if (randomRace.fields.name.toLowerCase().includes('animal')) {
+    //     console.log(randomRace);
+    // }
+    return randomChoice(filtered_races);;
 };
 
 const get_mutation_by_pk = (rulebook, mutation_id) => {
@@ -682,66 +695,62 @@ const get_mutation_by_pk = (rulebook, mutation_id) => {
 const get_character_mutations = (rulebook, character_race) => {
     let character_mutations = [];
 
-    if (character_race.name.toLowerCase() === 'irradiated') {
-        character_mutations.push('Unique Sense > Radiation [race mutation, A4]');
-    }
-
     // mental mutations
-    total_new_mutations = roll_dice(character_race.mental_mutations_roll_str);
+    total_new_mutations = roll_dice(character_race.fields.mental_mutations_roll_str);
     if (total_new_mutations > 0) {
         character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'mental', character_race);
     }
 
     // physical mutations
-    total_new_mutations = roll_dice(character_race.physical_mutations_roll_str);
+    total_new_mutations = roll_dice(character_race.fields.physical_mutations_roll_str);
     if (total_new_mutations > 0) {
         character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'physical', character_race);
     }
 
     // plant_mutations
-    total_new_mutations = roll_dice(character_race.plant_mutations_roll_str);
+    total_new_mutations = roll_dice(character_race.fields.plant_mutations_roll_str);
     if (total_new_mutations > 0) {
         character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'plant', character_race);
     }
 
     // human_animal_mutations
-    total_new_mutations = roll_dice(character_race.random_human_animal_roll_str);
+    total_new_mutations = roll_dice(character_race.fields.random_human_animal_roll_str);
     if (total_new_mutations > 0) {
         character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'human_animal', character_race);
     }
 
     // beneficial_any_mutations
-    total_new_mutations = roll_dice(character_race.random_beneficial_any_roll_str);
+    total_new_mutations = roll_dice(character_race.fields.random_beneficial_any_roll_str);
     if (total_new_mutations > 0) {
         character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'any_beneficial', character_race);
     }
 
     // mental_drawback_mutations
-    total_new_mutations = roll_dice(character_race.mental_drawback_roll_str);
+    total_new_mutations = roll_dice(character_race.fields.mental_drawback_roll_str);
     if (total_new_mutations > 0) {
         character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'mental_drawback', character_race);
     }
 
     // physical_drawback_mutations
-    total_new_mutations = roll_dice(character_race.physical_drawback_roll_str);
+    total_new_mutations = roll_dice(character_race.fields.physical_drawback_roll_str);
     if (total_new_mutations > 0) {
         character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'physical_drawback', character_race);
     }
 
     // any_mutations
-    total_new_mutations = roll_dice(character_race.random_any_roll_str);
+    total_new_mutations = roll_dice(character_race.fields.random_any_roll_str);
     if (total_new_mutations > 0) {
         character_mutations = append_table_mutations(rulebook, character_mutations, total_new_mutations, 'any', character_race);
     }
 
     // special_animal_mutations
-    total_new_mutations = roll_dice(character_race.special_animal_roll_str);
+    total_new_mutations = roll_dice(character_race.fields.special_animal_roll_str);
     if (total_new_mutations > 0) {
         character_mutations = append_random_special_mutations(character_mutations, total_new_mutations, rulebook.specialAnimalMutationRolls, rulebook, character_race);
     }
 
     // special_insect_mutations
-    total_new_mutations = roll_dice(character_race.special_insect_roll_str);
+    total_new_mutations = roll_dice(character_race.fields.special_insect_roll_str);
     if (total_new_mutations > 0) {
         character_mutations = append_random_special_mutations(character_mutations, total_new_mutations, rulebook.specialInsectMutationRolls, rulebook, character_race)
     }
@@ -848,8 +857,7 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
             }
 
             mutation_name = get_full_mutation_name(mutation, rulebook);
-
-            if (character_mutations.some(mutation => { mutation.startsWith(mutation_name) })) {
+            if (character_mutations.some(mutation => { mutation_name.startsWith(mutation.fields.name) })) {
                 continue;
             }
 
@@ -857,11 +865,11 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
                 continue;
             }
 
-            if (character_race.name.toLowerCase() == 'irradiated' && IRRADIATED_DISALLOWED_MUTATIONS.includes(mutation.fields.name)) {
+            if (character_race.fields.name.toLowerCase() == 'irradiated' && IRRADIATED_DISALLOWED_MUTATIONS.includes(mutation.fields.name)) {
                 continue;
             }
     
-            character_mutations.push(mutation_name);
+            character_mutations.push(mutation);
             mutation_count += 1;
         }
 
@@ -879,7 +887,7 @@ const get_any_random_mutation = (rulebook) => {
 }
 
 const select_beneficial_mutation = (mutationList) => {
-    const beneficialMutations = mutationList.filter(mutation => mutation.toLowerCase().includes('benefit'));
+    const beneficialMutations = mutationList.filter(mutation => mutation.fields.effect_type.toLowerCase() === 'benefit');
     return randomChoice(beneficialMutations);
 }
 
@@ -890,7 +898,7 @@ const append_random_special_mutations = (character_mutations, total_new_mutation
         let mutation = get_mutation_by_pk(rulebook, mutation_pk);
         let mutation_name = get_full_mutation_name(mutation, rulebook);
 
-        if (character_mutations.some(mutation => { mutation.startsWith(mutation_name) })) {
+        if (character_mutations.some(mutation => { mutation_name.startsWith(mutation.fields.name) })) {
             continue;
         }
 
@@ -898,11 +906,11 @@ const append_random_special_mutations = (character_mutations, total_new_mutation
             continue;
         }
 
-        if (character_race.name.toLowerCase() == 'irradiated' && IRRADIATED_DISALLOWED_MUTATIONS.includes(mutation.fields.name)) {
+        if (character_race.fields.name.toLowerCase() == 'irradiated' && IRRADIATED_DISALLOWED_MUTATIONS.includes(mutation.fields.name)) {
             continue;
         }
 
-        character_mutations.push(mutation_name)
+        character_mutations.push(mutation)
         mutation_count += 1
     }
 
@@ -1034,15 +1042,19 @@ const get_splat_sheet_string = (characters) => {
 
         splat_sheet_contents += `<h3>`;
 
-        let character_race_display = character.race.name;
-        character_race_display = character_race_display.replace(' (Advanced)','');
-        character_race_display = character_race_display.replace('(','');
-        character_race_display = character_race_display.replace(')','');
-        character_race_display = character_race_display.replace('Animal','');
-        character_race_display = character_race_display.replace('Plant','');
-        character_race_display = character_race_display.replace('Insect','');
+        let character_race_detail = character.race.fields.name;
+        character_race_detail = character_race_detail.replace('Animal', `Animal (${randomChoice(ANIMALS)})`);
+        character_race_detail = character_race_detail.replace('Plant', `Plant (${randomChoice(PLANTS)})`);
+        character_race_detail = character_race_detail.replace('Insect', `Insect (${randomChoice(INSECTS)})`);
 
-        splat_sheet_contents += `${character.alignment} ${character_race_display}`;
+        let character_race_title = character_race_detail.replace(' (Advanced)','');
+        character_race_title = character_race_title.replace('(','');
+        character_race_title = character_race_title.replace(')','');
+        character_race_title = character_race_title.replace('Animal','');
+        character_race_title = character_race_title.replace('Plant','');
+        character_race_title = character_race_title.replace('Insect','');
+
+        splat_sheet_contents += `${character.alignment} ${character_race_title}`;
 
         backgrounds_set = new Set(character.backgrounds);
         for (let background of backgrounds_set) {
@@ -1051,7 +1063,7 @@ const get_splat_sheet_string = (characters) => {
 
         splat_sheet_contents += `</h3>`;
 
-        splat_sheet_contents += `Race: ${character.race["name"]} (${character.race["page_number"]})<br><br>`;
+        splat_sheet_contents += `Race: <a href='javascript:void(0);' class='item-link splat-item-link' data-category='races' data-itemid='${character.race.pk}'>${character_race_detail}</a> (${character.race.fields.page_number})<br><br>`;
 
         splat_sheet_contents += `Backgrounds:<br>`;
         for (let background of backgrounds_set) {
@@ -1091,16 +1103,44 @@ const get_splat_sheet_string = (characters) => {
 
         if (character.mutations.length > 0) {
             splat_sheet_contents += `Mutations:<br>`;
+
+            if (character.race.fields.name.toLowerCase() === 'irradiated') {
+                splat_sheet_contents += `--Unique Sense > Radiation [race mutation, A4]<br>`;
+            }
+
             let hasDwarfism = false;
             let hasGigantism = false;
             for (let mutation of character.mutations) {
-                if (mutation.toLowerCase().startsWith('dwarfism')) {
+                if (mutation.fields.name.toLowerCase().startsWith('dwarfism')) {
                     hasDwarfism = true;
                 }
-                if (mutation.toLowerCase().startsWith('gigantism')) {
+                if (mutation.fields.name.toLowerCase().startsWith('gigantism')) {
                     hasGigantism = true;
                 }
-                splat_sheet_contents += `--${mutation}<br>`;
+
+
+                if (mutation.fields.name.toLowerCase().startsWith('unreliable mutation')) {
+                    let unreliable_description = get_full_mutation_name(mutation);
+                    let affected_mutation = select_beneficial_mutation(character.mutations);
+                    
+                    if (affected_mutation) {
+                        let mutation_name = get_full_mutation_name(affected_mutation, rulebook);
+
+                        if (mutation_name.includes('>')) {
+                            mutation_name = mutation_name.slice(0, mutation_name.indexOf(' >'));
+                        } else {
+                            mutation_name = mutation_name.slice(0, mutation_name.indexOf(' ['));
+                        }
+
+                        unreliable_description = unreliable_description.replace('Unreliable Mutation', `Unreliable Mutation > ${mutation_name}`);
+                    } else {
+                        unreliable_description = unreliable_description.replace('Unreliable Mutation', `Unreliable Mutation > None`);
+                    }
+
+                    splat_sheet_contents += `--<a href='javascript:void(0);' class='item-link splat-item-link' data-category='mutations' data-itemid='${mutation.pk}'>${unreliable_description}</a><br>`;
+                } else {
+                    splat_sheet_contents += `--<a href='javascript:void(0);' class='item-link splat-item-link' data-category='mutations' data-itemid='${mutation.pk}'>${get_full_mutation_name(mutation, rulebook)}</a><br>`;
+                }
             }
 
             if (hasDwarfism && hasGigantism) {
@@ -1111,7 +1151,7 @@ const get_splat_sheet_string = (characters) => {
         }
 
         splat_sheet_contents += `<br>`;
-        splat_sheet_contents += `Feat: ${character.feats["name"]} (${character.feats["page_number"]})<br>`;
+        splat_sheet_contents += `Feat: <a href='javascript:void(0);' class='item-link splat-item-link' data-category='feats' data-itemid='${character.feat.pk}'>${character.feat.fields.name}</a> (${character.feat.fields.page_number})<br>`;
 
         splat_sheet_contents += `<br>`;
         splat_sheet_contents += `Saving Throws<br>`;
@@ -1131,13 +1171,13 @@ const get_splat_sheet_string = (characters) => {
     return splat_sheet_contents
 };
 
-const print_character_list = (characters) => {
+const print_character_list = (characters, rulebook) => {
     document.querySelector('#character-list').innerHTML = get_splat_sheet_string(characters);
+    attach_item_event_handlers(rulebook);
 };
 
 const randInt = (a, b) => {
     return Math.floor(Math.random() * (b - a + 1)) + a;
 }
 
-
-splat_main();
+document.addEventListener('DOMContentLoaded', splat_main);
