@@ -5,7 +5,7 @@ let global_rulebook = null;
 
 let category_param = urlParams.get('cat');
 category_param = category_param ? category_param : 'mutations';
-const CATEGORY = category_param.toLocaleLowerCase();
+const CATEGORY = category_param.toLowerCase();
 
 const get_rulebook = async (url) => {
     try {
@@ -45,6 +45,13 @@ const attach_item_event_handlers = (rulebook) => {
             }
             let modalContent = `<article>`;
             modalContent += `<h3>${items.fields.name}</h3>`;
+
+            modalContent += '<hr>';
+
+            if (CATEGORY.toLowerCase() == 'mutations') {
+                modalContent += `<h4>${items.fields.type} ${items.fields.effect_type} (${items.fields.page_number})</h4>`;
+            }
+
             modalContent += items.fields.description;
             modalContent = modalContent.replace(/<br\s*\/?>/gi, " ");
             modalContent += `</article>`;

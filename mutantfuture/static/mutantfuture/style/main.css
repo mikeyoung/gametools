@@ -44,6 +44,11 @@ h1 {
   padding: 15px 0 ;
 }
 
+h3,
+h4 {
+  text-align: center;
+}
+
 ul {
   padding: 0;
   margin: 0;
@@ -84,7 +89,7 @@ aside {
 .intro-text {
   text-align: center;
   padding: 0 15px 15px 15px;
-  max-width: 500px;
+  max-width: 600px;
   width: 90%;
   display: block;
   margin: 0 auto;

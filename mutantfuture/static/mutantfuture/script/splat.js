@@ -566,9 +566,8 @@ const get_random_backgrounds = (rulebook, total_backgrounds) => {
 };
 
 const get_random_race = (rulebook) => {
-    // filter out base versions for now
     let filtered_races = null;
-    if (rulebook === 'advanced') {
+    if (ruleset === 'advanced') {
         filtered_races = rulebook.races.filter(race => !race.fields.name.toLowerCase().includes(`(base)`));
     } else {
         filtered_races = rulebook.races.filter(race => race.fields.source === 'base');
