@@ -1,10 +1,21 @@
 body {
     background-color: #b7f5e5;
     color: #000 !important;
-    font-family: 'Special Elite', serif;
     font-size: 18px;
     padding: 0;
     margin: 0;
+}
+
+body,
+select,
+option {
+  font-family: 'Special Elite', serif;
+}
+
+select,
+option {
+  text-align: center;
+  font-size: .9em;
 }
 
 a:link,
@@ -70,6 +81,15 @@ aside {
   }
 }
 
+.intro-text {
+  text-align: center;
+  padding: 0 15px 15px 15px;
+  max-width: 500px;
+  width: 90%;
+  display: block;
+  margin: 0 auto;
+}
+
 .tingle-modal-box {
   max-width: 400px;
 }
@@ -78,6 +98,8 @@ aside {
   padding: 15px;
 }
 
-.tingle-modal__closeLabel {
-  font-family: 'Special Elite', serif;
+#rulesform {
+  text-align: center;
+  margin-bottom: 30px;
+  display: none;
 }

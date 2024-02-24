@@ -1,0 +1,25 @@
+<form id='rulesform'>
+    <label for='ruleset'>Ruleset:</label>
+    <select id='ruleset' name='ruleset'>        
+        <option value='base'>Base</option>
+        <option value='advanced'>Advanced</option>
+    </select>
+</form>
+
+<script>
+    let storedRuleset = localStorage.getItem('mfruleset');
+    if (storedRuleset) {
+        document.querySelector('#ruleset').value = storedRuleset;
+    }
+
+    document.querySelector('#ruleset').addEventListener('change', () => {
+        localStorage.setItem('mfruleset', document.querySelector('#ruleset').value);        
+        render_content();
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        if (CATEGORY.toLowerCase() !== 'feats') {
+            document.querySelector('#rulesform').style.display = 'block';
+        }
+    });
+</script>

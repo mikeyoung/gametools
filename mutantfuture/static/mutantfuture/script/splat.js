@@ -1,125 +1,12 @@
 const ALIGNMENTS = ['Lawful', 'Neutral', 'Chaotic'];
 const IRRADIATED_DISALLOWED_MUTATIONS = ['regenerative capability', 'natural vampiric weapon', 'acute hyper healing'];
 const ANIMALS = ["Dog", "Cat", "Cow", "Horse", "Sheep", "Pig", "Chicken", "Duck", "Rabbit", "Deer", "Mouse", "Rat", "Squirrel", "Fox", "Bear", "Lion", "Tiger", "Elephant", "Giraffe", "Zebra", "Monkey", "Gorilla", "Kangaroo", "Koala", "Penguin", "Ostrich", "Eagle", "Hawk", "Parrot", "Pigeon", "Sparrow", "Owl", "Crow", "Peacock", "Swan", "Dolphin", "Whale", "Shark", "Octopus", "Jellyfish", "Crab", "Lobster", "Starfish", "Stingray", "Trout", "Salmon", "Tuna", "Goldfish", "Carp", "Clam", "Snail", "Frog", "Toad", "Turtle", "Snake", "Lizard", "Alligator", "Crocodile", "Dinosaur", "Bat", "Hyena", "Cheetah", "Leopard", "Hippopotamus", "Rhinoceros", "Buffalo", "Antelope", "Gazelle", "Moose", "Beaver", "Otter", "Skunk", "Raccoon", "Badger", "Hedgehog", "Porcupine", "Platypus", "Wombat", "Opossum", "Armadillo", "Sloth", "Ant", "Bee", "Butterfly", "Ladybug", "Spider", "Mosquito", "Fly", "Grasshopper", "Cockroach", "Dragonfly", "Hummingbird", "Woodpecker", "Flamingo", "Pelican", "Albatross", "Seagull", "Finch", "Canary", "Toucan", "Puma", "Lynx"];
-const PLANTS = [
-    "Rose Plant",
-    "Lily Plant",
-    "Tulip Plant",
-    "Daffodil Plant",
-    "Marigold Plant",
-    "Petunia Plant",
-    "Begonia Plant",
-    "Iris Plant",
-    "Dahlia Plant",
-    "Hydrangea Plant",
-    "Tomato Plant",
-    "Cucumber Plant",
-    "Carrot Plant",
-    "Lettuce Plant",
-    "Spinach Plant",
-    "Pepper Plant",
-    "Radish Plant",
-    "Pea Plant",
-    "Bean Plant",
-    "Zucchini Plant",
-    "Spider Plant",
-    "Snake Plant",
-    "Pothos Plant",
-    "Aloe Vera Plant",
-    "Jade Plant",
-    "Peace Lily Plant",
-    "Rubber Plant",
-    "Fiddle Leaf Fig Plant",
-    "Boston Fern Plant",
-    "Philodendron Plant",
-    "Dieffenbachia Plant",
-    "ZZ Plant",
-    "Schefflera Plant",
-    "Parlor Palm Plant",
-    "Yucca Plant",
-    "Dracaena Plant",
-    "Croton Plant",
-    "Aglaonema Plant",
-    "Kentia Palm Plant",
-    "Bird of Paradise Plant",
-    "Monstera Deliciosa Plant",
-    "Chinese Money Plant",
-    "Calathea Plant",
-    "Anthurium Plant",
-    "Begonia Maculata Plant",
-    "Hoya Plant",
-    "String of Pearls Plant",
-    "Prayer Plant",
-    "English Ivy Plant",
-    "Pilea Peperomioides Plant",
-    "Oak Tree",
-    "Maple Tree",
-    "Pine Tree",
-    "Willow Tree",
-    "Birch Tree",
-    "Cherry Tree",
-    "Apple Tree",
-    "Magnolia Tree",
-    "Elm Tree",
-    "Cedar Tree",
-    "Spruce Tree",
-    "Redwood Tree",
-    "Palm Tree",
-    "Beech Tree",
-    "Bonsai Tree",
-    "Cypress Tree",
-    "Fir Tree",
-    "Walnut Tree",
-    "Ash Tree",
-    "Poplar Tree",
-    "Button Mushroom",
-    "Portobello Mushroom",
-    "Shiitake Mushroom",
-    "Oyster Mushroom",
-    "Cremini Mushroom",
-    "Porcini Mushroom",
-    "Chanterelle Mushroom",
-    "Morel Mushroom",
-    "Enoki Mushroom",
-    "Maitake Mushroom",
-    "Kelp Plant",
-    "Seagrass Plant",
-    "Coral Plant",
-    "Algae Plant",
-    "Seaweed Plant",
-    "Dulse Plant",
-    "Eelgrass Plant",
-    "Sea Lettuce Plant",
-    "Sea Palm Plant",
-    "Rockweed Plant",
-    "Wheat Plant",
-    "Corn Plant",
-    "Rice Plant",
-    "Barley Plant",
-    "Soybean Plant",
-    "Potato Plant",
-    "Cabbage Plant",
-    "Onion Plant",
-    "Garlic Plant",
-    "Pumpkin Plant"
-];
-
-const INSECTS = [
-    "Fire Ant", "Carpenter Ant", "Bulldog Ant", "Army Ant", "Leafcutter Ant", "Harvester Ant", "Pharaoh Ant", "Pavement Ant", "Argentine Ant", "Odorous House Ant",
-    "Ladybug", "Longhorn Beetle", "Weevil", "Ground Beetle", "Dung Beetle", "Rhinoceros Beetle", "Stag Beetle", "Colorado Potato Beetle", "Click Beetle", "Firefly",
-    "Housefly", "Fruit Fly", "Tsetse Fly", "Horse Fly", "Deer Fly",
-    "Water Strider", "Backswimmer", "Water Boatman", "Giant Water Bug", "Water Scorpion", "Mosquito Larva", "Dragonfly Nymph", "Damselfly Nymph", "Mayfly Nymph", "Caddisfly Larva",
-    "Bee", "Butterfly", "Moth", "Cockroach", "Mosquito", "Dragonfly", "Grasshopper", "Cricket", "Termite", "Aphid",
-    "Cicada", "Mantis", "Wasp", "Hornet", "Bedbug", "Flea", "Tick", "Spider", "Scorpion", "Centipede",
-    "Millipede", "Louse", "Silverfish", "Earwig", "Mayfly", "Sandfly", "Blowfly", "Botfly", "Snipe Fly", "Flesh Fly",
-    "Hoverfly", "Damselfly", "Stonefly", "Whitefly", "Greenfly", "Blackfly", "Sawfly", "Caddisfly", "Dobsonfly", "Snakefly",
-    "Lacewing", "Antlion", "Doodlebug", "Thrips", "Leafhopper", "Treehopper", "Planthopper", "Froghopper", "Cicada Killer", "Yellowjacket"
-];
-
+const PLANTS = [ "Rose Plant", "Lily Plant", "Tulip Plant", "Daffodil Plant", "Marigold Plant", "Petunia Plant", "Begonia Plant", "Iris Plant", "Dahlia Plant", "Hydrangea Plant", "Tomato Plant", "Cucumber Plant", "Carrot Plant", "Lettuce Plant", "Spinach Plant", "Pepper Plant", "Radish Plant", "Pea Plant", "Bean Plant", "Zucchini Plant", "Spider Plant", "Snake Plant", "Pothos Plant", "Aloe Vera Plant", "Jade Plant", "Peace Lily Plant", "Rubber Plant", "Fiddle Leaf Fig Plant", "Boston Fern Plant", "Philodendron Plant", "Dieffenbachia Plant", "ZZ Plant", "Schefflera Plant", "Parlor Palm Plant", "Yucca Plant", "Dracaena Plant", "Croton Plant", "Aglaonema Plant", "Kentia Palm Plant", "Bird of Paradise Plant", "Monstera Deliciosa Plant", "Chinese Money Plant", "Calathea Plant", "Anthurium Plant", "Begonia Maculata Plant", "Hoya Plant", "String of Pearls Plant", "Prayer Plant", "English Ivy Plant", "Pilea Peperomioides Plant", "Oak Tree", "Maple Tree", "Pine Tree", "Willow Tree", "Birch Tree", "Cherry Tree", "Apple Tree", "Magnolia Tree", "Elm Tree", "Cedar Tree", "Spruce Tree", "Redwood Tree", "Palm Tree", "Beech Tree", "Bonsai Tree", "Cypress Tree", "Fir Tree", "Walnut Tree", "Ash Tree", "Poplar Tree", "Button Mushroom", "Portobello Mushroom", "Shiitake Mushroom", "Oyster Mushroom", "Cremini Mushroom", "Porcini Mushroom", "Chanterelle Mushroom", "Morel Mushroom", "Enoki Mushroom", "Maitake Mushroom", "Kelp Plant", "Seagrass Plant", "Coral Plant", "Algae Plant", "Seaweed Plant", "Dulse Plant", "Eelgrass Plant", "Sea Lettuce Plant", "Sea Palm Plant", "Rockweed Plant", "Wheat Plant", "Corn Plant", "Rice Plant", "Barley Plant", "Soybean Plant", "Potato Plant", "Cabbage Plant", "Onion Plant", "Garlic Plant", "Pumpkin Plant"];
+const INSECTS = ["Fire Ant", "Carpenter Ant", "Bulldog Ant", "Army Ant", "Leafcutter Ant", "Harvester Ant", "Pharaoh Ant", "Pavement Ant", "Argentine Ant", "Odorous House Ant", "Ladybug", "Longhorn Beetle", "Weevil", "Ground Beetle", "Dung Beetle", "Rhinoceros Beetle", "Stag Beetle", "Colorado Potato Beetle", "Click Beetle", "Firefly", "Housefly", "Fruit Fly", "Tsetse Fly", "Horse Fly", "Deer Fly", "Water Strider", "Backswimmer", "Water Boatman", "Giant Water Bug", "Water Scorpion", "Mosquito Larva", "Dragonfly Nymph", "Damselfly Nymph", "Mayfly Nymph", "Caddisfly Larva", "Bee", "Butterfly", "Moth", "Cockroach", "Mosquito", "Dragonfly", "Grasshopper", "Cricket", "Termite", "Aphid", "Cicada", "Mantis", "Wasp", "Hornet", "Bedbug", "Flea", "Tick", "Spider", "Scorpion", "Centipede", "Millipede", "Louse", "Silverfish", "Earwig", "Mayfly", "Sandfly", "Blowfly", "Botfly", "Snipe Fly", "Flesh Fly", "Hoverfly", "Damselfly", "Stonefly", "Whitefly", "Greenfly", "Blackfly", "Sawfly", "Caddisfly", "Dobsonfly", "Snakefly", "Lacewing", "Antlion", "Doodlebug", "Thrips", "Leafhopper", "Treehopper", "Planthopper", "Froghopper", "Cicada Killer", "Yellowjacket"];
 let splat_count = urlParams.get('count');
 splat_count = splat_count ? splat_count : 20;
 
-let ruleset = 'advanced';
+let ruleset = document.querySelector('#ruleset').value;
 
 // TODO: set up base rules
 // * give mutant animals natural weapon
@@ -429,8 +316,13 @@ class CharacterBase {
 
 }   
 
-const splat_main = async () => {
-    rulebook = await get_rulebook(RULEBOOK_PATH);
+const render_content = async () => {
+    let rulebook = global_rulebook || await get_rulebook(RULEBOOK_PATH);
+    ruleset = document.querySelector('#ruleset').value;
+
+    if (global_rulebook === null) {
+        global_rulebook = rulebook;
+    }
 
     const characters = [];
 
@@ -482,16 +374,20 @@ const get_random_character = () => {
     character.alignment = get_random_alignment();
 
     // race
-    character.race = get_random_race(rulebook);
+    character.race = get_random_race(global_rulebook);
 
     // mutations
-    character.mutations = get_character_mutations(rulebook, character.race);
+    character.mutations = get_character_mutations(global_rulebook, character.race);
 
     // feat
-    character.feat = get_random_feat(rulebook, character.race);
+    if (ruleset === 'advanced') {
+        character.feat = get_random_feat(global_rulebook, character.race);
+    }
 
     // backgrounds
-    character.backgrounds = get_random_backgrounds(rulebook, 2);
+    if (ruleset === 'advanced') {
+        character.backgrounds = get_random_backgrounds(global_rulebook, 2);
+    }
 
     // thac0
     character.thac0 = 19;
@@ -512,7 +408,7 @@ const get_random_character = () => {
 const get_random_feat = (rulebook, race) => {
     let selected_feat = null;
     while (selected_feat === null) {
-        let random_feat = randomChoice(rulebook.feats.filter(feat => feat.fields.pc_eligible));
+        let random_feat = randomChoice(global_rulebook.feats.filter(feat => feat.fields.pc_eligible));
         const bonus_mutations_ineligible_races = [
             'pure human (base)',
             'pure human (advanced)',
@@ -533,25 +429,25 @@ const get_random_feat = (rulebook, race) => {
 
 const applyAbilityMods = (character) => {
     // strength
-    character.strengthMod = get_mod_by_attr_value(rulebook.strengthModSets, 'str_mod', character.strength);
-    character.damageMod = get_mod_by_attr_value(rulebook.strengthModSets, 'dmg_mod', character.strength);
+    character.strengthMod = get_mod_by_attr_value(global_rulebook.strengthModSets, 'str_mod', character.strength);
+    character.damageMod = get_mod_by_attr_value(global_rulebook.strengthModSets, 'dmg_mod', character.strength);
 
     // dexterity
-    character.acMod = get_mod_by_attr_value(rulebook.dexterityModSets, 'ac_mod', character.dexterity);
-    character.missileMod = get_mod_by_attr_value(rulebook.dexterityModSets, 'missile_mod', character.dexterity);
-    character.initMod = get_mod_by_attr_value(rulebook.dexterityModSets, 'init_mod', character.dexterity);
+    character.acMod = get_mod_by_attr_value(global_rulebook.dexterityModSets, 'ac_mod', character.dexterity);
+    character.missileMod = get_mod_by_attr_value(global_rulebook.dexterityModSets, 'missile_mod', character.dexterity);
+    character.initMod = get_mod_by_attr_value(global_rulebook.dexterityModSets, 'init_mod', character.dexterity);
 
     // constitution
-    character.poisonDeathMod = get_mod_by_attr_value(rulebook.constitutionModSets, 'poison_death_mod', character.constitution);
-    character.radiationMod = get_mod_by_attr_value(rulebook.constitutionModSets, 'radiation_mod', character.constitution);
+    character.poisonDeathMod = get_mod_by_attr_value(global_rulebook.constitutionModSets, 'poison_death_mod', character.constitution);
+    character.radiationMod = get_mod_by_attr_value(global_rulebook.constitutionModSets, 'radiation_mod', character.constitution);
 
     // intelligence
-    character.technologyMod = get_mod_by_attr_value(rulebook.intelligenceModSets, 'tech_mod', character.intelligence);
+    character.technologyMod = get_mod_by_attr_value(global_rulebook.intelligenceModSets, 'tech_mod', character.intelligence);
 
     // charisma
-    character.reactionMod = get_mod_by_attr_value(rulebook.charismaModSets, 'reaction_mod', character.charisma);
-    character.retainers = get_mod_by_attr_value(rulebook.charismaModSets, 'retainers', character.charisma);
-    character.retainerMorale = get_mod_by_attr_value(rulebook.charismaModSets, 'retainer_morale', character.charisma);
+    character.reactionMod = get_mod_by_attr_value(global_rulebook.charismaModSets, 'reaction_mod', character.charisma);
+    character.retainers = get_mod_by_attr_value(global_rulebook.charismaModSets, 'retainers', character.charisma);
+    character.retainerMorale = get_mod_by_attr_value(global_rulebook.charismaModSets, 'retainer_morale', character.charisma);
 
     return character;
 }
@@ -671,19 +567,12 @@ const get_random_backgrounds = (rulebook, total_backgrounds) => {
 
 const get_random_race = (rulebook) => {
     // filter out base versions for now
-    const filtered_races = rulebook.races.filter(race => !race.fields.name.toLowerCase().includes('(base)'));
-    // let randomRaceName = randomRace.fields.name;
-
-    // randomRaceName = randomRaceName
-    //     .replace('Animal', `Animal (${randomChoice(ANIMALS)})`)
-    //     .replace('Plant', `Plant (${randomChoice(PLANTS)})`)
-    //     .replace('Insect', `Insect (${randomChoice(INSECTS)})`);
-    
-    // randomRace.fields.name = randomRaceName;
-
-    // if (randomRace.fields.name.toLowerCase().includes('animal')) {
-    //     console.log(randomRace);
-    // }
+    let filtered_races = null;
+    if (rulebook === 'advanced') {
+        filtered_races = rulebook.races.filter(race => !race.fields.name.toLowerCase().includes(`(base)`));
+    } else {
+        filtered_races = rulebook.races.filter(race => race.fields.source === 'base');
+    }
     return randomChoice(filtered_races);;
 };
 
@@ -774,7 +663,7 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
                     d100_roll = roll_dice('1d100');
                     mutation_row = table.filter(row => d100_roll === row.fields.roll);
                     mutation_row = mutation_row[0];
-                    new_mutation_pk = mutation_row.fields.advanced_result;
+                    new_mutation_pk = mutation_row.fields[`${ruleset}_result`];
                     new_mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
                     break;
 
@@ -783,7 +672,7 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
                     d100_roll = roll_dice('1d100');
                     mutation_row = table.filter(row => d100_roll === row.fields.roll);
                     mutation_row = mutation_row[0];
-                    new_mutation_pk = mutation_row.fields.advanced_result;
+                    new_mutation_pk = mutation_row.fields[`${ruleset}_result`];
                     new_mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
                     break;
 
@@ -792,7 +681,7 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
                     d100_roll = roll_dice('1d100');
                     mutation_row = table.filter(row => d100_roll === row.fields.roll);
                     mutation_row = mutation_row[0];
-                    new_mutation_pk = mutation_row.fields.advanced_result;
+                    new_mutation_pk = mutation_row.fields[`${ruleset}_result`];
                     new_mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
                     break;
 
@@ -801,7 +690,7 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
                     d100_roll = roll_dice('1d100');
                     mutation_row = table.filter(row => d100_roll === row.fields.roll);
                     mutation_row = mutation_row[0];
-                    new_mutation_pk = mutation_row.fields.advanced_result;
+                    new_mutation_pk = mutation_row.fields[`${ruleset}_result`];
                     new_mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
                     break;
 
@@ -811,7 +700,7 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
                         d100_roll = roll_dice('1d100');
                         mutation_row = table.filter(row => d100_roll === row.fields.roll);
                         mutation_row = mutation_row[0];
-                        new_mutation_pk = mutation_row.fields.advanced_result;
+                        new_mutation_pk = mutation_row.fields[`${ruleset}_result`];
                         new_mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
                         if (new_mutation.fields.effect_type == 'benefit') {
                             break;
@@ -826,7 +715,7 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
                         d100_roll = roll_dice('1d100');
                         mutation_row = table.filter(row => d100_roll === row.fields.roll);
                         mutation_row = mutation_row[0];
-                        new_mutation_pk = mutation_row.fields.advanced_result;
+                        new_mutation_pk = mutation_row.fields[`${ruleset}_result`];
                         new_mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
                         if (new_mutation.fields.effect_type == 'drawback') {
                             break;
@@ -841,7 +730,7 @@ const append_table_mutations = (rulebook, character_mutations, total_new_mutatio
                         d100_roll = roll_dice('1d100');
                         mutation_row = table.filter(row => d100_roll === row.fields.roll);
                         mutation_row = mutation_row[0];
-                        new_mutation_pk = mutation_row.fields.advanced_result;
+                        new_mutation_pk = mutation_row.fields[`${ruleset}_result`];
                         new_mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
                         if (new_mutation.fields.effect_type == 'drawback') {
                             break;
@@ -885,7 +774,7 @@ const get_any_random_mutation = (rulebook) => {
     d100_roll = roll_dice('1d100');
     mutation_row = table.filter(row => d100_roll === row.fields.roll);
     mutation_row = mutation_row[0];
-    new_mutation_pk = mutation_row.fields.advanced_result;
+    new_mutation_pk = mutation_row.fields[`${ruleset}_result`];
     mutation = get_mutation_by_pk(rulebook, new_mutation_pk);
     return mutation;
 }
@@ -1057,6 +946,7 @@ const get_splat_sheet_string = (characters) => {
         character_race_detail = character_race_detail.replace('Insect', `Insect (${randomChoice(INSECTS)})`);
 
         let character_race_title = character_race_detail.replace(' (Advanced)','');
+        character_race_title = character_race_detail.replace(' (Base)','');
         character_race_title = character_race_title.replace('(','');
         character_race_title = character_race_title.replace(')','');
         character_race_title = character_race_title.replace('Animal','');
@@ -1065,21 +955,25 @@ const get_splat_sheet_string = (characters) => {
 
         splat_sheet_contents += `${character.alignment} ${character_race_title}`;
 
-        backgrounds_set = new Set(character.backgrounds);
-        for (let background of backgrounds_set) {
-            splat_sheet_contents += ` ${background}`;
+        if (ruleset === 'advanced') {       
+            backgrounds_set = new Set(character.backgrounds);
+            for (let background of backgrounds_set) {
+                splat_sheet_contents += ` ${background}`;
+            }
         }
 
         splat_sheet_contents += `</h3>`;
 
-        splat_sheet_contents += `Race: <a href='javascript:void(0);' class='item-link splat-item-link' data-category='races' data-itemid='${character.race.pk}'>${character_race_detail}</a> (${character.race.fields.page_number})<br><br>`;
+        splat_sheet_contents += `Race: <a href='javascript:void(0);' class='item-link splat-item-link' data-category='races' data-itemid='${character.race.pk}'>${character_race_detail}</a> (${character.race.fields.page_number})<br>`;
 
-        splat_sheet_contents += `Backgrounds:<br>`;
-        for (let background of backgrounds_set) {
-            const rank = character.backgrounds.reduce((acc, str) => str === background ? acc + 1 : acc, 0)
-            splat_sheet_contents += `--${background}: ${rank}<br>`;
+        if (ruleset === 'advanced') {
+            splat_sheet_contents += `Backgrounds:<br>`;
+            for (let background of backgrounds_set) {
+                const rank = character.backgrounds.reduce((acc, str) => str === background ? acc + 1 : acc, 0)
+                splat_sheet_contents += `--${background}: ${rank}<br>`;
+            }    
         }
-            
+
         splat_sheet_contents += `<br>`;
         splat_sheet_contents += `Alignment: ${character.alignment}<br>`;
 
@@ -1123,10 +1017,6 @@ const get_splat_sheet_string = (characters) => {
             let mutationNames = [];
 
             for (let mutation of character.mutations) {
-                if (mutationNames.includes(mutation.fields.name)) {
-                    alert('dupe: ' + mutation.fields.name);
-                }
-
                 mutationNames.push(mutation.fields.name);
 
                 if (mutation.fields.name.toLowerCase().startsWith('dwarfism')) {
@@ -1142,7 +1032,7 @@ const get_splat_sheet_string = (characters) => {
                     let affected_mutation = select_beneficial_mutation(character.mutations);
                     
                     if (affected_mutation) {
-                        let mutation_name = get_full_mutation_name(affected_mutation, rulebook);
+                        let mutation_name = get_full_mutation_name(affected_mutation, global_rulebook);
 
                         if (mutation_name.includes('>')) {
                             mutation_name = mutation_name.slice(0, mutation_name.indexOf(' >'));
@@ -1157,7 +1047,7 @@ const get_splat_sheet_string = (characters) => {
 
                     splat_sheet_contents += `--<a href='javascript:void(0);' class='item-link splat-item-link' data-category='mutations' data-itemid='${mutation.pk}'>${unreliable_description}</a><br>`;
                 } else {
-                    splat_sheet_contents += `--<a href='javascript:void(0);' class='item-link splat-item-link' data-category='mutations' data-itemid='${mutation.pk}'>${get_full_mutation_name(mutation, rulebook)}</a><br>`;
+                    splat_sheet_contents += `--<a href='javascript:void(0);' class='item-link splat-item-link' data-category='mutations' data-itemid='${mutation.pk}'>${get_full_mutation_name(mutation, global_rulebook)}</a><br>`;
                 }
             }
 
@@ -1168,8 +1058,10 @@ const get_splat_sheet_string = (characters) => {
             splat_sheet_contents += `Mutations: None<br>`;
         }
 
-        splat_sheet_contents += `<br>`;
-        splat_sheet_contents += `Feat: <a href='javascript:void(0);' class='item-link splat-item-link' data-category='feats' data-itemid='${character.feat.pk}'>${character.feat.fields.name}</a> (${character.feat.fields.page_number})<br>`;
+        if (ruleset === 'advanced') {
+            splat_sheet_contents += `<br>`;
+            splat_sheet_contents += `Feat: <a href='javascript:void(0);' class='item-link splat-item-link' data-category='feats' data-itemid='${character.feat.pk}'>${character.feat.fields.name}</a> (${character.feat.fields.page_number})<br>`;
+        }
 
         splat_sheet_contents += `<br>`;
         splat_sheet_contents += `Saving Throws<br>`;
@@ -1179,6 +1071,13 @@ const get_splat_sheet_string = (characters) => {
         splat_sheet_contents += `--Radiation Save: ${character.radiationSave}<br>`;
         splat_sheet_contents += `<br>`;
         splat_sheet_contents += `Gold: ${character.gold}<br>`;
+        splat_sheet_contents += `<br>`;
+
+        if (ruleset === 'advanced') {
+            splat_sheet_contents += `<br>`;
+            splat_sheet_contents += `Player applies feat after selecting character.`;
+        }
+
         splat_sheet_contents += `<br>`;
         splat_sheet_contents += `<aside><a href='javascript:void(0)' data-char_id='${chararacter_number}' class='print-button'>[PRINT]</a></aside>`;
         splat_sheet_contents += `  </article>`;
@@ -1220,4 +1119,7 @@ const display_irradiated_bonus = () => {
     modal.open();
 }
 
-document.addEventListener('DOMContentLoaded', splat_main);
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelector('#new-splat-link').addEventListener('click', render_content);
+    render_content();
+});

@@ -1,6 +1,7 @@
 const RULEBOOK_PATH = '/static/mutantfuture/json/rulebook.json';
-
 const urlParams = new URLSearchParams(window.location.search);
+
+let global_rulebook = null;
 
 let category_param = urlParams.get('cat');
 category_param = category_param ? category_param : 'mutations';
