@@ -1120,5 +1120,4 @@ const display_irradiated_bonus = () => {
 
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('#new-splat-link').addEventListener('click', render_content);
-    render_content();
 });
