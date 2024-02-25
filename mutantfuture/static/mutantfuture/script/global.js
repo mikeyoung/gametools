@@ -48,8 +48,10 @@ const attach_item_event_handlers = (rulebook) => {
 
             modalContent += '<hr>';
 
-            if (CATEGORY.toLowerCase() == 'mutations') {
+            if (typeof items.fields.type !== 'undefined') {
                 modalContent += `<h4>${items.fields.type} ${items.fields.effect_type} (${items.fields.page_number})</h4>`;
+            } else {
+                modalContent += `<h4>(${items.fields.page_number})</h4>`;
             }
 
             modalContent += items.fields.description;
