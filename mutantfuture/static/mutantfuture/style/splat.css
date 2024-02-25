@@ -18,6 +18,10 @@ li {
   text-align: center;
   margin: 1em 0;
 }
+
+#character-list h3 {
+  text-align: left;
+}
   
 @media print {
   .print-button,
