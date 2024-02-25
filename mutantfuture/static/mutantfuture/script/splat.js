@@ -899,7 +899,7 @@ const get_full_mutation_name = (mutation, rulebook) => {
         formatted_form = mutation_form ? ` > ${mutation_form}` : '';
     }
 
-    return `${mutation.fields.name}${formatted_form} [${mutation.fields.type} ${mutation.fields.effect_type} (${mutation.fields.page_number})]`;
+    return `${mutation.fields.name}${formatted_form} [${mutation.fields.type} ${mutation.fields.effect_type}, ${mutation.fields.page_number}]`;
 };
 
 const roll_dice = (roll_str) => {
