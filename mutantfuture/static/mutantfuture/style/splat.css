@@ -3,10 +3,6 @@
   min-width: 300px;
   max-width: 768px;
   margin: 0 auto;
-
-  & h3 {
-    text-align: left;
-  }
 }
   
 li {
