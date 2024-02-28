@@ -30,8 +30,9 @@ li {
   #rulesform,
   .intro-text,
   .splat-links-container,
-  #rulesform {
-    display: none;
+  #rulesform,
+  #rulesform * {
+    display: none !important;
   }
 
   #character-list {
