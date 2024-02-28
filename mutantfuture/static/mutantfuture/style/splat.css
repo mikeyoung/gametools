@@ -28,7 +28,9 @@ li {
   h1,
   nav.main-nav,
   #rulesform,
-  .intro-text {
+  .intro-text,
+  .splat-links-container,
+  #rulesform {
     display: none;
   }
 
