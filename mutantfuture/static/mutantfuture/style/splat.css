@@ -24,6 +24,10 @@ li {
 }
   
 @media print {
+  body {
+    background-color: transparent;
+  }
+
   .print-button,
   h1,
   nav.main-nav,

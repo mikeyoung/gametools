@@ -1,5 +1,17 @@
+@keyframes backgroundColorPalette {
+  0% {
+    background: #d6ffe7;
+  }
+  100% {
+    background: #b5ffd2;
+  }
+}
+
 body {
-    background-color: #b7f5e5;
+    animation-name: backgroundColorPalette;
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
     color: #000 !important;
     font-size: 18px;
     padding: 0;
@@ -107,4 +119,11 @@ aside {
   text-align: center;
   margin-bottom: 30px;
   display: none;
+}
+
+.bottom-image {
+  width: 95%;
+  max-width: 400px;
+  margin: 1em auto;
+  display: block;
 }
