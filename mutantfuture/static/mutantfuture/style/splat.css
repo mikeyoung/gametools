@@ -35,7 +35,8 @@ li {
   .intro-text,
   .splat-links-container,
   #rulesform,
-  #rulesform * {
+  #rulesform *,
+  .bottom-image {
     display: none !important;
   }
 
