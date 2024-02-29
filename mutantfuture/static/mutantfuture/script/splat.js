@@ -902,26 +902,6 @@ const get_full_mutation_name = (mutation, rulebook) => {
     return `${mutation.fields.name}${formatted_form} [${mutation.fields.type} ${mutation.fields.effect_type}, ${mutation.fields.page_number}]`;
 };
 
-const roll_dice = (roll_str) => {
-    if (roll_str.toLowerCase().includes('d')) {
-        total = 0;
-        roll_elements = roll_str.split('d');
-        num_dice = roll_elements[0];
-        num_sides = roll_elements[1];
-        num_dice = parseInt(num_dice);
-        num_sides = parseInt(num_sides);
-
-        for (let i=0; i < num_dice; i++) {
-            total += randInt(1,num_sides)
-        }
-        
-        return total;
-        
-    } else {
-        return parseInt(roll_str)
-    }
-};
-
 const get_mod_by_attr_value = (attribute_table, mod_name, value) => {
     const value_rows = attribute_table.filter(row => row.fields.value == value);
     const value_row = value_rows[0];
@@ -1097,9 +1077,7 @@ const print_character_list = (characters, rulebook) => {
     })
 };
 
-const randInt = (a, b) => {
-    return Math.floor(Math.random() * (b - a + 1)) + a;
-}
+
 
 const display_irradiated_bonus = () => {
     // instanciate new modal

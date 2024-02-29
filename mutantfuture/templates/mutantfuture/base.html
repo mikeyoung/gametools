@@ -15,16 +15,19 @@
     {% block head_content %}{% endblock %}
   </head>
   <body>
-    <nav class="main-nav">
-      <a href="{% url 'index'  %}">Home</a> |
-      <a href="{% url 'items' %}?cat=races">Races</a> |
-      <a href="{% url 'items' %}?cat=mutations">Mutations</a> |
-      <a href="{% url 'items' %}?cat=feats">Feats</a> |
-      <a href="{% url 'splat' %}">Splat</a>
-    </nav>
-    {% block body_content %}{% endblock %}
-    <br>
-    <img class="bottom-image" src="{% static 'mutantfuture/images/eyeball_circuits_transbg.png' %}">
+
+    <div class="gametools-container">
+      <nav class="main-nav">
+        <a href="{% url 'index'  %}">Home</a> |
+        <a href="{% url 'items' %}?cat=races">Races</a> |
+        <a href="{% url 'items' %}?cat=mutations">Mutations</a> |
+        <a href="{% url 'items' %}?cat=feats">Feats</a> |
+        <a href="{% url 'splat' %}">Splat</a>
+      </nav>
+      {% block body_content %}{% endblock %}
+      <footer><img class="bottom-image" src="{% static 'mutantfuture/images/eyeball_circuits_transbg.png' %}"></footer>
+    </div>
+
     <script src="{% static 'mutantfuture/script/tingle.min.js' %}"></script>
     <script src="{% static 'mutantfuture/script/global.js' %}"></script>
     {% block bottom_scripts %}{% endblock %}

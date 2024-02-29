@@ -36,7 +36,7 @@ li {
   .splat-links-container,
   #rulesform,
   #rulesform *,
-  .bottom-image {
+  footer {
     display: none !important;
   }
 

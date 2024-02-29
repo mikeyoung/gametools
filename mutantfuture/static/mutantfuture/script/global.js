@@ -7,6 +7,26 @@ let category_param = urlParams.get('cat');
 category_param = category_param ? category_param : 'mutations';
 const CATEGORY = category_param.toLowerCase();
 
+const roll_dice = (roll_str) => {
+    if (roll_str.toLowerCase().includes('d')) {
+        total = 0;
+        roll_elements = roll_str.split('d');
+        num_dice = roll_elements[0];
+        num_sides = roll_elements[1];
+        num_dice = parseInt(num_dice);
+        num_sides = parseInt(num_sides);
+
+        for (let i=0; i < num_dice; i++) {
+            total += Math.floor(Math.random() * num_sides) + 1;
+        }
+        
+        return total;
+        
+    } else {
+        return parseInt(roll_str)
+    }
+};
+
 const get_rulebook = async (url) => {
     try {
         const response = await fetch(url);
@@ -63,3 +83,7 @@ const attach_item_event_handlers = (rulebook) => {
         });
     });    
 };
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelector('body').style.backgroundImage = `url('/static/mutantfuture/images/backgrounds/${roll_dice("1d64")}.jpg')`;
+});
