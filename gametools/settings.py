@@ -29,7 +29,11 @@ DEBUG = True
 # Set access to the admin url route
 ADMIN_ENABLED = True
 
-ALLOWED_HOSTS = ['mikeyoung.pythonanywhere.com', '127.0.0.1']
+ALLOWED_HOSTS = [
+    'mikeyoung.pythonanywhere.com',
+    '127.0.0.1',
+    'www.thac0.xyz',
+]
 
 
 # Application definition
