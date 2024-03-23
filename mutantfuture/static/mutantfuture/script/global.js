@@ -83,7 +83,3 @@ const attach_item_event_handlers = (rulebook) => {
         });
     });    
 };
-
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelector('body').style.backgroundImage = `url('/static/mutantfuture/images/backgrounds/${roll_dice("1d64")}.jpg')`;
-});
